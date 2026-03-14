@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Show and Tell
+    url: https://github.com/grainulator/wheat/discussions/categories/show-and-tell
+    about: Share the results of a wheat research sprint
+  - name: Questions
+    url: https://github.com/grainulator/wheat/discussions
+    about: Ask questions and get help from the community

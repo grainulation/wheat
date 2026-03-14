@@ -1,0 +1,43 @@
+{
+  "name": "@grainulator/wheat",
+  "version": "0.9.0-beta.1",
+  "description": "Research-driven development framework — structured claims, compiled evidence, deterministic output",
+  "license": "MIT",
+  "author": "Aid Idrizovic",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grainulator/wheat"
+  },
+  "homepage": "https://github.com/grainulator/wheat#readme",
+  "bugs": {
+    "url": "https://github.com/grainulator/wheat/issues"
+  },
+  "keywords": [
+    "wheat-framework",
+    "research-sprint",
+    "claims-compiler",
+    "claude-code",
+    "structured-research",
+    "evidence-graded",
+    "decision-framework",
+    "research-driven-development",
+    "developer-research",
+    "technical-decision-making"
+  ],
+  "bin": {
+    "wheat": "bin/wheat.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "compiler/",
+    "templates/"
+  ],
+  "scripts": {
+    "test": "node --test test/"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {}
+}

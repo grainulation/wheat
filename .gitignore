@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+*.log
+
+# Wheat sprint artifacts (generated, not checked in)
+compilation.json
+wheat-manifest.json

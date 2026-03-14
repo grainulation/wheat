@@ -1,0 +1,63 @@
+title: "[Show & Tell] "
+labels:
+  - show-and-tell
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share the results of a wheat research sprint! This is the place to show
+        what you investigated, what you learned, and what decisions you reached.
+
+  - type: input
+    id: sprint-question
+    attributes:
+      label: Sprint question
+      description: What was the research question driving your sprint?
+      placeholder: "e.g., Should we migrate from REST to GraphQL?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: key-findings
+    attributes:
+      label: Key findings
+      description: What did you learn? Summarize the top 3-5 claims or conclusions.
+      placeholder: |
+        1. Finding one...
+        2. Finding two...
+    validations:
+      required: true
+
+  - type: textarea
+    id: decision
+    attributes:
+      label: Decision or recommendation
+      description: What did you decide, and why? Include the confidence level if applicable.
+      placeholder: "We decided to... because..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: sprint-stats
+    attributes:
+      label: Sprint stats (optional)
+      description: "Paste the output of `wheat stats` or `wheat status` if you like."
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: artifacts
+    attributes:
+      label: Artifacts
+      description: Link to or paste any briefs, dashboards, or presentations generated.
+    validations:
+      required: false
+
+  - type: textarea
+    id: lessons
+    attributes:
+      label: Lessons learned
+      description: What would you do differently next time? Any tips for others?
+    validations:
+      required: false

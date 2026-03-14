@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Verify zero dependencies
+        run: |
+          deps=$(node -e "console.log(Object.keys(require('./package.json').dependencies || {}).length)")
+          if [ "$deps" != "0" ]; then
+            echo "ERROR: package.json has $deps dependencies — wheat must have zero deps"
+            exit 1
+          fi
+
+      - name: Run integration tests
+        run: node --test test/
+
+      - name: Compiler self-check
+        run: |
+          # Create a minimal sprint to test the compiler
+          mkdir -p /tmp/wheat-test
+          echo '{"meta":{"question":"CI test","initiated":"2024-01-01","audience":["ci"],"phase":"define","connectors":[]},"claims":[{"id":"d001","type":"constraint","topic":"test","content":"CI test claim","source":{"origin":"stakeholder","artifact":null,"connector":null},"evidence":"stated","status":"active","phase_added":"define","timestamp":"2024-01-01T00:00:00Z","conflicts_with":[],"resolved_by":null,"tags":[]}]}' > /tmp/wheat-test/claims.json
+          node compiler/wheat-compiler.js --dir /tmp/wheat-test --check
+
+      - name: CLI help check
+        run: node bin/wheat.js --help
+
+      - name: Guard hook check
+        run: echo '{}' | node bin/wheat.js guard --dir /tmp/wheat-test
