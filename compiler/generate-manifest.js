@@ -220,7 +220,7 @@ if (require.main === module) {
 
     // Claims that reference files as artifacts
     for (const claim of claims.claims) {
-      if (claim.source?.artifact && filePath.includes(claim.source.artifact.replace(/^.*\/prototypes\//, 'prototypes/'))) {
+      if (claim.source?.artifact && filePath.includes(claim.source.artifact.replace(/^.*[/\\]prototypes[/\\]/, 'prototypes/'))) {
         if (!fileInfo.topics.includes(claim.topic)) {
           fileInfo.topics.push(claim.topic);
         }
