@@ -74,8 +74,7 @@ nav .container{display:flex;align-items:center;justify-content:space-between}
 .nav-links{display:flex;gap:24px;font-size:.875rem;color:var(--text-2);align-items:center}
 .nav-links a{color:var(--text-2);transition:color .2s}
 .nav-links a:hover{color:var(--text);text-decoration:none}
-.nav-cta{background:var(--accent);color:#000;padding:6px 16px;border-radius:6px;font-weight:600;font-size:.8125rem;transition:opacity .2s}
-.nav-cta:hover{opacity:.85;text-decoration:none}
+.nav-cta{background:transparent;color:var(--text);padding:6px 16px;border-radius:6px;font-weight:600;font-size:.8125rem;transition:all .2s;border:1px solid var(--border-light)}.nav-cta:hover{background:var(--surface-hover);text-decoration:none;color:var(--text)}
 
 .hero{padding:100px 0 80px;text-align:center}
 .hero-badge{display:inline-block;padding:5px 14px;border:1px solid var(--border-light);border-radius:100px;font-size:.75rem;color:var(--text-2);margin-bottom:24px;letter-spacing:.04em;text-transform:uppercase}
@@ -104,7 +103,7 @@ nav .container{display:flex;align-items:center;justify-content:space-between}
 .flow-circle{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8125rem;border:1px solid var(--border)}
 .flow-label{font-size:.75rem;color:var(--text-2);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
 .flow-arrow{color:var(--text-3);font-size:1.2rem;margin:0 -4px;align-self:center;padding-bottom:24px}
-@media(max-width:600px){.flow-row{flex-direction:column}.flow-arrow{transform:rotate(90deg)}}
+@media(max-width:600px){.flow-row{flex-direction:column}.flow-arrow{transform:rotate(90deg);padding-bottom:0}}
 
 /* Quick start */
 .quickstart{padding:80px 0 60px}
@@ -137,6 +136,17 @@ nav .container{display:flex;align-items:center;justify-content:space-between}
 .ex-body .ex-output .hl{color:var(--accent)}
 @media(max-width:600px){.ex-step{grid-template-columns:36px 1fr;gap:14px}.ex-dot{width:36px;height:36px;font-size:.9rem}.example-timeline::before{left:17px}}
 
+/* Terminal simulation */
+.term-sim .typing-cursor::after{content:'|';animation:term-blink 1s step-end infinite;color:var(--accent);font-weight:400}
+@keyframes term-blink{0%,100%{opacity:1}50%{opacity:0}}
+.term-sim .ex-output{opacity:0;transform:translateY(4px);transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.term-sim .ex-output.t-visible{opacity:1;transform:none}
+.term-sim .ex-step{opacity:0;transform:translateY(12px);transition:opacity .4s var(--ease),transform .4s var(--ease)}
+.term-sim .ex-step.t-active{opacity:1;transform:none}
+.term-sim.t-done .ex-step{opacity:1;transform:none;transition:none}
+.term-sim.t-done .ex-output{opacity:1;transform:none;transition:none}
+.term-sim.t-done .typing-cursor::after{display:none}
+
 /* Features */
 .features{padding:80px 0}
 .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
@@ -150,7 +160,7 @@ nav .container{display:flex;align-items:center;justify-content:space-between}
 .faq{padding:80px 0}
 .faq-grid{display:grid;gap:16px;max-width:720px;margin:0 auto}
 .faq-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px 28px}
-.faq-item h3{font-size:.9375rem;font-weight:700;margin-bottom:8px;color:var(--text)}
+.faq-item h3{font-size:.9375rem;font-weight:700;margin-bottom:12px;color:var(--text)}
 .faq-item p{font-size:.875rem;color:var(--text-2);line-height:1.6}
 
 /* Ecosystem */
@@ -180,8 +190,10 @@ footer p{margin-bottom:6px}
   .container{padding:0 16px}
   section,.what-is,.quickstart,.features,.faq,.ecosystem,.example{padding:60px 0}
   .what-box{padding:28px 20px}
-  .faq-item{padding:20px 18px}
+  .faq-item{padding:24px 20px}
   .ex-body .ex-output{font-size:.7rem;padding:10px 12px}
+  .qs-step{padding:20px 16px}
+  .copy-btn{position:static;margin-top:8px;width:auto}
 }
 @media(max-width:480px){
   .hero h1{font-size:1.6rem}
@@ -352,7 +364,7 @@ endpoints opportunistically.</div>
     <p class="section-sub rv rv-d2">A team needs to decide whether to invest 3-5 weeks in a GraphQL migration. They use wheat to research it properly instead of debating in Slack.</p>
 
     <div class="example-timeline">
-      <div class="ex-step rv">
+      <div class="ex-step">
         <div class="ex-dot init">1</div>
         <div class="ex-body">
           <div class="ex-cmd">$ npx @grainulator/wheat init</div>
@@ -361,7 +373,7 @@ endpoints opportunistically.</div>
         </div>
       </div>
 
-      <div class="ex-step rv">
+      <div class="ex-step">
         <div class="ex-dot research">2</div>
         <div class="ex-body">
           <div class="ex-cmd">/research "GraphQL performance characteristics"</div>
@@ -376,7 +388,7 @@ endpoints opportunistically.</div>
         </div>
       </div>
 
-      <div class="ex-step rv">
+      <div class="ex-step">
         <div class="ex-dot proto">3</div>
         <div class="ex-body">
           <div class="ex-cmd">/prototype</div>
@@ -389,7 +401,7 @@ endpoints opportunistically.</div>
         </div>
       </div>
 
-      <div class="ex-step rv">
+      <div class="ex-step">
         <div class="ex-dot challenge">4</div>
         <div class="ex-body">
           <div class="ex-cmd">/challenge r001</div>
@@ -401,7 +413,7 @@ endpoints opportunistically.</div>
         </div>
       </div>
 
-      <div class="ex-step rv">
+      <div class="ex-step">
         <div class="ex-dot brief">5</div>
         <div class="ex-body">
           <div class="ex-cmd">/brief</div>
@@ -530,7 +542,7 @@ vs. 40-60%). The caching gap (r003) needs a solution first.
 <footer>
   <div class="container">
     <p>Part of the <a href="https://grainulator.github.io/grainulator/">grainulator</a> ecosystem</p>
-    <p>wheat -- MIT License -- <a href="https://github.com/grainulator/wheat">GitHub</a> -- <a href="https://github.com/grainulator/wheat#readme">Docs</a></p>
+    <p>wheat -- <a href="https://github.com/grainulator/wheat">GitHub</a> -- <a href="https://github.com/grainulator/wheat#readme">Docs</a></p>
   </div>
 </footer>
 
@@ -549,6 +561,119 @@ function copyText(btn, text) {
     setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
   });
 }
+
+/* Terminal simulation for example timeline */
+(function() {
+  var TYPING_SPEED = 35;
+  var LINE_PAUSE = 150;
+  var OUTPUT_STAGGER = 80;
+  var STEP_PAUSE = 300;
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var timeline = document.querySelector('.example-timeline');
+  if (!timeline) return;
+
+  var steps = timeline.querySelectorAll('.ex-step');
+  var cmdTexts = [];
+  var cmdEls = [];
+  var outputEls = [];
+
+  steps.forEach(function(step) {
+    var cmd = step.querySelector('.ex-cmd');
+    var output = step.querySelector('.ex-output');
+    cmdTexts.push(cmd ? cmd.textContent : '');
+    cmdEls.push(cmd);
+    outputEls.push(output);
+    if (cmd) cmd.textContent = '';
+    if (output) output.style.opacity = '0';
+    step.style.opacity = '0';
+  });
+
+  timeline.classList.add('term-sim');
+  var animated = false;
+
+  function showFinalState() {
+    timeline.classList.add('t-done');
+    steps.forEach(function(step, i) {
+      step.classList.add('t-active');
+      if (cmdEls[i]) { cmdEls[i].textContent = cmdTexts[i]; cmdEls[i].classList.remove('typing-cursor'); }
+      if (outputEls[i]) { outputEls[i].classList.add('t-visible'); outputEls[i].style.opacity = ''; }
+    });
+  }
+
+  function typeText(el, text, cb) {
+    var idx = 0;
+    el.classList.add('typing-cursor');
+    function tick() {
+      if (idx < text.length) {
+        el.textContent += text[idx];
+        idx++;
+        setTimeout(tick, TYPING_SPEED);
+      } else {
+        el.classList.remove('typing-cursor');
+        cb();
+      }
+    }
+    tick();
+  }
+
+  function animateStep(i, cb) {
+    if (i >= steps.length) { cb(); return; }
+    var step = steps[i];
+    step.classList.add('t-active');
+    setTimeout(function() {
+      if (cmdEls[i] && cmdTexts[i]) {
+        typeText(cmdEls[i], cmdTexts[i], function() {
+          setTimeout(function() {
+            if (outputEls[i]) {
+              outputEls[i].style.opacity = '';
+              outputEls[i].classList.add('t-visible');
+            }
+            setTimeout(function() { animateStep(i + 1, cb); }, STEP_PAUSE);
+          }, LINE_PAUSE);
+        });
+      } else {
+        setTimeout(function() { animateStep(i + 1, cb); }, STEP_PAUSE);
+      }
+    }, 100);
+  }
+
+  if (reducedMotion) {
+    showFinalState();
+    return;
+  }
+
+  var termObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting && !animated) {
+        animated = true;
+        termObs.unobserve(timeline);
+        animateStep(0, function() { timeline.classList.add('t-done'); });
+      }
+    });
+  }, { threshold: 0.15 });
+
+  /* Also handle fast scroll — if user scrolls past, show final state */
+  var scrollTimer;
+  function onScroll() {
+    if (animated) { window.removeEventListener('scroll', onScroll); return; }
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(function() {
+      if (!animated) {
+        var rect = timeline.getBoundingClientRect();
+        if (rect.bottom < 0) {
+          animated = true;
+          termObs.unobserve(timeline);
+          showFinalState();
+          window.removeEventListener('scroll', onScroll);
+        }
+      }
+    }, 100);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  termObs.observe(timeline);
+})();
 </script>
 </body>
 </html>
