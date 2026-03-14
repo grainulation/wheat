@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>wheat — Research sprints for Claude Code</title>
+<meta name="description" content="Turn technical questions into evidence-graded decisions. A structured research framework that runs inside Claude Code.">
+<meta name="author" content="Aid Idrizovic">
+<link rel="canonical" href="https://aid-ninja.github.io/wheat/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="wheat — Research sprints for Claude Code">
+<meta property="og:description" content="Turn technical questions into evidence-graded decisions. A structured research framework that runs inside Claude Code.">
+<meta property="og:url" content="https://aid-ninja.github.io/wheat/">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%2308090f'/><text x='32' y='48' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='800' font-size='44' fill='%23fbbf24'>w</text></svg>">
+
+<style>
+/* ── Reset & Tokens ── */
+:root {
+  --bg: #08090f;
+  --bg-2: #0d0f17;
+  --surface: rgba(255,255,255,0.03);
+  --surface-hover: rgba(255,255,255,0.06);
+  --border: rgba(255,255,255,0.07);
+  --border-light: rgba(255,255,255,0.12);
+  --gold: #fbbf24;
+  --gold-dim: rgba(251,191,36,0.12);
+  --gold-glow: rgba(251,191,36,0.06);
+  --green: #34d399;
+  --green-dim: rgba(52,211,153,0.1);
+  --blue: #60a5fa;
+  --blue-dim: rgba(96,165,250,0.1);
+  --purple: #a78bfa;
+  --purple-dim: rgba(167,139,250,0.1);
+  --text: #e8ecf1;
+  --text-2: #9ba5b7;
+  --text-3: #5a6478;
+  --mono: 'SF Mono','Fira Code','Cascadia Code','Consolas',monospace;
+  --sans: -apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Helvetica,sans-serif;
+  --max-w: 1080px;
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
+code,pre{font-family:var(--mono)}
+
+/* ── Ambient background ── */
+.bg-ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-ambient .orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.04;animation:drift 28s ease-in-out infinite alternate}
+.bg-ambient .orb:nth-child(1){width:600px;height:600px;background:var(--gold);top:-10%;left:20%}
+.bg-ambient .orb:nth-child(2){width:400px;height:400px;background:var(--blue);top:50%;right:-5%;animation-delay:-10s}
+.bg-ambient .orb:nth-child(3){width:350px;height:350px;background:var(--purple);bottom:5%;left:-5%;animation-delay:-18s}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-15px) scale(1.03)}100%{transform:translate(-12px,10px) scale(.97)}}
+
+/* ── Layout ── */
+.page{position:relative;z-index:2}
+.container{max-width:var(--max-w);margin:0 auto;padding:0 24px}
+
+/* ── Reveal animations ── */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.rv.vis{opacity:1;transform:none}
+.rv-d1{transition-delay:.08s}.rv-d2{transition-delay:.16s}.rv-d3{transition-delay:.24s}.rv-d4{transition-delay:.32s}
+
+/* ── Hero fade ── */
+.hf{opacity:0;transform:translateY(16px);animation:hIn .65s var(--ease) forwards}
+.hf1{animation-delay:.05s}.hf2{animation-delay:.15s}.hf3{animation-delay:.25s}.hf4{animation-delay:.4s}
+@keyframes hIn{to{opacity:1;transform:none}}
+
+/* ── Nav ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(8,9,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:14px 0}
+nav .container{display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-weight:700;font-size:1.1rem;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:24px;font-size:.875rem;color:var(--text-2)}
+.nav-links a{color:var(--text-2);transition:color .2s}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.nav-cta{background:var(--gold);color:#000;padding:6px 16px;border-radius:6px;font-weight:600;font-size:.8125rem;transition:opacity .2s}
+.nav-cta:hover{opacity:.85;text-decoration:none}
+
+/* ── Hero ── */
+.hero{padding:100px 0 80px;text-align:center}
+.hero-badge{display:inline-block;padding:5px 14px;border:1px solid var(--border-light);border-radius:100px;font-size:.75rem;color:var(--text-2);margin-bottom:24px;letter-spacing:.04em;text-transform:uppercase}
+.hero h1{font-size:clamp(2.4rem,5.5vw,3.8rem);font-weight:800;letter-spacing:-.035em;line-height:1.1;margin-bottom:20px}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p{font-size:clamp(1.05rem,2vw,1.25rem);color:var(--text-2);max-width:600px;margin:0 auto 40px;line-height:1.55}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:10px;font-weight:600;font-size:.9375rem;transition:all .2s}
+.btn-primary{background:var(--gold);color:#000}.btn-primary:hover{opacity:.88;text-decoration:none;transform:translateY(-1px)}
+.btn-ghost{border:1px solid var(--border-light);color:var(--text)}.btn-ghost:hover{background:var(--surface-hover);text-decoration:none;transform:translateY(-1px)}
+
+/* ── Flow section (the 3 steps) ── */
+.flow{padding:80px 0 60px}
+.flow-label{text-align:center;font-size:.8125rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:40px;font-weight:600}
+.flow-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.flow-step{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px 28px}
+.flow-num{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--gold-dim);color:var(--gold);font-weight:700;font-size:.875rem;margin-bottom:16px}
+.flow-step h3{font-size:1.05rem;font-weight:700;margin-bottom:8px;letter-spacing:-.01em}
+.flow-step p{color:var(--text-2);font-size:.875rem;line-height:1.55;margin-bottom:16px}
+.flow-code{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:.8125rem;color:var(--green);overflow-x:auto;white-space:pre}
+.flow-code .dim{color:var(--text-3)}
+
+@media(max-width:720px){.flow-steps{grid-template-columns:1fr}}
+
+/* ── Example walkthrough ── */
+.example{padding:80px 0}
+.section-label{font-size:.8125rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:12px;font-weight:600}
+.section-title{font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;letter-spacing:-.03em;margin-bottom:16px;line-height:1.15}
+.section-sub{color:var(--text-2);font-size:1.05rem;max-width:620px;margin-bottom:48px;line-height:1.55}
+
+.example-timeline{display:flex;flex-direction:column;gap:0;position:relative}
+.example-timeline::before{content:'';position:absolute;left:23px;top:28px;bottom:28px;width:2px;background:var(--border);border-radius:1px}
+.ex-step{display:grid;grid-template-columns:48px 1fr;gap:20px;padding:24px 0;position:relative}
+.ex-dot{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;z-index:1}
+.ex-dot.init{background:var(--gold-dim);color:var(--gold)}
+.ex-dot.research{background:var(--blue-dim);color:var(--blue)}
+.ex-dot.proto{background:var(--purple-dim);color:var(--purple)}
+.ex-dot.challenge{background:rgba(248,113,113,.1);color:#f87171}
+.ex-dot.brief{background:var(--green-dim);color:var(--green)}
+.ex-body h4{font-size:.9375rem;font-weight:700;margin-bottom:4px}
+.ex-body .ex-cmd{font-family:var(--mono);font-size:.8125rem;color:var(--gold);margin-bottom:6px}
+.ex-body p{color:var(--text-2);font-size:.875rem;line-height:1.5}
+.ex-body .ex-output{margin-top:10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 18px;font-size:.8rem;color:var(--text-2);font-family:var(--mono);line-height:1.6;overflow-x:auto}
+.ex-body .ex-output .claim{color:var(--green)}
+.ex-body .ex-output .risk{color:#f87171}
+.ex-body .ex-output .hl{color:var(--gold)}
+
+@media(max-width:600px){.ex-step{grid-template-columns:36px 1fr;gap:14px}.ex-dot{width:36px;height:36px;font-size:.9rem}.example-timeline::before{left:17px}}
+
+/* ── Install ── */
+.install{padding:80px 0}
+.install-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.install-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px 24px}
+.install-card h3{font-size:.9375rem;font-weight:700;margin-bottom:6px}
+.install-card p{color:var(--text-2);font-size:.8125rem;margin-bottom:16px;line-height:1.5}
+.install-card pre{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-size:.8rem;color:var(--text);overflow-x:auto;line-height:1.55;white-space:pre}
+.install-card pre .comment{color:var(--text-3)}
+
+@media(max-width:720px){.install-grid{grid-template-columns:1fr}}
+
+/* ── Works everywhere ── */
+.universal{padding:80px 0}
+.universal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.uni-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px 20px;text-align:center}
+.uni-icon{font-size:2rem;margin-bottom:12px}
+.uni-card h4{font-size:.875rem;font-weight:600;margin-bottom:4px}
+.uni-card p{font-size:.75rem;color:var(--text-3);line-height:1.45}
+
+@media(max-width:600px){.universal-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ── How it works (claims system) ── */
+.how{padding:80px 0}
+.how-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.how-text p{color:var(--text-2);font-size:.9375rem;line-height:1.65;margin-bottom:16px}
+.how-text p strong{color:var(--text);font-weight:600}
+.how-visual{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;font-family:var(--mono);font-size:.8rem;line-height:1.65}
+.how-visual .key{color:var(--gold)}
+.how-visual .str{color:var(--green)}
+.how-visual .tier{color:var(--blue)}
+.how-visual .dim{color:var(--text-3)}
+
+@media(max-width:720px){.how-grid{grid-template-columns:1fr}}
+
+/* ── Commands reference ── */
+.commands{padding:80px 0}
+.cmd-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.cmd-row{display:flex;align-items:baseline;gap:12px;padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:10px;transition:background .15s}
+.cmd-row:hover{background:var(--surface-hover)}
+.cmd-name{font-family:var(--mono);font-size:.8125rem;color:var(--gold);white-space:nowrap;min-width:120px;font-weight:600}
+.cmd-desc{font-size:.8125rem;color:var(--text-2)}
+
+@media(max-width:720px){.cmd-grid{grid-template-columns:1fr}}
+
+/* ── CTA ── */
+.cta{padding:100px 0;text-align:center}
+.cta h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;letter-spacing:-.03em;margin-bottom:16px}
+.cta p{color:var(--text-2);font-size:1.05rem;max-width:500px;margin:0 auto 36px}
+.cta-code{display:inline-block;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 32px;font-family:var(--mono);font-size:1rem;color:var(--green);margin-bottom:24px;letter-spacing:-.01em}
+
+/* ── Footer ── */
+footer{border-top:1px solid var(--border);padding:32px 0;text-align:center;font-size:.8125rem;color:var(--text-3)}
+footer a{color:var(--text-2)}
+
+/* ── Copy button ── */
+.copy-wrap{position:relative}
+.copy-btn{position:absolute;top:8px;right:8px;background:var(--surface-hover);border:1px solid var(--border);color:var(--text-3);border-radius:6px;padding:4px 10px;font-size:.7rem;cursor:pointer;font-family:var(--sans);transition:all .15s}
+.copy-btn:hover{color:var(--text);border-color:var(--border-light)}
+.copy-btn.copied{color:var(--green);border-color:var(--green)}
+
+/* ── Separator ── */
+.sep{border:none;border-top:1px solid var(--border);margin:0}
+</style>
+</head>
+<body>
+
+<div class="bg-ambient"><div class="orb"></div><div class="orb"></div><div class="orb"></div></div>
+
+<div class="page">
+
+<!-- Nav -->
+<nav>
+  <div class="container">
+    <div class="nav-logo"><span>w</span> wheat</div>
+    <div class="nav-links">
+      <a href="#how-to-use">Usage</a>
+      <a href="#example">Example</a>
+      <a href="#install">Install</a>
+      <a href="#commands">Commands</a>
+      <a href="https://github.com/aid-ninja/wheat" class="nav-cta">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge hf hf1">Research framework for Claude Code</div>
+    <h1 class="hf hf2">Turn questions into<br><em>evidence-graded decisions</em></h1>
+    <p class="hf hf3">Wheat gives your Claude Code sessions a structured research sprint. Every finding is a typed claim with an evidence tier. A compiler catches conflicts and gates output on data integrity.</p>
+    <div class="hero-actions hf hf4">
+      <a href="#install" class="btn btn-primary">Get started</a>
+      <a href="#example" class="btn btn-ghost">See it in action</a>
+    </div>
+  </div>
+</section>
+
+<!-- 3-step flow -->
+<section class="flow" id="how-to-use">
+  <div class="container">
+    <div class="flow-label rv">Three steps to a decision</div>
+    <div class="flow-steps">
+      <div class="flow-step rv rv-d1">
+        <div class="flow-num">1</div>
+        <h3>Start a sprint</h3>
+        <p>Define your question, audience, and constraints. Wheat scaffolds the research structure.</p>
+        <div class="flow-code"><span class="dim">$</span> npx @grainulator/wheat init
+<span class="dim">"Should we migrate from REST to GraphQL?"</span></div>
+      </div>
+      <div class="flow-step rv rv-d2">
+        <div class="flow-num">2</div>
+        <h3>Research and validate</h3>
+        <p>Research topics, build prototypes, challenge assumptions. Every finding becomes a tracked claim.</p>
+        <div class="flow-code"><span class="dim">/</span>research <span class="dim">"GraphQL performance"</span>
+<span class="dim">/</span>prototype
+<span class="dim">/</span>challenge r001</div>
+      </div>
+      <div class="flow-step rv rv-d3">
+        <div class="flow-num">3</div>
+        <h3>Ship the answer</h3>
+        <p>The compiler validates your claims, resolves conflicts by evidence tier, and generates decision-ready artifacts.</p>
+        <div class="flow-code"><span class="dim">$</span> npx @grainulator/wheat brief
+<span class="dim"># -&gt; output/brief.html</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- Example walkthrough -->
+<section class="example" id="example">
+  <div class="container">
+    <div class="section-label rv">Real example</div>
+    <h2 class="section-title rv rv-d1">"Should we migrate from REST to GraphQL?"</h2>
+    <p class="section-sub rv rv-d2">Here is what a wheat sprint looks like from start to finish. Each step produces typed, evidence-graded claims that flow through the compiler.</p>
+
+    <div class="example-timeline">
+      <div class="ex-step rv">
+        <div class="ex-dot init">1</div>
+        <div class="ex-body">
+          <div class="ex-cmd">/init "Should we migrate from REST to GraphQL?"</div>
+          <h4>Define the sprint</h4>
+          <p>Sets the question, audience (backend team), and constraints (must support existing mobile clients). Creates <code>claims.json</code> and <code>wheat.config.json</code>.</p>
+        </div>
+      </div>
+
+      <div class="ex-step rv">
+        <div class="ex-dot research">2</div>
+        <div class="ex-body">
+          <div class="ex-cmd">/research "GraphQL performance characteristics"</div>
+          <h4>Gather evidence</h4>
+          <p>Investigates the topic, producing claims with evidence tiers. Each claim is typed and traceable.</p>
+          <div class="ex-output"><span class="claim">r001 [factual|documented]</span> GraphQL eliminates over-fetching for
+  mobile clients, reducing payload size 40-60%
+<span class="claim">r002 [factual|web]</span> GraphQL N+1 query problem requires DataLoader
+  or equivalent batching layer
+<span class="risk">r003 [risk|documented]</span> Existing REST caching (CDN, HTTP) does not
+  transfer to GraphQL without custom solutions</div>
+        </div>
+      </div>
+
+      <div class="ex-step rv">
+        <div class="ex-dot proto">3</div>
+        <div class="ex-body">
+          <div class="ex-cmd">/prototype</div>
+          <h4>Build and measure</h4>
+          <p>Creates a working proof-of-concept. Prototype findings get the <code>tested</code> evidence tier -- the second highest.</p>
+          <div class="ex-output"><span class="claim">p001 [estimate|tested]</span> Migration effort: ~3 weeks for core
+  endpoints, 2 weeks for mobile client updates
+<span class="claim">p002 [factual|tested]</span> DataLoader resolves N+1 for our schema;
+  p95 latency within 12% of REST equivalent</div>
+        </div>
+      </div>
+
+      <div class="ex-step rv">
+        <div class="ex-dot challenge">4</div>
+        <div class="ex-body">
+          <div class="ex-cmd">/challenge r001</div>
+          <h4>Stress-test claims</h4>
+          <p>Adversarial review of individual claims. Does the evidence actually support the conclusion? What are we not seeing?</p>
+          <div class="ex-output"><span class="risk">x001 [risk|documented]</span> 40-60% payload reduction assumes
+  worst-case REST over-fetching; our actual endpoints
+  are already field-filtered -- real reduction likely 15-25%</div>
+        </div>
+      </div>
+
+      <div class="ex-step rv">
+        <div class="ex-dot brief">5</div>
+        <div class="ex-body">
+          <div class="ex-cmd">/brief</div>
+          <h4>Get the answer</h4>
+          <p>The compiler resolves conflicts (higher evidence tiers win), validates the claim set, and produces a self-contained HTML brief you can send to stakeholders.</p>
+          <div class="ex-output"><span class="hl">Recommendation:</span> Proceed with GraphQL for new endpoints only.
+Migrate existing REST endpoints opportunistically. The payload
+benefits are real but smaller than initially estimated (15-25%
+vs. 40-60%). The caching gap (r003) needs a solution before
+full migration.
+
+<span class="dim">14 claims | 3 conflicts resolved | evidence: 2 tested, 8 documented, 4 web</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- Install -->
+<section class="install" id="install">
+  <div class="container">
+    <div class="section-label rv">Get started</div>
+    <h2 class="section-title rv rv-d1">Install in 30 seconds</h2>
+    <p class="section-sub rv rv-d2">Wheat runs inside Claude Code. No framework, no build step. Your target project does not need Node.</p>
+
+    <div class="install-grid">
+      <div class="install-card rv rv-d1">
+        <h3>npx (recommended)</h3>
+        <p>Run directly without installing. Works in any repo.</p>
+        <div class="copy-wrap">
+          <pre>npx @grainulator/wheat init</pre>
+          <button class="copy-btn" onclick="copyText(this,'npx @grainulator/wheat init')">Copy</button>
+        </div>
+      </div>
+      <div class="install-card rv rv-d2">
+        <h3>Global install</h3>
+        <p>Install once, use everywhere.</p>
+        <div class="copy-wrap">
+          <pre>npm i -g @grainulator/wheat
+<span class="comment"># then in any repo:</span>
+wheat init</pre>
+          <button class="copy-btn" onclick="copyText(this,'npm i -g @grainulator/wheat')">Copy</button>
+        </div>
+      </div>
+      <div class="install-card rv rv-d3">
+        <h3>Clone and link</h3>
+        <p>For contributors or custom setups.</p>
+        <div class="copy-wrap">
+          <pre>git clone https://github.com/aid-ninja/wheat
+cd wheat
+<span class="comment"># install into your project:</span>
+node wheat-init.js /path/to/repo</pre>
+          <button class="copy-btn" onclick="copyText(this,'git clone https://github.com/aid-ninja/wheat')">Copy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- Works everywhere -->
+<section class="universal" id="universal">
+  <div class="container">
+    <div class="section-label rv">Language agnostic</div>
+    <h2 class="section-title rv rv-d1">Works in any repo</h2>
+    <p class="section-sub rv rv-d2">Wheat researches your codebase using Claude Code's built-in tools. No plugins, no language-specific config. If Claude Code can read it, wheat can research it.</p>
+
+    <div class="universal-grid">
+      <div class="uni-card rv rv-d1">
+        <div class="uni-icon">JS</div>
+        <h4>JavaScript / TypeScript</h4>
+        <p>React, Node, Deno, Bun</p>
+      </div>
+      <div class="uni-card rv rv-d2">
+        <div class="uni-icon">Py</div>
+        <h4>Python</h4>
+        <p>Django, FastAPI, ML projects</p>
+      </div>
+      <div class="uni-card rv rv-d3">
+        <div class="uni-icon">Sc</div>
+        <h4>Scala / JVM</h4>
+        <p>Akka, Play, Spark</p>
+      </div>
+      <div class="uni-card rv rv-d4">
+        <div class="uni-icon">Fl</div>
+        <h4>Flutter / Dart</h4>
+        <p>Mobile, web, desktop</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- How it works -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="section-label rv">Under the hood</div>
+    <h2 class="section-title rv rv-d1">Claims-driven research</h2>
+
+    <div class="how-grid">
+      <div class="how-text rv rv-d2">
+        <p>Every finding in a wheat sprint is a <strong>typed claim</strong>. Claims have a type (factual, risk, estimate, recommendation) and an evidence tier (stated, web, documented, tested, production).</p>
+        <p>The <strong>wheat compiler</strong> validates the full claim set before any output artifact is produced. It resolves conflicts by evidence tier, flags unsupported recommendations, and catches claims that reference nonexistent sources.</p>
+        <p>Because every claim auto-commits to git, <code>git log --oneline claims.json</code> gives you the complete audit trail of your research sprint.</p>
+      </div>
+      <div class="how-visual rv rv-d3">
+<span class="dim">{</span>
+  <span class="key">"id"</span>: <span class="str">"r001"</span>,
+  <span class="key">"type"</span>: <span class="str">"factual"</span>,
+  <span class="key">"claim"</span>: <span class="str">"GraphQL reduces mobile payload 40-60%"</span>,
+  <span class="key">"evidence"</span>: <span class="tier">"documented"</span>,
+  <span class="key">"source"</span>: <span class="str">"graphql.org/learn/best-practices"</span>,
+  <span class="key">"confidence"</span>: <span class="tier">0.7</span>,
+  <span class="key">"superseded_by"</span>: <span class="str">"x001"</span>
+<span class="dim">}</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- Commands -->
+<section class="commands" id="commands">
+  <div class="container">
+    <div class="section-label rv">Command reference</div>
+    <h2 class="section-title rv rv-d1">Full command suite</h2>
+    <p class="section-sub rv rv-d2">All commands run inside Claude Code as slash commands or natural language.</p>
+
+    <div class="cmd-grid">
+      <div class="cmd-row rv"><span class="cmd-name">/init</span><span class="cmd-desc">Bootstrap a sprint -- question, audience, constraints</span></div>
+      <div class="cmd-row rv"><span class="cmd-name">/research</span><span class="cmd-desc">Deep-dive into a topic, produce claims</span></div>
+      <div class="cmd-row rv"><span class="cmd-name">/prototype</span><span class="cmd-desc">Build a proof-of-concept, tested evidence</span></div>
+      <div class="cmd-row rv"><span class="cmd-name">/challenge</span><span class="cmd-desc">Adversarial review of a specific claim</span></div>
+      <div class="cmd-row rv"><span class="cmd-name">/witness</span><span class="cmd-desc">Corroborate a claim against an external source</span></div>
+      <div class="cmd-row rv"><span class="cmd-name">/blind-spot</span><span class="cmd-desc">Find structural gaps in research coverage</span></div>
+      <div class="cmd-row rv"><span class="cmd-name">/evaluate</span><span class="cmd-desc">Score and compare options</span></div>
+      <div class="cmd-row rv"><span class="cmd-name">/brief</span><span class="cmd-desc">Generate a decision document from compiled claims</span></div>
+      <div class="cmd-row rv"><span class="cmd-name">/present</span><span class="cmd-desc">Create stakeholder presentation</span></div>
+      <div class="cmd-row rv"><span class="cmd-name">/status</span><span class="cmd-desc">Sprint dashboard snapshot</span></div>
+      <div class="cmd-row rv"><span class="cmd-name">/feedback</span><span class="cmd-desc">Incorporate stakeholder input</span></div>
+      <div class="cmd-row rv"><span class="cmd-name">/handoff</span><span class="cmd-desc">Knowledge transfer document for successors</span></div>
+      <div class="cmd-row rv"><span class="cmd-name">/merge</span><span class="cmd-desc">Combine findings from multiple sprints</span></div>
+      <div class="cmd-row rv"><span class="cmd-name">/replay</span><span class="cmd-desc">Visualize sprint history and evolution</span></div>
+      <div class="cmd-row rv"><span class="cmd-name">/calibrate</span><span class="cmd-desc">Score past predictions against actual outcomes</span></div>
+      <div class="cmd-row rv"><span class="cmd-name">/resolve</span><span class="cmd-desc">Adjudicate conflicts between claims</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <h2 class="rv">Start your first sprint</h2>
+    <p class="rv rv-d1">One command. Any repo. Evidence-graded decisions in minutes.</p>
+    <div class="cta-code rv rv-d2">npx @grainulator/wheat init</div>
+    <br>
+    <div class="rv rv-d3">
+      <a href="https://github.com/aid-ninja/wheat" class="btn btn-primary">View on GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p>wheat &middot; MIT License &middot; <a href="https://github.com/aid-ninja/wheat">GitHub</a></p>
+  </div>
+</footer>
+
+</div><!-- .page -->
+
+<script>
+// Scroll reveal
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); }});
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+// Copy button
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+</script>
+</body>
+</html>
