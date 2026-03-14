@@ -237,7 +237,7 @@ footer p{margin-bottom:6px}
 <main id="main">
 <section class="hero">
   <div class="container">
-    <div class="hero-badge hf hf1">Part of the grainulator ecosystem</div>
+    <div class="hero-badge hf hf1">Part of the <span style="color:#a78bfa">gr</span>ainulator ecosystem</div>
     <h1 class="hf hf2">You're about to make a big<br>technical decision.<br><em>Most teams wing it.</em></h1>
     <p class="hero-sub hf hf3">Wheat is a structured research framework that runs inside Claude Code. You ask a question, gather evidence from multiple angles, stress-test your assumptions, and ship a decision brief -- all tracked and auditable.</p>
     <p class="hf hf3" style="font-size:.8125rem;color:var(--text-3);margin-bottom:32px">Requires <a href="https://docs.anthropic.com/en/docs/claude-code" style="color:var(--text-3);text-decoration:underline">Claude Code</a> and Node.js 18+.</p>
@@ -256,7 +256,7 @@ footer p{margin-bottom:6px}
 <section class="what-is" id="what">
   <div class="container">
     <div class="what-box rv">
-      <h2>What is wheat?</h2>
+      <h2>What is <span style="color:var(--accent)">w</span>heat?</h2>
       <p>Wheat is a research tool for developers who need to make technical decisions. You start a "sprint" by asking a question -- like "Should we migrate to GraphQL?" -- and wheat guides you through gathering evidence, testing assumptions, and resolving conflicts. Every finding is tracked as a typed "claim" with a confidence level. When you are done, wheat compiles everything into a decision brief you can send to your team. It runs inside Claude Code, so you use natural language and slash commands -- no new UI to learn.</p>
     </div>
   </div>
@@ -362,7 +362,7 @@ endpoints opportunistically.</div>
   <div class="container">
     <div class="section-label rv">Real example</div>
     <h2 class="section-title rv rv-d1">"Should we migrate from REST to GraphQL?"</h2>
-    <p class="section-sub rv rv-d2">A team needs to decide whether to invest 3-5 weeks in a GraphQL migration. They use wheat to research it properly instead of debating in Slack.</p>
+    <p class="section-sub rv rv-d2">A team needs to decide whether to invest 3-5 weeks in a GraphQL migration. They use <span style="color:var(--accent)">w</span>heat to research it properly instead of debating in Slack.</p>
 
     <div class="example-timeline">
       <div class="ex-step">
@@ -407,7 +407,7 @@ endpoints opportunistically.</div>
         <div class="ex-body">
           <div class="ex-cmd">/challenge r001</div>
           <h4>Stress-test the claims</h4>
-          <p>This is where wheat shines. The adversarial review catches that the "40-60% payload reduction" was based on worst-case assumptions -- the real number is lower because the team already field-filters their REST endpoints.</p>
+          <p>This is where <span style="color:var(--accent)">w</span>heat shines. The adversarial review catches that the "40-60% payload reduction" was based on worst-case assumptions -- the real number is lower because the team already field-filters their REST endpoints.</p>
           <div class="ex-output"><span class="risk">x001 [risk|documented]</span> 40-60% payload reduction assumes
   worst-case REST over-fetching; our actual endpoints
   are already field-filtered -- real reduction ~15-25%</div>
@@ -486,7 +486,7 @@ vs. 40-60%). The caching gap (r003) needs a solution first.
           <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
         </div>
         <h3>Language Agnostic</h3>
-        <p>Works in any repo. JavaScript, Python, Scala, Rust, Flutter -- if Claude Code can read it, wheat can research it.</p>
+        <p>Works in any repo. JavaScript, Python, Scala, Rust, Flutter -- if Claude Code can read it, <span style="color:var(--accent)">w</span>heat can research it.</p>
       </div>
     </div>
   </div>
@@ -500,7 +500,7 @@ vs. 40-60%). The caching gap (r003) needs a solution first.
     <div class="faq-grid">
       <div class="faq-item rv rv-d1">
         <h3>Do I need Node.js?</h3>
-        <p>Yes, Node 18 or later. But your project does not need to be JavaScript -- wheat works in any repo regardless of language.</p>
+        <p>Yes, Node 18 or later. But your project does not need to be JavaScript -- <span style="color:var(--accent)">w</span>heat works in any repo regardless of language.</p>
       </div>
       <div class="faq-item rv rv-d2">
         <h3>Does this require Claude Code?</h3>
@@ -522,18 +522,18 @@ vs. 40-60%). The caching gap (r003) needs a solution first.
 
 <section class="ecosystem" id="ecosystem">
   <div class="container" style="text-align:center">
-    <div class="section-label rv">Part of grainulator</div>
+    <div class="section-label rv">Part of <span style="color:#a78bfa">gr</span>ainulator</div>
     <h2 class="section-title rv rv-d1">The ecosystem</h2>
     <p class="section-sub rv rv-d2" style="margin-left:auto;margin-right:auto">Wheat is the core research engine. Add tools as you need them.</p>
     <div class="eco-grid rv rv-d3">
-      <a href="https://grainulator.github.io/wheat/" class="eco-chip current"><span class="eco-dot" style="background:#fbbf24"></span><span class="eco-name">wheat</span> research sprints</a>
-      <a href="https://grainulator.github.io/farmer/" class="eco-chip"><span class="eco-dot" style="background:#22c55e"></span><span class="eco-name">farmer</span> permissions</a>
-      <a href="https://grainulator.github.io/barn/" class="eco-chip"><span class="eco-dot" style="background:#ef4444"></span><span class="eco-name">barn</span> shared tools</a>
-      <a href="https://grainulator.github.io/mill/" class="eco-chip"><span class="eco-dot" style="background:#e2e8f0"></span><span class="eco-name">mill</span> export</a>
-      <a href="https://grainulator.github.io/silo/" class="eco-chip"><span class="eco-dot" style="background:#60a5fa"></span><span class="eco-name">silo</span> knowledge packs</a>
-      <a href="https://grainulator.github.io/harvest/" class="eco-chip"><span class="eco-dot" style="background:#f97316"></span><span class="eco-name">harvest</span> analytics</a>
-      <a href="https://grainulator.github.io/orchard/" class="eco-chip"><span class="eco-dot" style="background:#ec4899"></span><span class="eco-name">orchard</span> orchestration</a>
-      <a href="https://grainulator.github.io/grainulator/" class="eco-chip"><span class="eco-dot" style="background:#a78bfa"></span><span class="eco-name">grainulator</span> the ecosystem</a>
+      <a href="https://grainulator.github.io/wheat/" class="eco-chip current"><span class="eco-dot" style="background:#fbbf24"></span><span class="eco-name"><span style="color:#fbbf24">w</span>heat</span> research sprints</a>
+      <a href="https://grainulator.github.io/farmer/" class="eco-chip"><span class="eco-dot" style="background:#22c55e"></span><span class="eco-name"><span style="color:#22c55e">f</span>armer</span> permissions</a>
+      <a href="https://grainulator.github.io/barn/" class="eco-chip"><span class="eco-dot" style="background:#ef4444"></span><span class="eco-name"><span style="color:#ef4444">b</span>arn</span> shared tools</a>
+      <a href="https://grainulator.github.io/mill/" class="eco-chip"><span class="eco-dot" style="background:#e2e8f0"></span><span class="eco-name"><span style="color:#e2e8f0">m</span>ill</span> export</a>
+      <a href="https://grainulator.github.io/silo/" class="eco-chip"><span class="eco-dot" style="background:#60a5fa"></span><span class="eco-name"><span style="color:#60a5fa">s</span>ilo</span> knowledge packs</a>
+      <a href="https://grainulator.github.io/harvest/" class="eco-chip"><span class="eco-dot" style="background:#f97316"></span><span class="eco-name"><span style="color:#f97316">h</span>arvest</span> analytics</a>
+      <a href="https://grainulator.github.io/orchard/" class="eco-chip"><span class="eco-dot" style="background:#ec4899"></span><span class="eco-name"><span style="color:#ec4899">o</span>rchard</span> orchestration</a>
+      <a href="https://grainulator.github.io/grainulator/" class="eco-chip"><span class="eco-dot" style="background:#a78bfa"></span><span class="eco-name"><span style="color:#a78bfa">gr</span>ainulator</span> the ecosystem</a>
     </div>
   </div>
 </section>
