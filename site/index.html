@@ -102,8 +102,8 @@ nav .container{display:flex;align-items:center;justify-content:space-between}
 .flow-step{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 20px}
 .flow-circle{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8125rem;border:1px solid var(--border)}
 .flow-label{font-size:.75rem;color:var(--text-2);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-.flow-arrow{color:var(--text-3);font-size:1.2rem;margin:0 -4px;align-self:center;padding-bottom:24px}
-@media(max-width:600px){.flow-row{flex-direction:column}.flow-arrow{transform:rotate(90deg);padding-bottom:0}}
+.flow-arrow{color:var(--text-3);font-size:1.2rem;margin:0 -4px;display:flex;align-items:center;justify-content:center;height:56px}
+@media(max-width:600px){.flow-row{flex-direction:column}.flow-arrow{transform:rotate(90deg);height:auto}}
 
 /* Quick start */
 .quickstart{padding:80px 0 60px}
@@ -674,6 +674,8 @@ function copyText(btn, text) {
   window.addEventListener('scroll', onScroll, { passive: true });
 
   termObs.observe(timeline);
+  /* Fallback: if IntersectionObserver doesn't fire (e.g. in iframes), show after 2s */
+  setTimeout(function() { if (!animated) { animated = true; showFinalState(); } }, 2000);
 })();
 </script>
 </body>
