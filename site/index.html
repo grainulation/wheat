@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>wheat -- Structured research sprints for decisions that matter</title>
+<title>wheat — Structured research sprints for decisions that matter</title>
 <meta name="description" content="Turn technical questions into evidence-graded decisions. A structured research framework that runs inside Claude Code. No more winging it.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="wheat -- Structured research sprints for decisions that matter">
+<meta property="og:title" content="wheat — Structured research sprints for decisions that matter">
 <meta property="og:description" content="Turn technical questions into evidence-graded decisions. A structured research framework that runs inside Claude Code. No more winging it.">
 <meta property="og:url" content="https://grainulator.github.io/wheat/">
 <meta property="og:image" content="https://grainulator.github.io/wheat/og-image.svg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="wheat -- Structured research sprints for decisions that matter">
+<meta name="twitter:title" content="wheat — Structured research sprints for decisions that matter">
 <meta name="twitter:description" content="Turn technical questions into evidence-graded decisions. A structured research framework that runs inside Claude Code.">
 <link rel="canonical" href="https://grainulator.github.io/wheat/">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%2309090b'/><text x='32' y='48' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='800' font-size='44' fill='%23fbbf24'>w</text></svg>">
@@ -239,7 +239,7 @@ footer p{margin-bottom:6px}
   <div class="container">
     <div class="hero-badge hf hf1">Part of the <strong style="color:#fff"><span style="color:#a78bfa">gr</span>ainulator</strong> ecosystem</div>
     <h1 class="hf hf2">You're about to make a big<br>technical decision.<br><em>Most teams wing it.</em></h1>
-    <p class="hero-sub hf hf3">Wheat is a structured research framework that runs inside Claude Code. You ask a question, gather evidence from multiple angles, stress-test your assumptions, and ship a decision brief -- all tracked and auditable.</p>
+    <p class="hero-sub hf hf3">Wheat is a structured research framework that runs inside Claude Code. You ask a question, gather evidence from multiple angles, stress-test your assumptions, and ship a decision brief — all tracked and auditable.</p>
     <p class="hf hf3" style="font-size:.8125rem;color:var(--text-3);margin-bottom:32px">Requires <a href="https://docs.anthropic.com/en/docs/claude-code" style="color:var(--text-3);text-decoration:underline">Claude Code</a> and Node.js 18+.</p>
     <div class="hero-actions hf hf4">
       <a href="#quickstart" class="btn btn-primary">
@@ -257,7 +257,7 @@ footer p{margin-bottom:6px}
   <div class="container">
     <div class="what-box rv">
       <h2>What is <strong style="color:#fff"><span style="color:var(--accent)">w</span>heat</strong>?</h2>
-      <p>Wheat is a research tool for developers who need to make technical decisions. You start a "sprint" by asking a question -- like "Should we migrate to GraphQL?" -- and wheat guides you through gathering evidence, testing assumptions, and resolving conflicts. Every finding is tracked as a typed "claim" with a confidence level. When you are done, wheat compiles everything into a decision brief you can send to your team. It runs inside Claude Code, so you use natural language and slash commands -- no new UI to learn.</p>
+      <p>Wheat is a research tool for developers who need to make technical decisions. You start a "sprint" by asking a question — like "Should we migrate to GraphQL?" — and wheat guides you through gathering evidence, testing assumptions, and resolving conflicts. Every finding is tracked as a typed "claim" with a confidence level. When you are done, wheat compiles everything into a decision brief you can send to your team. It runs inside Claude Code, so you use natural language and slash commands -- no new UI to learn.</p>
     </div>
   </div>
 </section>
@@ -307,7 +307,7 @@ footer p{margin-bottom:6px}
 
 <section class="quickstart" id="quickstart">
   <div class="container">
-    <div class="qs-label rv">Quick start -- 3 commands</div>
+    <div class="qs-label rv">Quick start — 3 commands</div>
     <div class="qs-steps">
       <div class="qs-step rv rv-d1">
         <div class="qs-num">1</div>
@@ -394,7 +394,7 @@ endpoints opportunistically.</div>
         <div class="ex-body">
           <div class="ex-cmd">/prototype</div>
           <h4>Build and measure</h4>
-          <p>Wheat builds a working proof-of-concept and benchmarks it. Findings from prototypes get the highest evidence tier -- "tested" -- because they come from real measurements, not blog posts.</p>
+          <p>Wheat builds a working proof-of-concept and benchmarks it. Findings from prototypes get the highest evidence tier — "tested" — because they come from real measurements, not blog posts.</p>
           <div class="ex-output"><span class="claim">p001 [estimate|tested]</span> Migration effort: ~3 weeks for core
   endpoints, 2 weeks for mobile client updates
 <span class="claim">p002 [factual|tested]</span> DataLoader resolves N+1; p95 latency
@@ -407,7 +407,7 @@ endpoints opportunistically.</div>
         <div class="ex-body">
           <div class="ex-cmd">/challenge r001</div>
           <h4>Stress-test the claims</h4>
-          <p>This is where <strong style="color:#fff"><span style="color:var(--accent)">w</span>heat</strong> shines. The adversarial review catches that the "40-60% payload reduction" was based on worst-case assumptions -- the real number is lower because the team already field-filters their REST endpoints.</p>
+          <p>This is where <strong style="color:#fff"><span style="color:var(--accent)">w</span>heat</strong> shines. The adversarial review catches that the "40-60% payload reduction" was based on worst-case assumptions — the real number is lower because the team already field-filters their REST endpoints.</p>
           <div class="ex-output"><span class="risk">x001 [risk|documented]</span> 40-60% payload reduction assumes
   worst-case REST over-fetching; our actual endpoints
   are already field-filtered -- real reduction ~15-25%</div>
@@ -432,7 +432,7 @@ vs. 40-60%). The caching gap (r003) needs a solution first.
     </div>
 
     <div style="margin-top:40px;text-align:center" class="rv">
-      <p style="color:var(--text-2);font-size:.9375rem;max-width:560px;margin:0 auto"><strong style="color:var(--text)">The outcome:</strong> Instead of a 45-minute meeting where the loudest voice wins, the team has a 14-claim brief with evidence tiers, conflict resolution, and a clear recommendation. The decision is traceable -- anyone can run <code>git log claims.json</code> to see how they got there.</p>
+      <p style="color:var(--text-2);font-size:.9375rem;max-width:560px;margin:0 auto"><strong style="color:var(--text)">The outcome:</strong> Instead of a 45-minute meeting where the loudest voice wins, the team has a 14-claim brief with evidence tiers, conflict resolution, and a clear recommendation. The decision is traceable — anyone can run <code>git log claims.json</code> to see how they got there.</p>
     </div>
   </div>
 </section>
@@ -542,8 +542,8 @@ vs. 40-60%). The caching gap (r003) needs a solution first.
 
 <footer>
   <div class="container">
-    <p>Part of the <a href="https://grainulator.github.io/grainulator/">grainulator</a> ecosystem</p>
-    <p>wheat -- <a href="https://github.com/grainulator/wheat">GitHub</a> -- <a href="https://github.com/grainulator/wheat#readme">Docs</a></p>
+    <p>Part of the <a href="https://grainulator.github.io/grainulator/"><strong style="color:#fff"><span style="color:#a78bfa">gr</span>ainulator</strong></a> ecosystem</p>
+    <p><strong style="color:#fff"><span style="color:#fbbf24">w</span>heat</strong> — <a href="https://github.com/grainulator/wheat">GitHub</a> — <a href="https://github.com/grainulator/wheat#readme">Docs</a></p>
   </div>
 </footer>
 
