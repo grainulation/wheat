@@ -117,8 +117,6 @@ nav .container{display:flex;align-items:center;justify-content:space-between}
 .qs-code{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:.8125rem;color:var(--green);overflow-x:auto;white-space:pre;position:relative;line-height:1.6}
 .qs-code .dim{color:var(--text-3)}
 .qs-output{margin-top:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:.75rem;color:var(--text-3);font-family:var(--mono);line-height:1.5;white-space:pre}
-@media(max-width:720px){.qs-steps{grid-template-columns:1fr}}
-
 /* Example */
 .example{padding:80px 0}
 .example-timeline{display:flex;flex-direction:column;gap:0;position:relative}
@@ -174,7 +172,28 @@ footer p{margin-bottom:6px}
 .copy-btn:hover{color:var(--text);border-color:var(--border-light)}
 .copy-btn.copied{color:var(--green);border-color:var(--green)}
 
-@media(max-width:600px){.nav-links a:not(.nav-cta){display:none}.hero{padding:80px 0 60px}}
+@media(max-width:720px){
+  .qs-steps,.features-grid,.eco-grid{grid-template-columns:1fr}
+  .hero{padding:80px 0 60px}
+  .hero h1{font-size:2rem}
+  .term-block,.qs-code,.qs-output,pre,code{font-size:12px;overflow-x:auto}
+  .container{padding:0 16px}
+  section,.what-is,.quickstart,.features,.faq,.ecosystem,.example{padding:60px 0}
+  .what-box{padding:28px 20px}
+  .faq-item{padding:20px 18px}
+  .ex-body .ex-output{font-size:.7rem;padding:10px 12px}
+}
+@media(max-width:480px){
+  .hero h1{font-size:1.6rem}
+  .hero-sub,.section-sub{font-size:0.95rem}
+  .nav-links a:not(.nav-cta){display:none}
+  .hero-actions{flex-direction:column}
+  .btn{width:100%;justify-content:center;min-height:44px}
+  .eco-chip{padding:10px 12px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms !important;transition-duration:0.01ms !important}
+}
 </style>
 </head>
 <body>
