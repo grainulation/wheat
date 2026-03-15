@@ -19,9 +19,14 @@
  * Zero npm dependencies.
  */
 
-const path = require('path');
+import path from 'path';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
 
-const VERSION = require('../package.json').version;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const VERSION = JSON.parse(readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8')).version;
 
 // ─── Parse arguments ─────────────────────────────────────────────────────────
 
@@ -51,6 +56,7 @@ Commands:
   init       Bootstrap a new research sprint in this repo
   compile    Run the Bran compiler on claims.json
   serve      Start the sprint dashboard UI
+  connect    Connect to external tools (e.g. wheat connect farmer)
   guard      PreToolUse guard hook (used by Claude Code)
   status     Quick sprint status check
   stats      Local sprint statistics (no phone-home)
@@ -94,6 +100,31 @@ if (subcommand === 'mcp') {
   process.exit(0);
 }
 
+// Handle "wheat connect <target>" as a compound subcommand
+if (subcommand === 'connect') {
+  const target = subArgs[0];
+  if (!target || target === '--help' || target === '-h') {
+    console.log(`wheat connect — Link external tools
+
+Usage:
+  wheat connect farmer [options]   Connect Farmer permission dashboard
+
+Run "wheat connect farmer --help" for options.`);
+    process.exit(0);
+  }
+  if (target === 'farmer') {
+    const connectModule = await import(new URL('../lib/connect.js', import.meta.url).href);
+    await connectModule.run(targetDir, subArgs.slice(1)).catch(err => {
+      console.error(`\nwheat connect farmer failed:`, err.message);
+      if (process.env.WHEAT_DEBUG) console.error(err.stack);
+      process.exit(1);
+    });
+    process.exit(0);
+  }
+  console.error(`Unknown connect target: ${target}\nAvailable: farmer`);
+  process.exit(1);
+}
+
 if (!commands[subcommand]) {
   console.error(`Unknown command: ${subcommand}\n`);
   console.error('Run "wheat --help" for available commands.');
@@ -101,7 +132,8 @@ if (!commands[subcommand]) {
 }
 
 // Load and run the subcommand module
-const handler = require(commands[subcommand]);
+const modulePath = new URL(commands[subcommand], import.meta.url).href;
+const handler = await import(modulePath);
 handler.run(targetDir, subArgs).catch(err => {
   console.error(`\nwheat ${subcommand} failed:`, err.message);
   if (process.env.WHEAT_DEBUG) console.error(err.stack);

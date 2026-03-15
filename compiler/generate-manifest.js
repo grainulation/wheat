@@ -11,9 +11,14 @@
  * r017 (topic map structure over file tree).
  */
 
-const fs = require('fs');
-const path = require('path');
-const { execFileSync } = require('child_process');
+import fs from 'fs';
+import path from 'path';
+import { execFileSync } from 'child_process';
+import { fileURLToPath } from 'url';
+import { detectSprints } from './detect-sprints.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // ─── Target directory ────────────────────────────────────────────────────────
 
@@ -33,7 +38,7 @@ const OUT_PATH = path.join(ROOT, arg('out', 'wheat-manifest.json'));
 // --- Helpers ---
 
 /** Safely parse JSON from a file path; returns null on failure. */
-function loadJSON(filePath) {
+export function loadJSON(filePath) {
   try {
     return JSON.parse(fs.readFileSync(filePath, 'utf8'));
   } catch {
@@ -42,7 +47,7 @@ function loadJSON(filePath) {
 }
 
 /** Recursively list files under dir, returning paths relative to ROOT. */
-function walk(dir, filter) {
+export function walk(dir, filter) {
   const results = [];
   if (!fs.existsSync(dir)) return results;
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -60,7 +65,7 @@ function walk(dir, filter) {
 }
 
 /** Determine file type from its path. */
-function classifyFile(relPath) {
+export function classifyFile(relPath) {
   const normalized = relPath.split(path.sep).join('/');
   if (normalized.startsWith('prototypes/')) return 'prototype';
   if (normalized.startsWith('research/')) return 'research';
@@ -78,7 +83,7 @@ function classifyFile(relPath) {
 }
 
 /** Compute highest evidence tier from a list of claims. */
-function highestEvidence(claims) {
+export function highestEvidence(claims) {
   const tiers = ['stated', 'web', 'documented', 'tested', 'production'];
   let max = 0;
   for (const c of claims) {
@@ -95,7 +100,6 @@ function highestEvidence(claims) {
 function detectSprintsForManifest() {
   // Try to use the exported function directly
   try {
-    const { detectSprints } = require('./detect-sprints.js');
     const parsed = detectSprints(ROOT);
     const sprints = {};
     for (const s of (parsed.sprints || [])) {
@@ -146,7 +150,9 @@ function detectSprintsForManifest() {
 
 // --- Main (only when run directly) ---
 
-if (require.main === module) {
+const isMain = process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
+
+if (isMain) {
   const t0 = performance.now();
 
   const claims = loadJSON(path.join(ROOT, 'claims.json'));
@@ -272,6 +278,3 @@ if (require.main === module) {
   console.log(`wheat-manifest.json generated in ${elapsed}ms`);
   console.log(`  Topics: ${topicCount}  |  Files: ${fileCount}  |  Sprints: ${sprintCount}  |  Size: ${(sizeBytes / 1024).toFixed(1)}KB`);
 }
-
-// ─── Exports ──────────────────────────────────────────────────────────────────
-module.exports = { loadJSON, walk, classifyFile, highestEvidence };

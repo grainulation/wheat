@@ -11,14 +11,14 @@
  * Uses node:test + node:assert — zero dependencies.
  */
 
-const { describe, it, before, after } = require('node:test');
-const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const path = require('node:path');
-const os = require('node:os');
+import { describe, it, before, after } from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
 
 // Import the guard function directly for unit-style integration testing
-const { guard } = require('../lib/guard.js');
+import { guard } from '../lib/guard.js';
 
 describe('wheat guard', () => {
   let tmpDir;

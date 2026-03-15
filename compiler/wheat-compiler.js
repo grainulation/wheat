@@ -14,13 +14,17 @@
  *   node wheat-compiler.js --diff A B   # diff two compilation.json files
  */
 
-const fs = require('fs');
-const crypto = require('crypto');
-const path = require('path');
-const { execFileSync } = require('child_process');
+import fs from 'fs';
+import crypto from 'crypto';
+import path from 'path';
+import { execFileSync } from 'child_process';
+import { fileURLToPath } from 'url';
 
 // Sprint detection — git-based, no config pointer needed (p013/f001)
-const { detectSprints } = require('./detect-sprints.js');
+import { detectSprints } from './detect-sprints.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // ─── --dir: target directory (defaults to script location for backwards compat) ─
 const _dirIdx = process.argv.indexOf('--dir');
@@ -685,6 +689,10 @@ function scanSelfContainment(dirs) {
 }
 
 // ─── CLI ─────────────────────────────────────────────────────────────────────
+const isMain = process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
+
+if (isMain) {
+
 const args = process.argv.slice(2);
 
 // --help / -h
@@ -895,6 +903,8 @@ if (args.includes('--next')) {
   }
   process.exit(0);
 }
+
+} // end if (isMain)
 
 /**
  * Suggest next actions based on compilation state (gaps, conflicts, weak evidence).
@@ -1112,6 +1122,4 @@ function computeNextActions(comp) {
 }
 
 // Export for use as a library
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { compile, diffCompilations, computeNextActions, generateManifest, loadConfig, detectSprints, EVIDENCE_TIERS, VALID_TYPES };
-}
+export { compile, diffCompilations, computeNextActions, generateManifest, loadConfig, detectSprints, EVIDENCE_TIERS, VALID_TYPES };

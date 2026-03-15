@@ -6,14 +6,10 @@
 
 You need Node 18+ to run wheat. But wheat does not add any dependencies to your project — no `node_modules`, no entries in your `package.json`. It runs via `npx` as an external tool.
 
-If your team doesn't use Node at all, you can install wheat standalone:
+If your team doesn't use Node at all, you still need it to run wheat — there is no standalone binary. Install Node 18+ and use:
 
 ```bash
-# macOS
-brew install grainulation/tap/wheat
-
-# Or download directly
-curl -fsSL https://get.grainulation.dev/wheat | sh
+npx @grainulation/wheat
 ```
 
 ### Does wheat live inside my project?

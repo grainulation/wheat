@@ -24,9 +24,13 @@
  * Zero npm dependencies (Node built-in only).
  */
 
-const fs = require('fs');
-const path = require('path');
-const { execFileSync } = require('child_process');
+import fs from 'fs';
+import path from 'path';
+import { execFileSync } from 'child_process';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 let ROOT = __dirname;
 
@@ -182,7 +186,7 @@ function analyzeSprint(root) {
  *
  * @returns {{ active: object|null, sprints: object[] }}
  */
-function detectSprints(rootDir) {
+export function detectSprints(rootDir) {
   if (rootDir) ROOT = rootDir;
   const roots = findSprintRoots();
   const sprints = roots.map(analyzeSprint).filter(Boolean);
@@ -240,14 +244,13 @@ function detectSprints(rootDir) {
   return { active, sprints: allSprints };
 }
 
-// ─── Exports ──────────────────────────────────────────────────────────────────
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { detectSprints, findSprintRoots, analyzeSprint };
-}
+export { findSprintRoots, analyzeSprint };
 
-// ─── CLI (only when run directly, not when required) ──────────────────────────
+// ─── CLI (only when run directly, not when imported) ──────────────────────────
 
-if (require.main === module) {
+const isMain = process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
+
+if (isMain) {
   const args = process.argv.slice(2);
 
   if (args.includes('--help') || args.includes('-h')) {

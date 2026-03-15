@@ -9,13 +9,18 @@
  * Uses node:test + node:assert — zero dependencies.
  */
 
-const { describe, it } = require('node:test');
-const assert = require('node:assert/strict');
-const { execFileSync } = require('node:child_process');
-const path = require('node:path');
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import path from 'node:path';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const WHEAT_BIN = path.resolve(__dirname, '..', 'bin', 'wheat.js');
-const PKG = require('../package.json');
+const PKG = JSON.parse(readFileSync(path.resolve(__dirname, '..', 'package.json'), 'utf8'));
 
 describe('wheat CLI', () => {
   it('--help outputs usage text with expected commands', () => {
