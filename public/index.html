@@ -41,15 +41,15 @@ body {
 /* ── Layout ── */
 .app {
   display: grid;
-  grid-template-rows: 48px 1fr 32px;
+  grid-template-rows: 48px 1fr auto 32px;
   grid-template-columns: 240px 1fr 340px;
   height: 100vh;
 }
-.toolbar { grid-column: 1 / -1; }
+.toolbar { grid-column: 1 / -1; grid-row: 1; }
 .sidebar { grid-row: 2; grid-column: 1; }
 .main { grid-row: 2; grid-column: 2; }
-.detail { grid-row: 2; grid-column: 3; }
-.statusbar { grid-column: 1 / -1; grid-row: 3; }
+.detail { grid-row: 2 / 4; grid-column: 3; }
+.statusbar { grid-column: 1 / -1; grid-row: 4; }
 
 /* ── Toolbar ── */
 .toolbar {
@@ -358,10 +358,88 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
 
+/* ── Mobile nav ── */
+.mobile-nav {
+  display: none;
+  grid-column: 1 / -1;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.mobile-nav-bar {
+  display: flex;
+}
+.mobile-tab {
+  flex: 1;
+  padding: 8px 0;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fg3);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-family: var(--font);
+}
+.mobile-tab:hover { color: var(--fg2); }
+.mobile-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ── Compilation panel ── */
+.compilation-panel {
+  padding: 12px 16px;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  grid-column: 2;
+  grid-row: 3;
+  max-height: 140px;
+  overflow-y: auto;
+  font-size: 11px;
+}
+.comp-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  color: var(--fg2);
+}
+.comp-row .comp-label { color: var(--fg3); min-width: 80px; }
+.comp-row .comp-value { color: var(--fg); }
+.comp-warning {
+  padding: 4px 8px;
+  margin-top: 4px;
+  background: rgba(251, 191, 36, 0.08);
+  border-left: 2px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--fg2);
+  font-size: 11px;
+}
+.comp-conflict {
+  padding: 4px 8px;
+  margin-top: 4px;
+  background: rgba(248, 113, 113, 0.08);
+  border-left: 2px solid var(--red);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--fg2);
+  font-size: 11px;
+}
+
 /* ── Responsive ── */
 @media (max-width: 900px) {
-  .app { grid-template-columns: 1fr; }
-  .sidebar, .detail { display: none; }
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: 48px auto 1fr 32px;
+  }
+  .mobile-nav { display: block; grid-row: 2; }
+  .sidebar { grid-row: 3; grid-column: 1; display: none; }
+  .main { grid-row: 3; grid-column: 1; border-right: none; }
+  .detail { grid-row: 3; grid-column: 1; display: none; }
+  .compilation-panel { display: none; }
+  .statusbar { grid-row: 4; }
+  .sidebar.mobile-visible,
+  .detail.mobile-visible { display: flex; flex-direction: column; }
+  .main.mobile-hidden { display: none; }
+  .filter-bar { overflow-x: auto; flex-wrap: nowrap; }
+  .toolbar .sprint-question { display: none; }
 }
 </style>
 </head>
@@ -376,6 +454,15 @@ body {
     <span id="claim-count" class="toolbar-badge" style="background:var(--bg3);color:var(--fg2)"></span>
     <button class="btn-refresh" onclick="recompile()">compile</button>
     <span id="connection-dot" class="connection-dot"></span>
+  </div>
+
+  <!-- Mobile nav -->
+  <div class="mobile-nav" id="mobile-nav">
+    <div class="mobile-nav-bar">
+      <button class="mobile-tab active" data-panel="claims" onclick="switchMobilePanel('claims')">Claims</button>
+      <button class="mobile-tab" data-panel="topics" onclick="switchMobilePanel('topics')">Topics</button>
+      <button class="mobile-tab" data-panel="detail" onclick="switchMobilePanel('detail')">Detail</button>
+    </div>
   </div>
 
   <!-- Sidebar: Topics + Sprints -->
@@ -414,6 +501,9 @@ body {
   <div class="detail" id="detail">
     <div class="detail-empty">Select a claim to view details</div>
   </div>
+
+  <!-- Compilation panel -->
+  <div class="compilation-panel" id="compilation-panel"></div>
 
   <!-- Statusbar -->
   <div class="statusbar">
@@ -470,6 +560,7 @@ function render() {
   renderSprints();
   renderFilters();
   renderClaims();
+  renderCompilation();
   renderStatusbar();
   if (selectedClaim) {
     const claim = state.claims.find(c => c.id === selectedClaim);
@@ -643,6 +734,59 @@ function filterType(type) {
 function filterStatus(status) {
   activeFilter.status = activeFilter.status === status ? null : status;
   render();
+}
+
+// ── Mobile panel switching ──
+function switchMobilePanel(panel) {
+  const sidebar = document.querySelector('.sidebar');
+  const main = document.querySelector('.main');
+  const detail = document.getElementById('detail');
+  const tabs = document.querySelectorAll('.mobile-tab');
+
+  sidebar.classList.remove('mobile-visible');
+  main.classList.remove('mobile-hidden');
+  detail.classList.remove('mobile-visible');
+
+  tabs.forEach(t => t.classList.toggle('active', t.dataset.panel === panel));
+
+  if (panel === 'topics') {
+    sidebar.classList.add('mobile-visible');
+    main.classList.add('mobile-hidden');
+  } else if (panel === 'detail') {
+    detail.classList.add('mobile-visible');
+    main.classList.add('mobile-hidden');
+  }
+}
+
+// ── Compilation panel ──
+function renderCompilation() {
+  const el = document.getElementById('compilation-panel');
+  const comp = state.compilation;
+  if (!comp) {
+    el.innerHTML = '<div style="color:var(--fg3)">No compilation data</div>';
+    return;
+  }
+  const warnings = comp.warnings || [];
+  const conflicts = comp.conflict_graph || [];
+  let html = '';
+  html += '<div class="comp-row"><span class="comp-label">Status</span><span class="comp-value" style="color:' + (comp.status === 'ready' ? 'var(--green)' : 'var(--red)') + '">' + (comp.status || 'unknown') + '</span></div>';
+  html += '<div class="comp-row"><span class="comp-label">Compiled</span><span class="comp-value">' + (comp.compiled_at ? new Date(comp.compiled_at).toLocaleTimeString() : '--') + '</span></div>';
+  html += '<div class="comp-row"><span class="comp-label">Claims</span><span class="comp-value">' + (comp.claim_count || state.claims.length) + '</span></div>';
+  if (warnings.length > 0) {
+    html += '<div style="margin-top:6px;font-size:10px;color:var(--fg3);font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Warnings (' + warnings.length + ')</div>';
+    for (const w of warnings.slice(0, 5)) {
+      html += '<div class="comp-warning">' + esc(typeof w === 'string' ? w : w.message || JSON.stringify(w)) + '</div>';
+    }
+    if (warnings.length > 5) html += '<div style="color:var(--fg3);font-size:10px;margin-top:2px">...and ' + (warnings.length - 5) + ' more</div>';
+  }
+  if (conflicts.length > 0) {
+    html += '<div style="margin-top:6px;font-size:10px;color:var(--fg3);font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Conflicts (' + conflicts.length + ')</div>';
+    for (const c of conflicts.slice(0, 5)) {
+      const ids = Array.isArray(c) ? c.join(' vs ') : (c.claims || []).join(' vs ');
+      html += '<div class="comp-conflict">' + esc(ids) + '</div>';
+    }
+  }
+  el.innerHTML = html;
 }
 
 function esc(s) {
