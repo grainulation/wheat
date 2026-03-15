@@ -6,7 +6,7 @@ You are scanning the claim set for structural gaps — not what's wrong, but wha
 
 1. **Run the compiler** to get fresh data:
    ```bash
-   npx @grainulator/wheat compile --summary
+   npx @grainulation/wheat compile --summary
    ```
 
 2. **Read compilation.json** for coverage analysis, including source diversity, type diversity, and corroboration data.

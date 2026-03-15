@@ -6,7 +6,7 @@ You are generating the current status dashboard for this Wheat sprint.
 
 1. **Run the compiler**:
    ```bash
-   npx @grainulator/wheat compile --summary
+   npx @grainulation/wheat compile --summary
    ```
 
 2. **Read compilation.json** for all dashboard data.

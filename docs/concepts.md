@@ -1,6 +1,6 @@
 # Wheat Concepts
 
-This guide explains the six core ideas behind wheat. If you've run `npx @grainulator/wheat init` and are wondering "what does all this mean?" — start here.
+This guide explains the six core ideas behind wheat. If you've run `npx @grainulation/wheat init` and are wondering "what does all this mean?" — start here.
 
 ## Claims
 
@@ -55,7 +55,7 @@ The compiler uses evidence tiers to warn you. A recommendation backed only by `s
 The compiler is what makes wheat more than a note-taking tool. Run it with:
 
 ```bash
-npx @grainulator/wheat compile --summary
+npx @grainulation/wheat compile --summary
 ```
 
 It reads `claims.json` and runs a multi-pass validation pipeline:

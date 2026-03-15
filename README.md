@@ -19,7 +19,7 @@ If that sounds like a lot of work: it is. That's the point. The work happens bef
 ## Quick start
 
 ```bash
-npx @grainulator/wheat init
+npx @grainulation/wheat init
 ```
 
 Wheat asks you a few questions in a conversational flow -- what you're investigating, who needs the answer, what constraints you're working under. No config wizard, just a conversation.
@@ -66,13 +66,13 @@ Wheat doesn't care what language you use. It runs via npx and stores sprint data
 
 ```bash
 # In a Scala repo
-npx @grainulator/wheat init
+npx @grainulation/wheat init
 
 # In a Python repo
-npx @grainulator/wheat init
+npx @grainulation/wheat init
 
 # Compiles anywhere Node 18+ is available
-npx @grainulator/wheat compile --summary
+npx @grainulation/wheat compile --summary
 ```
 
 No dependencies are added to your project. No `node_modules` pollution. Wheat is a tool you run, not a library you import.
@@ -83,10 +83,10 @@ If your team doesn't use Node:
 
 ```bash
 # macOS
-brew install grainulator/tap/wheat
+brew install grainulation/tap/wheat
 
 # Or download directly
-curl -fsSL https://get.grainulator.dev/wheat | sh
+curl -fsSL https://get.grainulation.dev/wheat | sh
 ```
 
 ## Guard rails
@@ -129,13 +129,13 @@ Both are optional and can be removed. But they exist because the most dangerous 
 
 Wheat runs on macOS, Linux, and Windows. All path handling uses `path.join`/`path.sep` internally, and git commands are invoked via `execFileSync` (no shell). The pre-commit hook requires Git Bash on Windows (bundled with Git for Windows).
 
-The `brew` and `curl | sh` install methods are Unix-only. On Windows, use `npx @grainulator/wheat` directly -- Node 18+ is the only requirement.
+The `brew` and `curl | sh` install methods are Unix-only. On Windows, use `npx @grainulation/wheat` directly -- Node 18+ is the only requirement.
 
 ## Contributing
 
 We'd love your help. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-Good first issues are labeled [`good first issue`](https://github.com/grainulator/wheat/labels/good%20first%20issue).
+Good first issues are labeled [`good first issue`](https://github.com/grainulation/wheat/labels/good%20first%20issue).
 
 ## License
 

@@ -43,7 +43,7 @@ Add constraint claims (type: "constraint") for each hard requirement identified.
 ## Step 3: Run the compiler
 
 ```bash
-npx @grainulator/wheat compile --summary
+npx @grainulation/wheat compile --summary
 ```
 
 Verify compilation succeeds.

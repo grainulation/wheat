@@ -10,10 +10,10 @@ If your team doesn't use Node at all, you can install wheat standalone:
 
 ```bash
 # macOS
-brew install grainulator/tap/wheat
+brew install grainulation/tap/wheat
 
 # Or download directly
-curl -fsSL https://get.grainulator.dev/wheat | sh
+curl -fsSL https://get.grainulation.dev/wheat | sh
 ```
 
 ### Does wheat live inside my project?
@@ -90,7 +90,7 @@ Not currently in a single directory — each sprint expects its own `claims.json
 
 ### Can I use wheat without Claude Code?
 
-Wheat is designed for Claude Code, but the claim format and compiler are standalone. You could manually add claims to `claims.json` and run `npx @grainulator/wheat compile` from the command line. You'd lose the slash commands and intent routing, but the evidence-tracking and compilation pipeline still work.
+Wheat is designed for Claude Code, but the claim format and compiler are standalone. You could manually add claims to `claims.json` and run `npx @grainulation/wheat compile` from the command line. You'd lose the slash commands and intent routing, but the evidence-tracking and compilation pipeline still work.
 
 ## Troubleshooting
 
@@ -98,7 +98,7 @@ Wheat is designed for Claude Code, but the claim format and compiler are standal
 
 The hook validates `claims.json` on every commit. If it's rejecting:
 
-1. Run `npx @grainulator/wheat compile --summary` to see what's wrong
+1. Run `npx @grainulation/wheat compile --summary` to see what's wrong
 2. Fix the reported issues (usually malformed JSON or structural errors)
 3. Try your commit again
 
@@ -106,8 +106,8 @@ To bypass temporarily: `git commit --no-verify` (but fix the issue before your n
 
 ### Commands aren't showing up in Claude Code
 
-Make sure `.claude/commands/` exists and contains the `.md` files. If you cloned the repo, you may need to run `npx @grainulator/wheat init` again to regenerate them.
+Make sure `.claude/commands/` exists and contains the `.md` files. If you cloned the repo, you may need to run `npx @grainulation/wheat init` again to regenerate them.
 
 ### The compiler says "stale compilation"
 
-This means claims changed since the last compile. Run `npx @grainulator/wheat compile` to refresh. Output commands (`/brief`, `/present`) do this automatically, but the guard hook may catch staleness on manual operations.
+This means claims changed since the last compile. Run `npx @grainulation/wheat compile` to refresh. Output commands (`/brief`, `/present`) do this automatically, but the guard hook may catch staleness on manual operations.

@@ -8,7 +8,7 @@ Read CLAUDE.md for sprint context and claims.json for all existing claims.
 
 1. **Run the compiler first**:
    ```bash
-   npx @grainulator/wheat compile --summary
+   npx @grainulation/wheat compile --summary
    ```
    Identify conflicts, weak evidence areas, and coverage gaps.
 
@@ -58,7 +58,7 @@ Update `meta.phase` to "evaluate" in claims.json.
 ## Run the compiler again
 
 ```bash
-npx @grainulator/wheat compile --summary
+npx @grainulation/wheat compile --summary
 ```
 
 Verify that conflicts are resolved. If the compiler still shows blockers, tell the user what remains.

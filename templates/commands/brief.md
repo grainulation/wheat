@@ -6,7 +6,7 @@ You are compiling the final decision brief for this Wheat sprint. This is the Br
 
 1. **Run the compiler with check**:
    ```bash
-   npx @grainulator/wheat compile --check
+   npx @grainulation/wheat compile --check
    ```
 
    **If the compiler returns an error (exit code 1), STOP.** Do not generate a brief. Instead:

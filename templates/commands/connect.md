@@ -86,7 +86,7 @@ You are connecting an external tool or data source to this Wheat sprint. Connect
 
 6. **Run the compiler**:
    ```bash
-   npx @grainulator/wheat compile --summary
+   npx @grainulation/wheat compile --summary
    ```
 
 ## Git commit

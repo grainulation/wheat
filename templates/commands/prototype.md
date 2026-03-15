@@ -47,7 +47,7 @@ Update `meta.phase` to "prototype" in claims.json if this is the first prototype
 ## Run the compiler
 
 ```bash
-npx @grainulator/wheat compile --summary
+npx @grainulation/wheat compile --summary
 ```
 
 Report evidence upgrades (research claims superseded by prototype findings).

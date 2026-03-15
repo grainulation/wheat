@@ -58,7 +58,7 @@ You are corroborating (or contradicting) a specific claim using an external sour
 
 7. **Run the compiler**:
    ```bash
-   npx @grainulator/wheat compile --summary
+   npx @grainulation/wheat compile --summary
    ```
    Report corroboration count changes and any new conflicts.
 

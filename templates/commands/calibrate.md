@@ -16,7 +16,7 @@ You are checking what actually happened after a sprint's recommendations were im
 
 5. **Write/update calibration.json** and add claims to claims.json:
    ```bash
-   npx @grainulator/wheat compile --summary
+   npx @grainulation/wheat compile --summary
    ```
 
 6. **Print the scorecard** to the terminal.

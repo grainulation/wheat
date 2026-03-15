@@ -5,7 +5,7 @@ Thanks for considering contributing. Wheat is a small project with big ambitions
 ## Quick setup
 
 ```bash
-git clone https://github.com/grainulator/wheat.git
+git clone https://github.com/grainulation/wheat.git
 cd wheat
 node bin/wheat.js --help
 ```
@@ -37,7 +37,7 @@ Slash commands live in `templates/commands/`. Each is a Markdown file that Claud
 
 1. Create `templates/commands/your-command.md`
 2. Follow the pattern of existing commands
-3. Make sure it references `npx @grainulator/wheat compile` (not hardcoded paths)
+3. Make sure it references `npx @grainulation/wheat compile` (not hardcoded paths)
 4. Add it to the README commands table
 
 ## Architecture

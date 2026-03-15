@@ -62,11 +62,11 @@ Global options:
   --help         Show this help
 
 Examples:
-  npx @grainulator/wheat init
-  npx @grainulator/wheat compile --summary
-  npx @grainulator/wheat init --question "Should we migrate to Postgres?"
+  npx @grainulation/wheat init
+  npx @grainulation/wheat compile --summary
+  npx @grainulation/wheat init --question "Should we migrate to Postgres?"
 
-Documentation: https://github.com/grainulator/wheat`);
+Documentation: https://github.com/grainulation/wheat`);
   process.exit(0);
 }
 

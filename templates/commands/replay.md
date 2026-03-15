@@ -17,12 +17,12 @@ You are reconstructing the historical evolution of this sprint by recompiling ev
 
 3. **Recompile each version** with the current compiler:
    ```bash
-   npx @grainulator/wheat compile --input /tmp/wheat-replay-<N>.json --output /tmp/wheat-comp-<N>.json
+   npx @grainulation/wheat compile --input /tmp/wheat-replay-<N>.json --output /tmp/wheat-comp-<N>.json
    ```
 
 4. **Compute deltas** between consecutive compilations:
    ```bash
-   npx @grainulator/wheat compile --diff /tmp/wheat-comp-<N-1>.json /tmp/wheat-comp-<N>.json
+   npx @grainulation/wheat compile --diff /tmp/wheat-comp-<N-1>.json /tmp/wheat-comp-<N>.json
    ```
 
 5. **Identify interesting moments** in each delta:

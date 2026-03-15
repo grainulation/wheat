@@ -39,7 +39,7 @@ Read CLAUDE.md and claims.json for context.
 
 4. **Run the compiler**:
    ```bash
-   npx @grainulator/wheat compile --summary
+   npx @grainulation/wheat compile --summary
    ```
 
 5. **Update CLAUDE.md** if the feedback changes constraints or audience.

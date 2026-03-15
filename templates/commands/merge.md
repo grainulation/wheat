@@ -13,7 +13,7 @@ You are merging claims from another sprint into the current one. This is for whe
    - Read the incoming claims file
    - Validate both against the compiler schema:
      ```bash
-     npx @grainulator/wheat compile --input <incoming-path> --output /tmp/wheat-merge-incoming.json
+     npx @grainulation/wheat compile --input <incoming-path> --output /tmp/wheat-merge-incoming.json
      ```
 
 3. **Determine the sprint slug**: Derive from the incoming sprint's `meta.question`.
@@ -28,7 +28,7 @@ You are merging claims from another sprint into the current one. This is for whe
 
 7. **Write merged claims.json** and compile:
    ```bash
-   npx @grainulator/wheat compile --summary
+   npx @grainulation/wheat compile --summary
    ```
 
 ## Git commit

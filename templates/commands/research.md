@@ -42,7 +42,7 @@ If the finding came from a connector (GitHub repo, Jira, etc.), set evidence to 
 ## Run the compiler
 
 ```bash
-npx @grainulator/wheat compile --summary
+npx @grainulation/wheat compile --summary
 ```
 
 Check for new conflicts introduced. Report them to the user.

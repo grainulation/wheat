@@ -15,7 +15,7 @@ You are generating a self-contained briefing optimized for a **successor** — s
 
 1. **Run the compiler**:
    ```bash
-   npx @grainulator/wheat compile --summary
+   npx @grainulation/wheat compile --summary
    ```
 
 2. **Read all data sources**:

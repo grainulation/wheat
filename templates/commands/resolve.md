@@ -6,7 +6,7 @@ You are manually resolving a conflict between claims that the compiler couldn't 
 
 1. **Run the compiler** to see current conflicts:
    ```bash
-   npx @grainulator/wheat compile --summary
+   npx @grainulation/wheat compile --summary
    ```
 
 2. **If the user specified claim IDs** (e.g., `/resolve r012 e003`), focus on that conflict. Otherwise, show all unresolved conflicts and ask which to resolve.
@@ -22,7 +22,7 @@ You are manually resolving a conflict between claims that the compiler couldn't 
 
 6. **Run the compiler again**:
    ```bash
-   npx @grainulator/wheat compile --summary
+   npx @grainulation/wheat compile --summary
    ```
 
    Verify the conflict is resolved.

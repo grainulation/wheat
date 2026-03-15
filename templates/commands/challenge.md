@@ -47,7 +47,7 @@ You are stress-testing a specific claim by researching the **strongest possible 
 
 5. **Run the compiler**:
    ```bash
-   npx @grainulator/wheat compile --summary
+   npx @grainulation/wheat compile --summary
    ```
    Report whether challenges created new conflicts and whether the compiler auto-resolved any.
 

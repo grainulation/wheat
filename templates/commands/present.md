@@ -6,7 +6,7 @@ You are generating a presentation for this Wheat sprint. Same Bran compilation g
 
 1. **Run the compiler with check**:
    ```bash
-   npx @grainulator/wheat compile --check
+   npx @grainulation/wheat compile --check
    ```
 
    **If blocked, STOP.** Show errors, suggest fixes. Do not generate a presentation with unresolved conflicts.
