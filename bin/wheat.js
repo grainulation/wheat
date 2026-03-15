@@ -50,6 +50,7 @@ Usage:
 Commands:
   init       Bootstrap a new research sprint in this repo
   compile    Run the Bran compiler on claims.json
+  serve      Start the sprint dashboard UI
   guard      PreToolUse guard hook (used by Claude Code)
   status     Quick sprint status check
   stats      Local sprint statistics (no phone-home)
@@ -84,6 +85,7 @@ const commands = {
   status:  '../lib/status.js',
   stats:   '../lib/stats.js',
   update:  '../lib/update.js',
+  serve:   '../lib/server.js',
   mcp:     null,
 };
 

@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>wheat — sprint dashboard</title>
+<style>
+:root {
+  --bg: #0a0e1a;
+  --bg2: #111827;
+  --bg3: #1e293b;
+  --bg4: #334155;
+  --fg: #e2e8f0;
+  --fg2: #94a3b8;
+  --fg3: #64748b;
+  --accent: #fbbf24;
+  --accent2: #f59e0b;
+  --accent-bg: rgba(251, 191, 36, 0.08);
+  --accent-border: rgba(251, 191, 36, 0.25);
+  --green: #34d399;
+  --red: #f87171;
+  --blue: #60a5fa;
+  --purple: #a78bfa;
+  --orange: #fb923c;
+  --cyan: #22d3ee;
+  --border: #1e293b;
+  --radius: 6px;
+  --font: 'SF Mono', 'Cascadia Code', 'JetBrains Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ── Layout ── */
+.app {
+  display: grid;
+  grid-template-rows: 48px 1fr 32px;
+  grid-template-columns: 240px 1fr 340px;
+  height: 100vh;
+}
+.toolbar { grid-column: 1 / -1; }
+.sidebar { grid-row: 2; grid-column: 1; }
+.main { grid-row: 2; grid-column: 2; }
+.detail { grid-row: 2; grid-column: 3; }
+.statusbar { grid-column: 1 / -1; grid-row: 3; }
+
+/* ── Toolbar ── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  z-index: 10;
+}
+.brand {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+}
+.sprint-question {
+  flex: 1;
+  color: var(--fg2);
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.toolbar-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.badge-ready { background: rgba(52, 211, 153, 0.15); color: var(--green); }
+.badge-blocked { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+.badge-phase { background: var(--accent-bg); color: var(--accent); }
+.connection-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+}
+.connection-dot.disconnected { background: var(--red); }
+.btn-refresh {
+  background: none; border: 1px solid var(--border);
+  color: var(--fg2); padding: 4px 10px;
+  border-radius: var(--radius); cursor: pointer;
+  font-family: var(--font); font-size: 11px;
+}
+.btn-refresh:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Sidebar ── */
+.sidebar {
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 12px 0;
+}
+.sidebar-section {
+  padding: 0 12px;
+  margin-bottom: 16px;
+}
+.sidebar-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--fg3);
+  margin-bottom: 8px;
+}
+.topic-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--fg2);
+  transition: background 0.1s;
+}
+.topic-item:hover { background: var(--bg3); }
+.topic-item.active { background: var(--accent-bg); color: var(--accent); }
+.topic-item .count {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--fg3);
+  background: var(--bg);
+  padding: 1px 6px;
+  border-radius: 8px;
+}
+.topic-item.active .count { background: var(--accent-border); color: var(--accent); }
+.evidence-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.ev-stated { background: var(--fg3); }
+.ev-web { background: var(--blue); }
+.ev-documented { background: var(--cyan); }
+.ev-tested { background: var(--green); }
+.ev-production { background: var(--accent); }
+
+/* ── Filter bar ── */
+.filter-bar {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.filter-chip {
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--fg2);
+  font-family: var(--font);
+}
+.filter-chip:hover { border-color: var(--fg3); }
+.filter-chip.active { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+
+/* ── Main (claims list) ── */
+.main {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid var(--border);
+}
+.claims-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--fg3);
+  font-weight: 600;
+}
+.claims-header .total { color: var(--fg2); }
+.claims-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+.claim-row {
+  display: grid;
+  grid-template-columns: 52px 84px 1fr 72px;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 16px;
+  border-bottom: 1px solid rgba(30, 41, 59, 0.5);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.claim-row:hover { background: var(--bg2); }
+.claim-row.active { background: var(--accent-bg); border-left: 2px solid var(--accent); padding-left: 14px; }
+.claim-row.conflicted { border-left: 2px solid var(--red); padding-left: 14px; }
+.claim-row.superseded { opacity: 0.45; }
+.claim-id {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font);
+}
+.claim-type-badge {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-align: center;
+}
+.type-constraint { background: rgba(251, 191, 36, 0.15); color: var(--accent); }
+.type-factual { background: rgba(96, 165, 250, 0.15); color: var(--blue); }
+.type-estimate { background: rgba(167, 139, 250, 0.15); color: var(--purple); }
+.type-risk { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+.type-recommendation { background: rgba(52, 211, 153, 0.15); color: var(--green); }
+.type-feedback { background: rgba(251, 146, 60, 0.15); color: var(--orange); }
+.claim-content {
+  font-size: 12px;
+  color: var(--fg2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.claim-evidence {
+  font-size: 10px;
+  text-align: right;
+  color: var(--fg3);
+}
+
+/* ── Detail pane ── */
+.detail {
+  background: var(--bg2);
+  overflow-y: auto;
+  padding: 0;
+}
+.detail-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--fg3);
+  font-size: 13px;
+  text-align: center;
+  padding: 32px;
+}
+.detail-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.detail-id {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.detail-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.detail-tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  color: var(--fg3);
+}
+.detail-body {
+  padding: 16px;
+}
+.detail-section {
+  margin-bottom: 16px;
+}
+.detail-section-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--fg3);
+  margin-bottom: 6px;
+}
+.detail-content {
+  font-size: 13px;
+  color: var(--fg);
+  line-height: 1.7;
+}
+.detail-field {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.detail-field-label { color: var(--fg3); min-width: 80px; }
+.detail-field-value { color: var(--fg2); }
+.related-claim {
+  display: inline-block;
+  padding: 2px 8px;
+  margin: 2px;
+  border-radius: 4px;
+  background: var(--bg3);
+  color: var(--accent);
+  font-size: 11px;
+  cursor: pointer;
+  font-family: var(--font);
+}
+.related-claim:hover { background: var(--accent-bg); }
+
+/* ── Statusbar ── */
+.statusbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 16px;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--fg3);
+}
+.statusbar .hash { font-family: var(--font); color: var(--fg3); }
+.coverage-mini {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+.coverage-bar {
+  width: 40px;
+  height: 4px;
+  background: var(--bg);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.coverage-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar, .detail { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <span class="brand">wheat</span>
+    <span id="phase-badge" class="toolbar-badge badge-phase"></span>
+    <span id="sprint-question" class="sprint-question"></span>
+    <span id="status-badge" class="toolbar-badge"></span>
+    <span id="claim-count" class="toolbar-badge" style="background:var(--bg3);color:var(--fg2)"></span>
+    <button class="btn-refresh" onclick="recompile()">compile</button>
+    <span id="connection-dot" class="connection-dot"></span>
+  </div>
+
+  <!-- Sidebar: Topics + Sprints -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Topics</div>
+      <div id="topics-list"></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Evidence Legend</div>
+      <div style="padding: 0 10px;">
+        <div class="topic-item" style="cursor:default"><span class="evidence-dot ev-stated"></span><span>stated</span></div>
+        <div class="topic-item" style="cursor:default"><span class="evidence-dot ev-web"></span><span>web</span></div>
+        <div class="topic-item" style="cursor:default"><span class="evidence-dot ev-documented"></span><span>documented</span></div>
+        <div class="topic-item" style="cursor:default"><span class="evidence-dot ev-tested"></span><span>tested</span></div>
+        <div class="topic-item" style="cursor:default"><span class="evidence-dot ev-production"></span><span>production</span></div>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Sprints</div>
+      <div id="sprints-list"></div>
+    </div>
+  </div>
+
+  <!-- Main: Filter + Claims list -->
+  <div class="main">
+    <div class="filter-bar" id="filter-bar"></div>
+    <div class="claims-header">
+      <span>ID</span><span>TYPE</span><span>CONTENT</span><span style="text-align:right">EVIDENCE</span>
+      <span style="margin-left:auto" class="total" id="visible-count"></span>
+    </div>
+    <div class="claims-list" id="claims-list"></div>
+  </div>
+
+  <!-- Detail pane -->
+  <div class="detail" id="detail">
+    <div class="detail-empty">Select a claim to view details</div>
+  </div>
+
+  <!-- Statusbar -->
+  <div class="statusbar">
+    <span id="compiler-version"></span>
+    <span>hash: <span class="hash" id="claims-hash">—</span></span>
+    <span id="warning-count"></span>
+    <div style="flex:1"></div>
+    <div id="coverage-mini" class="coverage-mini"></div>
+  </div>
+</div>
+
+<script>
+// ── State ──
+let state = { claims: [], compilation: null, sprints: [], activeSprint: null, meta: null };
+let selectedClaim = null;
+let activeFilter = { topic: null, type: null, status: null };
+
+// ── SSE ──
+let es;
+function connectSSE() {
+  es = new EventSource('/events');
+  es.onmessage = (e) => {
+    const msg = JSON.parse(e.data);
+    if (msg.type === 'state') {
+      state = msg.data;
+      render();
+    }
+  };
+  es.onopen = () => {
+    document.getElementById('connection-dot').classList.remove('disconnected');
+  };
+  es.onerror = () => {
+    document.getElementById('connection-dot').classList.add('disconnected');
+    setTimeout(() => { es.close(); connectSSE(); }, 3000);
+  };
+}
+
+// ── API ──
+async function recompile() {
+  const btn = document.querySelector('.btn-refresh');
+  btn.textContent = '...';
+  try {
+    const res = await fetch('/api/compile', { method: 'POST' });
+    state = await res.json();
+    render();
+  } catch {}
+  btn.textContent = 'compile';
+}
+
+// ── Render ──
+function render() {
+  renderToolbar();
+  renderTopics();
+  renderSprints();
+  renderFilters();
+  renderClaims();
+  renderStatusbar();
+  if (selectedClaim) {
+    const claim = state.claims.find(c => c.id === selectedClaim);
+    if (claim) renderDetail(claim);
+  }
+}
+
+function renderToolbar() {
+  const q = state.meta?.question || 'No sprint loaded';
+  document.getElementById('sprint-question').textContent = q;
+  const phase = state.meta?.phase || '—';
+  document.getElementById('phase-badge').textContent = phase;
+  const status = state.compilation?.status || 'unknown';
+  const badge = document.getElementById('status-badge');
+  badge.textContent = status;
+  badge.className = 'toolbar-badge ' + (status === 'ready' ? 'badge-ready' : 'badge-blocked');
+  const active = state.claims.filter(c => c.status === 'active').length;
+  document.getElementById('claim-count').textContent = `${active}/${state.claims.length} claims`;
+}
+
+function renderTopics() {
+  const coverage = state.compilation?.coverage || {};
+  const topics = Object.entries(coverage).sort((a, b) => b[1].claims - a[1].claims);
+  const el = document.getElementById('topics-list');
+  el.innerHTML = topics.map(([name, cov]) => {
+    const active = activeFilter.topic === name ? ' active' : '';
+    return `<div class="topic-item${active}" onclick="filterTopic('${name}')">
+      <span class="evidence-dot ev-${cov.max_evidence}"></span>
+      <span>${name}</span>
+      <span class="count">${cov.claims}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderSprints() {
+  const el = document.getElementById('sprints-list');
+  if (!state.sprints.length) {
+    el.innerHTML = '<div style="padding:6px 10px;color:var(--fg3);font-size:11px">No sprints detected</div>';
+    return;
+  }
+  el.innerHTML = state.sprints.map(s => {
+    const isActive = s.status === 'active';
+    return `<div class="topic-item${isActive ? ' active' : ''}" style="cursor:default">
+      <span class="evidence-dot" style="background:${isActive ? 'var(--green)' : 'var(--fg3)'}"></span>
+      <span>${s.name || 'unnamed'}</span>
+      <span class="count">${s.phase || '?'}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderFilters() {
+  const types = ['constraint', 'factual', 'estimate', 'risk', 'recommendation', 'feedback'];
+  const statuses = ['active', 'superseded', 'conflicted'];
+  const el = document.getElementById('filter-bar');
+  el.innerHTML = [
+    ...types.map(t => {
+      const active = activeFilter.type === t ? ' active' : '';
+      return `<button class="filter-chip${active}" onclick="filterType('${t}')">${t}</button>`;
+    }),
+    '<span style="width:1px;height:16px;background:var(--border)"></span>',
+    ...statuses.map(s => {
+      const active = activeFilter.status === s ? ' active' : '';
+      return `<button class="filter-chip${active}" onclick="filterStatus('${s}')">${s}</button>`;
+    })
+  ].join('');
+}
+
+function renderClaims() {
+  let claims = state.claims;
+  if (activeFilter.topic) claims = claims.filter(c => c.topic === activeFilter.topic);
+  if (activeFilter.type) claims = claims.filter(c => c.type === activeFilter.type);
+  if (activeFilter.status) claims = claims.filter(c => c.status === activeFilter.status);
+
+  document.getElementById('visible-count').textContent = `${claims.length} shown`;
+
+  const el = document.getElementById('claims-list');
+  el.innerHTML = claims.map(c => {
+    const isActive = selectedClaim === c.id ? ' active' : '';
+    const isConflicted = c.status === 'conflicted' ? ' conflicted' : '';
+    const isSuperseded = c.status === 'superseded' ? ' superseded' : '';
+    return `<div class="claim-row${isActive}${isConflicted}${isSuperseded}" onclick="selectClaim('${c.id}')">
+      <span class="claim-id">${c.id}</span>
+      <span class="claim-type-badge type-${c.type}">${c.type}</span>
+      <span class="claim-content">${esc(c.content)}</span>
+      <span class="claim-evidence">${c.evidence}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderDetail(claim) {
+  const el = document.getElementById('detail');
+  const conflicts = claim.conflicts_with || [];
+  const tags = claim.tags || [];
+  const resolvedBy = claim.resolved_by;
+  const source = claim.source || {};
+
+  el.innerHTML = `
+    <div class="detail-header">
+      <div class="detail-id">${claim.id}</div>
+      <span class="claim-type-badge type-${claim.type}" style="font-size:12px">${claim.type}</span>
+      &nbsp;<span style="color:var(--fg3);font-size:12px">${claim.topic}</span>
+      <div class="detail-meta">
+        <span class="detail-tag">${claim.evidence}</span>
+        <span class="detail-tag">${claim.status}</span>
+        <span class="detail-tag">${claim.phase_added}</span>
+        ${tags.map(t => `<span class="detail-tag">${t}</span>`).join('')}
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-section">
+        <div class="detail-section-title">Content</div>
+        <div class="detail-content">${esc(claim.content)}</div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-title">Source</div>
+        <div class="detail-field"><span class="detail-field-label">origin</span><span class="detail-field-value">${source.origin || '—'}</span></div>
+        <div class="detail-field"><span class="detail-field-label">artifact</span><span class="detail-field-value">${source.artifact || '—'}</span></div>
+        ${source.witnessed_claim ? `<div class="detail-field"><span class="detail-field-label">witnesses</span><span class="related-claim" onclick="selectClaim('${source.witnessed_claim}')">${source.witnessed_claim}</span></div>` : ''}
+        ${source.challenged_claim ? `<div class="detail-field"><span class="detail-field-label">challenges</span><span class="related-claim" onclick="selectClaim('${source.challenged_claim}')">${source.challenged_claim}</span></div>` : ''}
+      </div>
+      ${conflicts.length ? `<div class="detail-section">
+        <div class="detail-section-title">Conflicts with</div>
+        ${conflicts.map(id => `<span class="related-claim" onclick="selectClaim('${id}')">${id}</span>`).join(' ')}
+      </div>` : ''}
+      ${resolvedBy ? `<div class="detail-section">
+        <div class="detail-section-title">Resolved by</div>
+        <span class="related-claim" onclick="selectClaim('${resolvedBy}')">${resolvedBy}</span>
+      </div>` : ''}
+      <div class="detail-section">
+        <div class="detail-section-title">Timestamp</div>
+        <div class="detail-content" style="font-size:11px;color:var(--fg3)">${claim.timestamp || '—'}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderStatusbar() {
+  const comp = state.compilation;
+  document.getElementById('claims-hash').textContent = comp?.claims_hash || '—';
+  document.getElementById('compiler-version').textContent = comp ? `wheat-compiler v${comp.compiler_version}` : '';
+  const warnings = comp?.warnings || [];
+  document.getElementById('warning-count').textContent = warnings.length ? `${warnings.length} warning${warnings.length > 1 ? 's' : ''}` : '';
+
+  // Coverage mini bars
+  const coverage = comp?.coverage || {};
+  const el = document.getElementById('coverage-mini');
+  const evColors = { stated: 'var(--fg3)', web: 'var(--blue)', documented: 'var(--cyan)', tested: 'var(--green)', production: 'var(--accent)' };
+  el.innerHTML = Object.entries(coverage).map(([name, cov]) => {
+    const pct = Math.min(100, (cov.claims / 8) * 100);
+    const color = evColors[cov.max_evidence] || 'var(--fg3)';
+    return `<div title="${name}: ${cov.claims} claims (${cov.max_evidence})" class="coverage-bar"><div class="coverage-fill" style="width:${pct}%;background:${color}"></div></div>`;
+  }).join('');
+}
+
+// ── Interaction ──
+function selectClaim(id) {
+  selectedClaim = id;
+  const claim = state.claims.find(c => c.id === id);
+  if (claim) renderDetail(claim);
+  renderClaims();
+}
+
+function filterTopic(topic) {
+  activeFilter.topic = activeFilter.topic === topic ? null : topic;
+  render();
+}
+function filterType(type) {
+  activeFilter.type = activeFilter.type === type ? null : type;
+  render();
+}
+function filterStatus(status) {
+  activeFilter.status = activeFilter.status === status ? null : status;
+  render();
+}
+
+function esc(s) {
+  if (!s) return '';
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ── Keyboard shortcuts ──
+document.addEventListener('keydown', (e) => {
+  const claims = getFilteredClaims();
+  if (!claims.length) return;
+  const idx = claims.findIndex(c => c.id === selectedClaim);
+
+  if (e.key === 'ArrowDown' || e.key === 'j') {
+    e.preventDefault();
+    const next = Math.min(idx + 1, claims.length - 1);
+    selectClaim(claims[next].id);
+    scrollClaimIntoView(claims[next].id);
+  }
+  if (e.key === 'ArrowUp' || e.key === 'k') {
+    e.preventDefault();
+    const prev = Math.max(idx - 1, 0);
+    selectClaim(claims[prev].id);
+    scrollClaimIntoView(claims[prev].id);
+  }
+  if (e.key === 'Escape') {
+    activeFilter = { topic: null, type: null, status: null };
+    selectedClaim = null;
+    document.getElementById('detail').innerHTML = '<div class="detail-empty">Select a claim to view details</div>';
+    render();
+  }
+});
+
+function getFilteredClaims() {
+  let claims = state.claims;
+  if (activeFilter.topic) claims = claims.filter(c => c.topic === activeFilter.topic);
+  if (activeFilter.type) claims = claims.filter(c => c.type === activeFilter.type);
+  if (activeFilter.status) claims = claims.filter(c => c.status === activeFilter.status);
+  return claims;
+}
+
+function scrollClaimIntoView(id) {
+  const rows = document.querySelectorAll('.claim-row');
+  for (const row of rows) {
+    if (row.querySelector('.claim-id')?.textContent === id) {
+      row.scrollIntoView({ block: 'nearest' });
+      break;
+    }
+  }
+}
+
+// ── Init ──
+connectSSE();
+</script>
+</body>
+</html>
