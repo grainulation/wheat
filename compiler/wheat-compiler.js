@@ -615,7 +615,7 @@ function compile(inputPath, outputPath, dir) {
 
   // Read claims
   if (!fs.existsSync(claimsPath)) {
-    console.error(`Error: ${path.basename(claimsPath)} not found. Run /init first.`);
+    console.error(`Error: ${path.basename(claimsPath)} not found. Run "wheat init" to start a sprint.`);
     process.exit(1);
   }
 
