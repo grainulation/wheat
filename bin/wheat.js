@@ -22,6 +22,7 @@
 import path from 'path';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
+import { track as trackInstall, maybePrompt as installPrompt } from '../lib/install-prompt.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -97,6 +98,13 @@ if (subcommand === '--version' || subcommand === '-v') {
   console.log(`wheat v${VERSION}`);
   process.exit(0);
 }
+
+// ─── Install prompt tracking ─────────────────────────────────────────────────
+// Track npx usage and maybe suggest installing. Both calls are sync, <5ms,
+// and fail silently. Only fires for real subcommands (not --help/--version).
+
+trackInstall(subcommand);
+installPrompt(subcommand);
 
 // ─── Dispatch ────────────────────────────────────────────────────────────────
 
