@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="auto">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -96,7 +96,7 @@ body {
 .connection-dot.disconnected { background: var(--red); }
 .reconnect-banner { position:fixed;top:0;left:0;right:0;z-index:9999;padding:8px 16px;background:#92400e;color:#fbbf24;font-size:12px;text-align:center;transform:translateY(-100%);transition:transform .3s;font-family:system-ui,sans-serif }
 .reconnect-banner.visible { transform:translateY(0) }
-.reconnect-banner button { background:none;border:1px solid #fbbf24;color:#fbbf24;padding:2px 10px;border-radius:4px;cursor:pointer;font-size:11px;margin-left:8px }
+.reconnect-banner button { background:none;border:1px solid #fbbf24;color:#fbbf24;padding:2px 10px;border-radius:4px;cursor:pointer;font-size:11px;margin-inline-start:8px }
 .btn-refresh {
   background: none; border: 1px solid var(--border);
   color: var(--fg2); padding: 4px 10px;
@@ -108,7 +108,7 @@ body {
 /* ── Sidebar ── */
 .sidebar {
   background: var(--bg2);
-  border-right: 1px solid var(--border);
+  border-inline-end: 1px solid var(--border);
   overflow-y: auto;
   padding: 12px 0;
 }
@@ -138,7 +138,7 @@ body {
 .topic-item:hover { background: var(--bg3); }
 .topic-item.active { background: var(--accent-bg); color: var(--accent); }
 .topic-item .count {
-  margin-left: auto;
+  margin-inline-start: auto;
   font-size: 10px;
   color: var(--fg3);
   background: var(--bg);
@@ -183,7 +183,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-right: 1px solid var(--border);
+  border-inline-end: 1px solid var(--border);
 }
 .claims-header {
   display: flex;
@@ -213,8 +213,8 @@ body {
   transition: background 0.1s;
 }
 .claim-row:hover { background: var(--bg2); }
-.claim-row.active { background: var(--accent-bg); border-left: 2px solid var(--accent); padding-left: 14px; }
-.claim-row.conflicted { border-left: 2px solid var(--red); padding-left: 14px; }
+.claim-row.active { background: var(--accent-bg); border-inline-start: 2px solid var(--accent); padding-inline-start: 14px; }
+.claim-row.conflicted { border-inline-start: 2px solid var(--red); padding-inline-start: 14px; }
 .claim-row.superseded { opacity: 0.45; }
 .claim-id {
   font-size: 11px;
@@ -243,7 +243,7 @@ body {
 }
 .claim-evidence {
   font-size: 10px;
-  text-align: right;
+  text-align: end;
   color: var(--fg3);
 }
 
@@ -362,7 +362,7 @@ body {
 ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
 
 /* ── A11y ── */
-.skip-link{position:absolute;top:-40px;left:0;background:var(--accent);color:#000;padding:8px 16px;z-index:10000;font-size:14px;font-weight:600;transition:top .2s}
+.skip-link{position:absolute;top:-40px;inset-inline-start:0;background:var(--accent);color:#000;padding:8px 16px;z-index:10000;font-size:14px;font-weight:600;transition:top .2s}
 .skip-link:focus{top:0}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 @media (prefers-reduced-motion: reduce) {
@@ -419,7 +419,7 @@ body {
   padding: 4px 8px;
   margin-top: 4px;
   background: rgba(251, 191, 36, 0.08);
-  border-left: 2px solid var(--accent);
+  border-inline-start: 2px solid var(--accent);
   border-radius: 0 var(--radius) var(--radius) 0;
   color: var(--fg2);
   font-size: 11px;
@@ -428,7 +428,7 @@ body {
   padding: 4px 8px;
   margin-top: 4px;
   background: rgba(248, 113, 113, 0.08);
-  border-left: 2px solid var(--red);
+  border-inline-start: 2px solid var(--red);
   border-radius: 0 var(--radius) var(--radius) 0;
   color: var(--fg2);
   font-size: 11px;
@@ -442,7 +442,7 @@ body {
   }
   .mobile-nav { display: block; grid-row: 2; }
   .sidebar { grid-row: 3; grid-column: 1; display: none; }
-  .main { grid-row: 3; grid-column: 1; border-right: none; }
+  .main { grid-row: 3; grid-column: 1; border-inline-end: none; }
   .detail { grid-row: 3; grid-column: 1; display: none; }
   .compilation-panel { display: none; }
   .statusbar { grid-row: 4; }
@@ -505,15 +505,15 @@ body {
   <main class="main" id="main-content" aria-label="Wheat workspace">
     <div class="filter-bar" id="filter-bar"></div>
     <div class="claims-header">
-      <span>ID</span><span>TYPE</span><span>CONTENT</span><span style="text-align:right">EVIDENCE</span>
-      <span style="margin-left:auto" class="total" id="visible-count"></span>
+      <span>ID</span><span>TYPE</span><span>CONTENT</span><span style="text-align:end">EVIDENCE</span>
+      <span style="margin-inline-start:auto" class="total" id="visible-count"></span>
     </div>
     <div class="claims-list" id="claims-list"></div>
   </main>
 
   <!-- Detail pane -->
   <div class="detail" id="detail">
-    <div class="detail-empty">Select a claim to view details</div>
+    <div class="detail-empty" id="detail-empty-text">Select a claim to view details</div>
   </div>
 
   <!-- Compilation panel -->
@@ -530,6 +530,10 @@ body {
 </div>
 
 <script>
+// ── i18n passthrough ──
+const t = (s, v) => v ? s.replace(/\{(\w+)\}/g, (_, k) => v[k] ?? k) : s;
+const _dtf = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+
 // ── State ──
 let state = { claims: [], compilation: null, sprints: [], activeSprint: null, meta: null };
 let selectedClaim = null;
@@ -541,11 +545,11 @@ let retryCount = 0;
 function showBanner(count) {
   const b = document.getElementById('reconnectBanner');
   if (count > 5) {
-    b.innerHTML = 'Connection lost. <button onclick="retryCount=0;connectSSE()">Retry now</button>';
+    b.innerHTML = t('Connection lost.') + ' <button onclick="retryCount=0;connectSSE()">' + t('Retry now') + '</button>';
   } else if (count > 1) {
-    b.textContent = 'Reconnecting (attempt ' + count + ')...';
+    b.textContent = t('Reconnecting (attempt {count})...', { count });
   } else {
-    b.textContent = 'Reconnecting...';
+    b.textContent = t('Reconnecting...');
   }
   b.classList.add('visible');
 }
@@ -562,7 +566,7 @@ function connectSSE() {
         state = msg.data;
         render();
         const ls = document.getElementById('live-status');
-        if (ls) ls.textContent = 'Updated: ' + state.claims.length + ' claims loaded';
+        if (ls) ls.textContent = t('Updated: {count} claims loaded', { count: state.claims.length });
       }
     } catch { /* ignore parse errors */ }
   };
@@ -590,7 +594,7 @@ async function recompile() {
     state = await res.json();
     render();
   } catch {}
-  btn.textContent = 'compile';
+  btn.textContent = t('compile');
 }
 
 // ── Render ──
@@ -609,7 +613,7 @@ function render() {
 }
 
 function renderToolbar() {
-  const q = state.meta?.question || 'No sprint loaded';
+  const q = state.meta?.question || t('No sprint loaded');
   document.getElementById('sprint-question').textContent = q;
   const phase = state.meta?.phase || '—';
   document.getElementById('phase-badge').textContent = phase;
@@ -618,7 +622,7 @@ function renderToolbar() {
   badge.textContent = status;
   badge.className = 'toolbar-badge ' + (status === 'ready' ? 'badge-ready' : 'badge-blocked');
   const active = state.claims.filter(c => c.status === 'active').length;
-  document.getElementById('claim-count').textContent = `${active}/${state.claims.length} claims`;
+  document.getElementById('claim-count').textContent = t('{active}/{total} claims', { active, total: state.claims.length });
 }
 
 function renderTopics() {
@@ -638,7 +642,7 @@ function renderTopics() {
 function renderSprints() {
   const el = document.getElementById('sprints-list');
   if (!state.sprints.length) {
-    el.innerHTML = '<div style="padding:6px 10px;color:var(--fg3);font-size:11px">No sprints detected</div>';
+    el.innerHTML = '<div style="padding:6px 10px;color:var(--fg3);font-size:11px">' + t('No sprints detected') + '</div>';
     return;
   }
   el.innerHTML = state.sprints.map(s => {
@@ -674,7 +678,7 @@ function renderClaims() {
   if (activeFilter.type) claims = claims.filter(c => c.type === activeFilter.type);
   if (activeFilter.status) claims = claims.filter(c => c.status === activeFilter.status);
 
-  document.getElementById('visible-count').textContent = `${claims.length} shown`;
+  document.getElementById('visible-count').textContent = t('{count} shown', { count: claims.length });
 
   const el = document.getElementById('claims-list');
   el.innerHTML = claims.map(c => {
@@ -711,26 +715,26 @@ function renderDetail(claim) {
     </div>
     <div class="detail-body">
       <div class="detail-section">
-        <div class="detail-section-title">Content</div>
+        <div class="detail-section-title">${t('Content')}</div>
         <div class="detail-content">${esc(claim.content)}</div>
       </div>
       <div class="detail-section">
-        <div class="detail-section-title">Source</div>
-        <div class="detail-field"><span class="detail-field-label">origin</span><span class="detail-field-value">${source.origin || '—'}</span></div>
-        <div class="detail-field"><span class="detail-field-label">artifact</span><span class="detail-field-value">${source.artifact || '—'}</span></div>
-        ${source.witnessed_claim ? `<div class="detail-field"><span class="detail-field-label">witnesses</span><span class="related-claim" onclick="selectClaim('${source.witnessed_claim}')">${source.witnessed_claim}</span></div>` : ''}
-        ${source.challenged_claim ? `<div class="detail-field"><span class="detail-field-label">challenges</span><span class="related-claim" onclick="selectClaim('${source.challenged_claim}')">${source.challenged_claim}</span></div>` : ''}
+        <div class="detail-section-title">${t('Source')}</div>
+        <div class="detail-field"><span class="detail-field-label">${t('origin')}</span><span class="detail-field-value">${source.origin || '—'}</span></div>
+        <div class="detail-field"><span class="detail-field-label">${t('artifact')}</span><span class="detail-field-value">${source.artifact || '—'}</span></div>
+        ${source.witnessed_claim ? `<div class="detail-field"><span class="detail-field-label">${t('witnesses')}</span><span class="related-claim" onclick="selectClaim('${source.witnessed_claim}')">${source.witnessed_claim}</span></div>` : ''}
+        ${source.challenged_claim ? `<div class="detail-field"><span class="detail-field-label">${t('challenges')}</span><span class="related-claim" onclick="selectClaim('${source.challenged_claim}')">${source.challenged_claim}</span></div>` : ''}
       </div>
       ${conflicts.length ? `<div class="detail-section">
-        <div class="detail-section-title">Conflicts with</div>
+        <div class="detail-section-title">${t('Conflicts with')}</div>
         ${conflicts.map(id => `<span class="related-claim" onclick="selectClaim('${id}')">${id}</span>`).join(' ')}
       </div>` : ''}
       ${resolvedBy ? `<div class="detail-section">
-        <div class="detail-section-title">Resolved by</div>
+        <div class="detail-section-title">${t('Resolved by')}</div>
         <span class="related-claim" onclick="selectClaim('${resolvedBy}')">${resolvedBy}</span>
       </div>` : ''}
       <div class="detail-section">
-        <div class="detail-section-title">Timestamp</div>
+        <div class="detail-section-title">${t('Timestamp')}</div>
         <div class="detail-content" style="font-size:11px;color:var(--fg3)">${claim.timestamp || '—'}</div>
       </div>
     </div>
@@ -740,9 +744,9 @@ function renderDetail(claim) {
 function renderStatusbar() {
   const comp = state.compilation;
   document.getElementById('claims-hash').textContent = comp?.claims_hash || '—';
-  document.getElementById('compiler-version').textContent = comp ? `wheat-compiler v${comp.compiler_version}` : '';
+  document.getElementById('compiler-version').textContent = comp ? t('wheat-compiler v{ver}', { ver: comp.compiler_version }) : '';
   const warnings = comp?.warnings || [];
-  document.getElementById('warning-count').textContent = warnings.length ? `${warnings.length} warning${warnings.length > 1 ? 's' : ''}` : '';
+  document.getElementById('warning-count').textContent = warnings.length ? t('{count} warnings', { count: warnings.length }) : '';
 
   // Coverage mini bars
   const coverage = comp?.coverage || {};
@@ -803,24 +807,24 @@ function renderCompilation() {
   const el = document.getElementById('compilation-panel');
   const comp = state.compilation;
   if (!comp) {
-    el.innerHTML = '<div style="color:var(--fg3)">No compilation data</div>';
+    el.innerHTML = '<div style="color:var(--fg3)">' + t('No compilation data') + '</div>';
     return;
   }
   const warnings = comp.warnings || [];
   const conflicts = comp.conflict_graph || [];
   let html = '';
-  html += '<div class="comp-row"><span class="comp-label">Status</span><span class="comp-value" style="color:' + (comp.status === 'ready' ? 'var(--green)' : 'var(--red)') + '">' + (comp.status || 'unknown') + '</span></div>';
-  html += '<div class="comp-row"><span class="comp-label">Compiled</span><span class="comp-value">' + (comp.compiled_at ? new Date(comp.compiled_at).toLocaleTimeString() : '--') + '</span></div>';
-  html += '<div class="comp-row"><span class="comp-label">Claims</span><span class="comp-value">' + (comp.claim_count || state.claims.length) + '</span></div>';
+  html += '<div class="comp-row"><span class="comp-label">' + t('Status') + '</span><span class="comp-value" style="color:' + (comp.status === 'ready' ? 'var(--green)' : 'var(--red)') + '">' + (comp.status || t('unknown')) + '</span></div>';
+  html += '<div class="comp-row"><span class="comp-label">' + t('Compiled') + '</span><span class="comp-value">' + (comp.compiled_at ? _dtf.format(new Date(comp.compiled_at)) : '--') + '</span></div>';
+  html += '<div class="comp-row"><span class="comp-label">' + t('Claims') + '</span><span class="comp-value">' + (comp.claim_count || state.claims.length) + '</span></div>';
   if (warnings.length > 0) {
-    html += '<div style="margin-top:6px;font-size:10px;color:var(--fg3);font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Warnings (' + warnings.length + ')</div>';
+    html += '<div style="margin-top:6px;font-size:10px;color:var(--fg3);font-weight:600;text-transform:uppercase;letter-spacing:0.5px">' + t('Warnings ({count})', { count: warnings.length }) + '</div>';
     for (const w of warnings.slice(0, 5)) {
       html += '<div class="comp-warning">' + esc(typeof w === 'string' ? w : w.message || JSON.stringify(w)) + '</div>';
     }
     if (warnings.length > 5) html += '<div style="color:var(--fg3);font-size:10px;margin-top:2px">...and ' + (warnings.length - 5) + ' more</div>';
   }
   if (conflicts.length > 0) {
-    html += '<div style="margin-top:6px;font-size:10px;color:var(--fg3);font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Conflicts (' + conflicts.length + ')</div>';
+    html += '<div style="margin-top:6px;font-size:10px;color:var(--fg3);font-weight:600;text-transform:uppercase;letter-spacing:0.5px">' + t('Conflicts ({count})', { count: conflicts.length }) + '</div>';
     for (const c of conflicts.slice(0, 5)) {
       const ids = Array.isArray(c) ? c.join(' vs ') : (c.claims || []).join(' vs ');
       html += '<div class="comp-conflict">' + esc(ids) + '</div>';
@@ -845,7 +849,7 @@ function switchPanel(dir) {
 function closeDetail() {
   activeFilter = { topic: null, type: null, status: null };
   selectedClaim = null;
-  document.getElementById('detail').innerHTML = '<div class="detail-empty">Select a claim to view details</div>';
+  document.getElementById('detail').innerHTML = '<div class="detail-empty">' + t('Select a claim to view details') + '</div>';
   render();
 }
 
