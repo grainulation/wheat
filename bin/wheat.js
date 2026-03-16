@@ -64,6 +64,7 @@ Usage:
 
 Commands:
   init       Bootstrap a new research sprint in this repo
+  quickstart Zero-to-dashboard demo sprint (under 90 seconds)
   compile    Run the Bran compiler on claims.json
   migrate    Migrate claims.json to the current schema version
   serve      Start the sprint dashboard UI
@@ -83,6 +84,7 @@ Global options:
   --help         Show this help
 
 Examples:
+  npx @grainulation/wheat quickstart
   npx @grainulation/wheat init
   npx @grainulation/wheat compile --summary
   npx @grainulation/wheat init --question "Should we migrate to Postgres?"
@@ -99,8 +101,9 @@ if (subcommand === '--version' || subcommand === '-v') {
 // ─── Dispatch ────────────────────────────────────────────────────────────────
 
 const commands = {
-  init:    '../lib/init.js',
-  compile: '../lib/compiler.js',
+  init:       '../lib/init.js',
+  quickstart: '../lib/quickstart.js',
+  compile:    '../lib/compiler.js',
   guard:   '../lib/guard.js',
   status:  '../lib/status.js',
   stats:   '../lib/stats.js',
