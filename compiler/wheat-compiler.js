@@ -73,6 +73,73 @@ const PHASE_ORDER = ['init', 'define', 'research', 'prototype', 'evaluate', 'com
 // Burn-residue ID prefix — synthetic claims from /control-burn must never persist
 const BURN_PREFIX = 'burn-';
 
+// ─── Schema Migration Framework [r237] ──────────────────────────────────────
+const CURRENT_SCHEMA = '1.0';
+
+/**
+ * Ordered list of migration functions. Each entry migrates from one version to the next.
+ * Add new entries here as schema evolves: { from: '1.0', to: '1.1', migrate: fn }
+ * The migrate function receives the full claimsData object and returns it mutated.
+ */
+const SCHEMA_MIGRATIONS = [
+  // Example for future use:
+  // { from: '1.0', to: '1.1', migrate(data) { /* transform data */ return data; } },
+];
+
+/**
+ * Compare two semver-style version strings (e.g. '1.0', '2.1').
+ * Returns -1 if a < b, 0 if equal, 1 if a > b.
+ */
+function compareVersions(a, b) {
+  const pa = a.split('.').map(Number);
+  const pb = b.split('.').map(Number);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const na = pa[i] || 0;
+    const nb = pb[i] || 0;
+    if (na < nb) return -1;
+    if (na > nb) return 1;
+  }
+  return 0;
+}
+
+/**
+ * Validate and migrate schema version. Returns { data, errors }.
+ * - Missing schema_version is treated as '1.0' (backwards compat).
+ * - If schema_version > CURRENT_SCHEMA, returns a fatal error.
+ * - If schema_version < CURRENT_SCHEMA, runs migrations in order.
+ */
+function checkAndMigrateSchema(claimsData) {
+  const meta = claimsData.meta || {};
+  const fileVersion = meta.schema_version || '1.0';
+
+  // Future version — this compiler cannot handle it
+  if (compareVersions(fileVersion, CURRENT_SCHEMA) > 0) {
+    return {
+      data: claimsData,
+      errors: [{
+        code: 'E_SCHEMA_VERSION',
+        message: `claims.json uses schema v${fileVersion} but this compiler only supports up to v${CURRENT_SCHEMA}. Run: npx @grainulation/wheat@latest compile`,
+      }],
+    };
+  }
+
+  // Run migrations if file version is behind current
+  let currentVersion = fileVersion;
+  for (const migration of SCHEMA_MIGRATIONS) {
+    if (compareVersions(currentVersion, migration.from) === 0 &&
+        compareVersions(currentVersion, CURRENT_SCHEMA) < 0) {
+      claimsData = migration.migrate(claimsData);
+      currentVersion = migration.to;
+      if (!claimsData.meta) claimsData.meta = {};
+      claimsData.meta.schema_version = currentVersion;
+    }
+  }
+
+  return { data: claimsData, errors: [] };
+}
+
+export { CURRENT_SCHEMA, SCHEMA_MIGRATIONS, checkAndMigrateSchema, compareVersions };
+
 // ─── Pass 1: Schema Validation (+ burn-residue safety check) ────────────────
 function validateSchema(claims) {
   const errors = [];
@@ -560,6 +627,16 @@ function compile(inputPath, outputPath, dir) {
     console.error(`Error: ${path.basename(claimsPath)} is not valid JSON — ${e.message}`);
     process.exit(1);
   }
+  // ── Schema version check + migration [r237] ──────────────────────────────
+  const migrationResult = checkAndMigrateSchema(claimsData);
+  if (migrationResult.errors.length > 0) {
+    for (const err of migrationResult.errors) {
+      console.error(`Error: ${err.message}`);
+    }
+    process.exit(1);
+  }
+  claimsData = migrationResult.data;
+
   const claims = claimsData.claims || [];
   const meta = claimsData.meta || {};
 
@@ -712,7 +789,7 @@ Usage:
 Options:
   --dir <path>  Resolve all paths relative to <path> instead of script location
   --help, -h    Show this help message
-  --json        Output as JSON (with --next)`);
+  --json        Output as JSON (works with --summary, --check, --gate, --scan, --next)`);
   process.exit(0);
 }
 
@@ -731,6 +808,12 @@ if (args.includes('--scan')) {
   const results = scanSelfContainment(allDirs);
   const clean = results.filter(r => r.external.length === 0);
   const dirty = results.filter(r => r.external.length > 0);
+
+  const scanJsonFlag = args.includes('--json');
+  if (scanJsonFlag) {
+    console.log(JSON.stringify({ scanned: results.length, clean: clean.length, dirty: dirty.length, files: dirty }, null, 2));
+    process.exit(dirty.length > 0 ? 1 : 0);
+  }
 
   console.log(`Self-Containment Scan`);
   console.log('='.repeat(50));
@@ -782,6 +865,7 @@ if (outputIdx !== -1 && args[outputIdx + 1]) {
 }
 
 const compilation = compile(inputPath, outputPath);
+const jsonFlag = args.includes('--json');
 
 if (args.includes('--summary')) {
   const c = compilation;
@@ -839,15 +923,27 @@ if (args.includes('--summary')) {
   }
 
   console.log(`Certificate: ${c.compilation_certificate.input_hash.slice(0, 20)}...`);
+
+  if (jsonFlag) {
+    console.log(JSON.stringify(c, null, 2));
+  }
 }
 
 if (args.includes('--check')) {
   if (compilation.status === 'blocked') {
-    console.error(`Compilation blocked: ${compilation.errors.length} error(s)`);
-    compilation.errors.forEach(e => console.error(`  ${e.code}: ${e.message}`));
+    if (jsonFlag) {
+      console.log(JSON.stringify({ status: 'blocked', errors: compilation.errors }, null, 2));
+    } else {
+      console.error(`Compilation blocked: ${compilation.errors.length} error(s)`);
+      compilation.errors.forEach(e => console.error(`  ${e.code}: ${e.message}`));
+    }
     process.exit(1);
   } else {
-    console.log('Compilation ready.');
+    if (jsonFlag) {
+      console.log(JSON.stringify({ status: 'ready' }, null, 2));
+    } else {
+      console.log('Compilation ready.');
+    }
     process.exit(0);
   }
 }
@@ -868,13 +964,21 @@ if (args.includes('--gate')) {
   }
 
   if (compilation.status === 'blocked') {
-    console.error(`Gate FAILED: ${compilation.errors.length} blocker(s)`);
-    compilation.errors.forEach(e => console.error(`  ${e.code}: ${e.message}`));
+    if (jsonFlag) {
+      console.log(JSON.stringify({ gate: 'failed', errors: compilation.errors }, null, 2));
+    } else {
+      console.error(`Gate FAILED: ${compilation.errors.length} blocker(s)`);
+      compilation.errors.forEach(e => console.error(`  ${e.code}: ${e.message}`));
+    }
     process.exit(1);
   }
 
-  // Print a one-line gate pass for audit
-  console.log(`Gate PASSED: ${compilation.sprint_meta.active_claims} claims, ${Object.keys(compilation.coverage).length} topics, hash ${compilation.claims_hash}`);
+  if (jsonFlag) {
+    console.log(JSON.stringify({ gate: 'passed', active_claims: compilation.sprint_meta.active_claims, topics: Object.keys(compilation.coverage).length, hash: compilation.claims_hash }, null, 2));
+  } else {
+    // Print a one-line gate pass for audit
+    console.log(`Gate PASSED: ${compilation.sprint_meta.active_claims} claims, ${Object.keys(compilation.coverage).length} topics, hash ${compilation.claims_hash}`);
+  }
   process.exit(0);
 }
 

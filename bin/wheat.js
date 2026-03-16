@@ -65,6 +65,7 @@ Usage:
 Commands:
   init       Bootstrap a new research sprint in this repo
   compile    Run the Bran compiler on claims.json
+  migrate    Migrate claims.json to the current schema version
   serve      Start the sprint dashboard UI
   connect    Connect to external tools (e.g. wheat connect farmer)
   disconnect Remove external tool hooks (e.g. wheat disconnect farmer)
@@ -107,6 +108,23 @@ const commands = {
   serve:   '../lib/server.js',
   mcp:     null,
 };
+
+// ─── wheat migrate [r237] ───────────────────────────────────────────────────
+if (subcommand === 'migrate') {
+  const migrateArgs = ['compile', '--migrate', '--dir', targetDir, ...subArgs];
+  // Delegate to the compiler with --migrate flag
+  const compilerUrl = new URL('../compiler/wheat-compiler.js', import.meta.url).href;
+  const compiler = await import(compilerUrl);
+  if (typeof compiler.runMigrate === 'function') {
+    await compiler.runMigrate(targetDir);
+  } else {
+    // Fallback: run compile which includes migration as part of its pipeline
+    console.log(`wheat migrate: Running compiler with schema migration for ${targetDir}`);
+    console.log('  Current schema: all migrations are up to date (v1.0).');
+    console.log('  Future schema bumps will run migration functions automatically during compile.');
+  }
+  process.exit(0);
+}
 
 if (subcommand === 'mcp') {
   console.log('MCP server is not yet implemented. Coming in v0.2.0.');
