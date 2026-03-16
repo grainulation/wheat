@@ -30,8 +30,18 @@ const VERSION = JSON.parse(readFileSync(path.join(__dirname, '..', 'package.json
 
 // ─── Parse arguments ─────────────────────────────────────────────────────────
 
+const verbose = process.argv.includes('--verbose');
+function vlog(...a) {
+  if (!verbose) return;
+  const ts = new Date().toISOString();
+  process.stderr.write(`[${ts}] wheat: ${a.join(' ')}\n`);
+}
+export { vlog, verbose };
+
 const args = process.argv.slice(2);
 const subcommand = args[0];
+
+vlog('startup', `subcommand=${subcommand || '(none)'}`, `cwd=${process.cwd()}`);
 
 // Extract --dir flag (applies to all subcommands)
 let targetDir = process.cwd();
@@ -65,6 +75,7 @@ Commands:
 
 Global options:
   --dir <path>   Target directory (default: current directory)
+  --verbose      Enable verbose logging to stderr
   --version      Show version
   --help         Show this help
 
@@ -121,17 +132,18 @@ Run "wheat connect farmer --help" for options.`);
     });
     process.exit(0);
   }
-  console.error(`Unknown connect target: ${target}\nAvailable: farmer`);
+  console.error(`wheat: unknown connect target: ${target}\nAvailable: farmer`);
   process.exit(1);
 }
 
 if (!commands[subcommand]) {
-  console.error(`Unknown command: ${subcommand}\n`);
+  console.error(`wheat: unknown command: ${subcommand}\n`);
   console.error('Run "wheat --help" for available commands.');
   process.exit(1);
 }
 
 // Load and run the subcommand module
+vlog('dispatch', `loading module for "${subcommand}"`);
 const modulePath = new URL(commands[subcommand], import.meta.url).href;
 const handler = await import(modulePath);
 handler.run(targetDir, subArgs).catch(err => {
