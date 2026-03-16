@@ -67,6 +67,7 @@ Commands:
   compile    Run the Bran compiler on claims.json
   serve      Start the sprint dashboard UI
   connect    Connect to external tools (e.g. wheat connect farmer)
+  disconnect Remove external tool hooks (e.g. wheat disconnect farmer)
   guard      PreToolUse guard hook (used by Claude Code)
   status     Quick sprint status check
   stats      Local sprint statistics (no phone-home)
@@ -75,6 +76,7 @@ Commands:
 
 Global options:
   --dir <path>   Target directory (default: current directory)
+  --json         Output as JSON (machine-readable)
   --verbose      Enable verbose logging to stderr
   --version      Show version
   --help         Show this help
@@ -133,6 +135,31 @@ Run "wheat connect farmer --help" for options.`);
     process.exit(0);
   }
   console.error(`wheat: unknown connect target: ${target}\nAvailable: farmer`);
+  process.exit(1);
+}
+
+// Handle "wheat disconnect <target>" as a compound subcommand
+if (subcommand === 'disconnect') {
+  const target = subArgs[0];
+  if (!target || target === '--help' || target === '-h') {
+    console.log(`wheat disconnect — Remove external tool hooks
+
+Usage:
+  wheat disconnect farmer [options]   Remove Farmer hooks from settings
+
+Run "wheat disconnect farmer --help" for options.`);
+    process.exit(0);
+  }
+  if (target === 'farmer') {
+    const disconnectModule = await import(new URL('../lib/disconnect.js', import.meta.url).href);
+    await disconnectModule.run(targetDir, subArgs.slice(1)).catch(err => {
+      console.error(`\nwheat disconnect farmer failed:`, err.message);
+      if (process.env.WHEAT_DEBUG) console.error(err.stack);
+      process.exit(1);
+    });
+    process.exit(0);
+  }
+  console.error(`wheat: unknown disconnect target: ${target}\nAvailable: farmer`);
   process.exit(1);
 }
 
