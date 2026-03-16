@@ -1,6 +1,6 @@
 {
   "name": "@grainulation/wheat",
-  "version": "0.9.0-beta.1",
+  "version": "1.0.0",
   "description": "Research-driven development framework — structured claims, compiled evidence, deterministic output",
   "license": "MIT",
   "author": "grainulation contributors",
@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://github.com/grainulation/wheat"
   },
-  "homepage": "https://github.com/grainulation/wheat#readme",
+  "homepage": "https://wheat.grainulation.com",
   "bugs": {
     "url": "https://github.com/grainulation/wheat/issues"
   },
@@ -24,8 +24,17 @@
     "developer-research",
     "technical-decision-making"
   ],
+  "type": "module",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./compiler": "./lib/compiler.js",
+    "./server": "./lib/server.js",
+    "./guard": "./lib/guard.js",
+    "./connect": "./lib/connect.js"
+  },
   "bin": {
-    "wheat": "bin/wheat.js"
+    "wheat": "./bin/wheat.js"
   },
   "files": [
     "bin/",
@@ -37,7 +46,6 @@
   "scripts": {
     "test": "node --test test/"
   },
-  "type": "module",
   "engines": {
     "node": ">=18"
   }
