@@ -75,7 +75,7 @@ Commands:
   status     Quick sprint status check
   stats      Local sprint statistics (no phone-home)
   update     Copy/update slash commands to .claude/commands/
-  mcp        Start MCP server (coming soon)
+  mcp        Start MCP server
 
 Global options:
   --dir <path>   Target directory (default: current directory)
@@ -117,7 +117,7 @@ const commands = {
   stats:   '../lib/stats.js',
   update:  '../lib/update.js',
   serve:   '../lib/server.js',
-  mcp:     null,
+  mcp:     '../lib/serve-mcp.js',
 };
 
 // ─── wheat migrate [r237] ───────────────────────────────────────────────────
@@ -137,10 +137,6 @@ if (subcommand === 'migrate') {
   process.exit(0);
 }
 
-if (subcommand === 'mcp') {
-  console.log('MCP server is not yet implemented. Coming in v0.2.0.');
-  process.exit(0);
-}
 
 // Handle "wheat connect <target>" as a compound subcommand
 if (subcommand === 'connect') {

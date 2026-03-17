@@ -6,7 +6,7 @@
   "author": "grainulation contributors",
   "repository": {
     "type": "git",
-    "url": "https://github.com/grainulation/wheat"
+    "url": "git+https://github.com/grainulation/wheat.git"
   },
   "homepage": "https://wheat.grainulation.com",
   "bugs": {
@@ -31,10 +31,11 @@
     "./compiler": "./lib/compiler.js",
     "./server": "./lib/server.js",
     "./guard": "./lib/guard.js",
-    "./connect": "./lib/connect.js"
+    "./connect": "./lib/connect.js",
+    "./mcp": "./lib/serve-mcp.js"
   },
   "bin": {
-    "wheat": "./bin/wheat.js"
+    "wheat": "bin/wheat.js"
   },
   "files": [
     "bin/",
