@@ -973,11 +973,13 @@ function connectSSE() {
     hideBanner();
     document.getElementById('connection-dot').classList.remove('disconnected');
     document.getElementById('connection-dot').title = 'Connected';
+    if (window._grainSetState) window._grainSetState('idle');
   };
   es.onerror = function() {
     es.close();
     document.getElementById('connection-dot').classList.add('disconnected');
     document.getElementById('connection-dot').title = 'Disconnected - retrying...';
+    if (window._grainSetState) window._grainSetState('orbit');
     var delay = Math.min(30000, 1000 * Math.pow(2, retryCount)) + Math.random() * 1000;
     retryCount++;
     showBanner(retryCount);
