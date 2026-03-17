@@ -1,8 +1,12 @@
-# @grainulation/wheat
+<p align="center">
+  <img src="site/wordmark.svg" alt="Wheat" width="400">
+</p>
 
-[![npm version](https://img.shields.io/npm/v/@grainulation/wheat)](https://www.npmjs.com/package/@grainulation/wheat) [![npm downloads](https://img.shields.io/npm/dm/@grainulation/wheat)](https://www.npmjs.com/package/@grainulation/wheat) [![license](https://img.shields.io/npm/l/@grainulation/wheat)](https://github.com/grainulation/wheat/blob/main/LICENSE) [![node](https://img.shields.io/node/v/@grainulation/wheat)](https://nodejs.org) [![CI](https://github.com/grainulation/wheat/actions/workflows/ci.yml/badge.svg)](https://github.com/grainulation/wheat/actions)
+<p align="center">
+  <a href="https://www.npmjs.com/package/@grainulation/wheat"><img src="https://img.shields.io/npm/v/@grainulation/wheat" alt="npm version"></a> <a href="https://www.npmjs.com/package/@grainulation/wheat"><img src="https://img.shields.io/npm/dm/@grainulation/wheat" alt="npm downloads"></a> <a href="https://github.com/grainulation/wheat/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/@grainulation/wheat" alt="license"></a> <a href="https://nodejs.org"><img src="https://img.shields.io/node/v/@grainulation/wheat" alt="node"></a> <a href="https://github.com/grainulation/wheat/actions"><img src="https://github.com/grainulation/wheat/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+</p>
 
-**The structured research engine for AI-assisted decisions.**
+<p align="center"><strong>The structured research engine for AI-assisted decisions.</strong></p>
 
 You're about to mass-migrate 200 microservices. Slow down.
 
