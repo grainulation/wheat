@@ -11,6 +11,7 @@
  *   wheat status                  Quick sprint status
  *   wheat stats                   Local sprint statistics (no phone-home)
  *   wheat update                  Update slash commands in .claude/commands/
+ *   wheat mcp                     Start MCP server (future)
  *
  * All operations resolve paths relative to --dir or process.cwd().
  * The package ships framework code; sprint data stays in YOUR repo.
@@ -74,6 +75,7 @@ Commands:
   status     Quick sprint status check
   stats      Local sprint statistics (no phone-home)
   update     Copy/update slash commands to .claude/commands/
+  mcp        Start MCP server (coming soon)
 
 Global options:
   --dir <path>   Target directory (default: current directory)
@@ -115,6 +117,7 @@ const commands = {
   stats:   '../lib/stats.js',
   update:  '../lib/update.js',
   serve:   '../lib/server.js',
+  mcp:     null,
 };
 
 // ─── wheat migrate [r237] ───────────────────────────────────────────────────
@@ -131,6 +134,11 @@ if (subcommand === 'migrate') {
     console.log('  Current schema: all migrations are up to date (v1.0).');
     console.log('  Future schema bumps will run migration functions automatically during compile.');
   }
+  process.exit(0);
+}
+
+if (subcommand === 'mcp') {
+  console.log('MCP server is not yet implemented. Coming in v0.2.0.');
   process.exit(0);
 }
 
