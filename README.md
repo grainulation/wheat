@@ -16,15 +16,21 @@ The process is intentionally slow. You gather evidence from multiple sources. Yo
 
 If that sounds like a lot of work: it is. That's the point. The work happens before you commit a team to six months of migration, not after.
 
-## Quick start
+## See it in 30 seconds
+
+```bash
+npx @grainulation/wheat quickstart
+```
+
+Creates a demo sprint with pre-seeded claims, an intentional conflict, compiles everything, and opens a dashboard. You'll see the compiler flag the conflict and block output until it's resolved.
+
+## Start a real sprint
 
 ```bash
 npx @grainulation/wheat init
 ```
 
-Wheat asks you a few questions in a conversational flow -- what you're investigating, who needs the answer, what constraints you're working under. No config wizard, just a conversation.
-
-Then it sets up the sprint in your repo:
+Wheat asks a few questions -- what you're investigating, who needs the answer, what constraints exist. Then it sets up the sprint in your repo:
 
 ```
 claims.json          # Your evidence database
@@ -77,18 +83,6 @@ npx @grainulation/wheat compile --summary
 
 No dependencies are added to your project. No `node_modules` pollution. Wheat is a tool you run, not a library you import.
 
-## Without npm
-
-If your team doesn't use Node:
-
-```bash
-# macOS
-brew install grainulation/tap/wheat
-
-# Or download directly
-curl -fsSL https://get.grainulation.dev/wheat | sh
-```
-
 ## Guard rails
 
 Wheat installs two guard mechanisms:
@@ -129,7 +123,7 @@ Both are optional and can be removed. But they exist because the most dangerous 
 
 Wheat runs on macOS, Linux, and Windows. All path handling uses `path.join`/`path.sep` internally, and git commands are invoked via `execFileSync` (no shell). The pre-commit hook requires Git Bash on Windows (bundled with Git for Windows).
 
-The `brew` and `curl | sh` install methods are Unix-only. On Windows, use `npx @grainulation/wheat` directly -- Node 18+ is the only requirement.
+On Windows, use `npx @grainulation/wheat` directly -- Node 18+ is the only requirement.
 
 ## Contributing
 
