@@ -108,17 +108,20 @@ function findSprintRoots() {
     roots.push({ claimsPath: rootClaims, sprintPath: '.' });
   }
 
-  // 2. examples/<name>/claims.json (archived/example sprints)
-  const examplesDir = path.join(ROOT, 'examples');
-  if (fs.existsSync(examplesDir)) {
+  // 2. Scan known subdirectories for sprint claims.json files
+  //    Root claims.json should NOT prevent scanning subdirs
+  const scanDirs = ['examples', 'sprints', 'archive'];
+  for (const dirName of scanDirs) {
+    const dir = path.join(ROOT, dirName);
+    if (!fs.existsSync(dir)) continue;
     try {
-      for (const entry of fs.readdirSync(examplesDir, { withFileTypes: true })) {
+      for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
         if (!entry.isDirectory()) continue;
-        const claimsPath = path.join(examplesDir, entry.name, 'claims.json');
+        const claimsPath = path.join(dir, entry.name, 'claims.json');
         if (fs.existsSync(claimsPath)) {
           roots.push({
             claimsPath,
-            sprintPath: path.join('examples', entry.name),
+            sprintPath: path.join(dirName, entry.name),
           });
         }
       }
@@ -267,8 +270,11 @@ Based on f001: config should not duplicate git-derivable state.`);
     process.exit(0);
   }
 
+  const rootIdx = args.indexOf('--root');
+  const rootArg = (rootIdx !== -1 && args[rootIdx + 1]) ? path.resolve(args[rootIdx + 1]) : undefined;
+
   const t0 = performance.now();
-  const result = detectSprints();
+  const result = detectSprints(rootArg);
   const elapsed = (performance.now() - t0).toFixed(1);
 
   if (args.includes('--json')) {
