@@ -198,7 +198,7 @@ footer p{margin-bottom:6px}
 
 .qs-code,.qs-output,.term-block,.ex-output{max-width:100%;overflow-x:auto;word-break:break-all}
 
-@media(max-width:720px){nav{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(10,14,26,.98)}.copy-btn{backdrop-filter:none;-webkit-backdrop-filter:none}.bg-ambient .orb{animation:none;filter:blur(80px);opacity:.025}.rv{transition-duration:.25s;transform:translateY(12px)}
+@media(max-width:720px){nav{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(10,14,26,.98)}.copy-btn{backdrop-filter:none;-webkit-backdrop-filter:none}.bg-ambient{display:none}.rv{opacity:1;transform:none;transition:none}.rv.vis{opacity:1;transform:none}.hf{opacity:1;transform:none;animation:none}
   .qs-steps,.features-grid,.eco-grid{grid-template-columns:1fr}
   .hero{padding:80px 0 60px}
   .hero h1{font-size:2rem}
@@ -603,7 +603,7 @@ function copyText(btn, text) {
   var LINE_PAUSE = 150;
   var OUTPUT_STAGGER = 80;
   var STEP_PAUSE = 300;
-  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.innerWidth <= 720;
 
   var timeline = document.querySelector('.example-timeline');
   if (!timeline) return;
