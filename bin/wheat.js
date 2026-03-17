@@ -44,9 +44,9 @@ const subcommand = args[0];
 
 vlog('startup', `subcommand=${subcommand || '(none)'}`, `cwd=${process.cwd()}`);
 
-// Extract --dir flag (applies to all subcommands)
+// Extract --dir or --root flag (applies to all subcommands)
 let targetDir = process.cwd();
-const dirIdx = args.indexOf('--dir');
+const dirIdx = args.indexOf('--dir') !== -1 ? args.indexOf('--dir') : args.indexOf('--root');
 if (dirIdx !== -1 && args[dirIdx + 1]) {
   targetDir = path.resolve(args[dirIdx + 1]);
   args.splice(dirIdx, 2);
