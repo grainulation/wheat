@@ -11,7 +11,7 @@
  *   wheat status                  Quick sprint status
  *   wheat stats                   Local sprint statistics (no phone-home)
  *   wheat update                  Update slash commands in .claude/commands/
- *   wheat mcp                     Start MCP server (future)
+ *   wheat mcp                     Start MCP server
  *
  * All operations resolve paths relative to --dir or process.cwd().
  * The package ships framework code; sprint data stays in YOUR repo.
@@ -67,7 +67,6 @@ Commands:
   init       Bootstrap a new research sprint in this repo
   quickstart Zero-to-dashboard demo sprint (under 90 seconds)
   compile    Run the Bran compiler on claims.json
-  migrate    Migrate claims.json to the current schema version
   serve      Start the sprint dashboard UI
   connect    Connect to external tools (e.g. wheat connect farmer)
   disconnect Remove external tool hooks (e.g. wheat disconnect farmer)
@@ -120,21 +119,10 @@ const commands = {
   mcp:     '../lib/serve-mcp.js',
 };
 
-// ─── wheat migrate [r237] ───────────────────────────────────────────────────
+// ─── wheat migrate (not yet implemented) ────────────────────────────────────
 if (subcommand === 'migrate') {
-  const migrateArgs = ['compile', '--migrate', '--dir', targetDir, ...subArgs];
-  // Delegate to the compiler with --migrate flag
-  const compilerUrl = new URL('../compiler/wheat-compiler.js', import.meta.url).href;
-  const compiler = await import(compilerUrl);
-  if (typeof compiler.runMigrate === 'function') {
-    await compiler.runMigrate(targetDir);
-  } else {
-    // Fallback: run compile which includes migration as part of its pipeline
-    console.log(`wheat migrate: Running compiler with schema migration for ${targetDir}`);
-    console.log('  Current schema: all migrations are up to date (v1.0).');
-    console.log('  Future schema bumps will run migration functions automatically during compile.');
-  }
-  process.exit(0);
+  console.error('wheat migrate is not yet available');
+  process.exit(1);
 }
 
 
