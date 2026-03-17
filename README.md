@@ -1,20 +1,22 @@
-# wheat
+# @grainulation/wheat
 
-**You're about to mass-migrate 200 microservices. Slow down.**
+[![npm version](https://img.shields.io/npm/v/@grainulation/wheat)](https://www.npmjs.com/package/@grainulation/wheat) [![npm downloads](https://img.shields.io/npm/dm/@grainulation/wheat)](https://www.npmjs.com/package/@grainulation/wheat) [![license](https://img.shields.io/npm/l/@grainulation/wheat)](https://github.com/grainulation/wheat/blob/main/LICENSE) [![node](https://img.shields.io/node/v/@grainulation/wheat)](https://nodejs.org) [![CI](https://github.com/grainulation/wheat/actions/workflows/ci.yml/badge.svg)](https://github.com/grainulation/wheat/actions)
+
+**The structured research engine for AI-assisted decisions.**
+
+You're about to mass-migrate 200 microservices. Slow down.
 
 The migration will take months. It will cost real money. And right now, the decision to move is based on a Slack thread, a blog post, and a gut feeling from someone who left the company.
 
 Wheat exists because the most expensive engineering decisions are made with the least structured evidence. Not because people are careless -- because there's no tool that makes structured investigation feel natural.
 
-## The idea
+## Install
 
-Wheat is a research sprint framework. You point it at a question -- "Should we migrate to Postgres?", "Is this architecture going to scale?", "Which vendor should we pick?" -- and it helps you build an evidence base before you commit.
+```bash
+npx @grainulation/wheat init
+```
 
-Every finding becomes a typed, evidence-graded claim. A constraint from your VP is different from a benchmark you ran, and wheat tracks the difference. When two findings contradict each other, the compiler catches it. When you try to ship a recommendation backed by nothing but blog posts, it warns you.
-
-The process is intentionally slow. You gather evidence from multiple sources. You grade how much you trust each piece. You challenge your own assumptions. Then -- and only then -- you compile it into a recommendation you can defend.
-
-If that sounds like a lot of work: it is. That's the point. The work happens before you commit a team to six months of migration, not after.
+No dependencies are added to your project. No `node_modules` pollution. Wheat is a tool you run, not a library you import.
 
 ## See it in 30 seconds
 
@@ -62,35 +64,9 @@ You investigate  -->  Claims accumulate  -->  Compiler validates  -->  Artifacts
 
 **Claim types:** constraint, factual, estimate, risk, recommendation, feedback
 
-**Evidence tiers:** stated -> web -> documented -> tested -> production
+**Evidence tiers:** stated > web > documented > tested > production
 
 The compiler catches conflicts, warns about weak evidence, and blocks output when issues exist. You cannot ship a brief built on unresolved contradictions.
-
-## Works in any repo
-
-Wheat doesn't care what language you use. It runs via npx and stores sprint data in your repo. Your Scala project, your Python monorepo, your Flutter app -- wheat works the same everywhere.
-
-```bash
-# In a Scala repo
-npx @grainulation/wheat init
-
-# In a Python repo
-npx @grainulation/wheat init
-
-# Compiles anywhere Node 18+ is available
-npx @grainulation/wheat compile --summary
-```
-
-No dependencies are added to your project. No `node_modules` pollution. Wheat is a tool you run, not a library you import.
-
-## Guard rails
-
-Wheat installs two guard mechanisms:
-
-1. **Git pre-commit hook** -- prevents committing broken `claims.json`
-2. **Claude Code guard hook** -- prevents generating output artifacts from stale or blocked compilations
-
-Both are optional and can be removed. But they exist because the most dangerous moment in a research sprint is when you skip the process.
 
 ## Commands
 
@@ -113,23 +89,35 @@ Both are optional and can be removed. But they exist because the most dangerous 
 | `/merge <path>` | Combine findings across sprints |
 | `/connect <type>` | Link external tools (Jira, docs, etc.) |
 
-## Documentation
+## Guard rails
 
-- **[Concepts](docs/concepts.md)** -- claims, phases, evidence tiers, the compiler
-- **[Commands](docs/commands.md)** -- every slash command with usage examples
-- **[FAQ](docs/faq.md)** -- setup, data, usage, and troubleshooting
+Wheat installs two guard mechanisms:
 
-## Platform support
+1. **Git pre-commit hook** -- prevents committing broken `claims.json`
+2. **Claude Code guard hook** -- prevents generating output artifacts from stale or blocked compilations
 
-Wheat runs on macOS, Linux, and Windows. All path handling uses `path.join`/`path.sep` internally, and git commands are invoked via `execFileSync` (no shell). The pre-commit hook requires Git Bash on Windows (bundled with Git for Windows).
+Both are optional and can be removed.
 
-On Windows, use `npx @grainulation/wheat` directly -- Node 18+ is the only requirement.
+## Works in any repo
 
-## Contributing
+Wheat doesn't care what language you use. Your Scala project, your Python monorepo, your Flutter app -- wheat works the same everywhere. Node 18+ is the only requirement.
 
-We'd love your help. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+## Zero dependencies
 
-Good first issues are labeled [`good first issue`](https://github.com/grainulation/wheat/labels/good%20first%20issue).
+Node built-in modules only. No npm install waterfall. No supply chain anxiety.
+
+## Part of the grainulation ecosystem
+
+| Tool | Role |
+|------|------|
+| **wheat** | Research engine -- grow structured evidence |
+| [farmer](https://github.com/grainulation/farmer) | Permission dashboard -- approve AI actions in real time |
+| [barn](https://github.com/grainulation/barn) | Shared tools -- templates, validators, sprint detection |
+| [mill](https://github.com/grainulation/mill) | Format conversion -- export to PDF, CSV, slides, 24 formats |
+| [silo](https://github.com/grainulation/silo) | Knowledge storage -- reusable claim libraries and packs |
+| [harvest](https://github.com/grainulation/harvest) | Analytics -- cross-sprint patterns and prediction scoring |
+| [orchard](https://github.com/grainulation/orchard) | Orchestration -- multi-sprint coordination and dependencies |
+| [grainulation](https://github.com/grainulation/grainulation) | Unified CLI -- single entry point to the ecosystem |
 
 ## License
 
