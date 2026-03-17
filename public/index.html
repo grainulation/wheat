@@ -970,7 +970,6 @@ function connectSSE() {
   };
   es.onopen = function() {
     retryCount = 0;
-    hideBanner();
     document.getElementById('connection-dot').classList.remove('disconnected');
     document.getElementById('connection-dot').title = 'Connected';
     if (window._grainSetState) window._grainSetState('idle');
@@ -982,7 +981,6 @@ function connectSSE() {
     if (window._grainSetState) window._grainSetState('orbit');
     var delay = Math.min(30000, 1000 * Math.pow(2, retryCount)) + Math.random() * 1000;
     retryCount++;
-    showBanner(retryCount);
     setTimeout(connectSSE, delay);
   };
 }
