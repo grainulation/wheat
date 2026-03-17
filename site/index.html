@@ -3,9 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
 <title>wheat — Structured research sprints for decisions that matter</title>
 <meta name="description" content="Turn technical questions into evidence-graded decisions. A structured research framework that runs inside Claude Code. No more winging it.">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Grainulation">
+<meta property="og:locale" content="en_US">
 <meta property="og:title" content="wheat — Structured research sprints for decisions that matter">
 <meta property="og:description" content="Turn technical questions into evidence-graded decisions. A structured research framework that runs inside Claude Code. No more winging it.">
 <meta property="og:url" content="https://wheat.grainulation.com/">
@@ -203,7 +206,7 @@ footer p{margin-bottom:6px}
   .container{padding:0 16px}
   section,.what-is,.quickstart,.features,.faq,.ecosystem,.example{padding:40px 0}.hero{padding:48px 0 32px}
   .what-box{padding:28px 20px}
-  .faq-item{padding:24px 20px}
+  .faq-q{padding:18px 20px}
   .ex-body .ex-output{font-size:.7rem;padding:10px 12px}
   .qs-step{padding:20px 16px}
   .copy-btn{display:none !important}
@@ -227,6 +230,9 @@ footer p{margin-bottom:6px}
 .nav-links a{min-height:44px;display:inline-flex;align-items:center}
 </style>
 <meta name="theme-color" content="#fbbf24">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"@grainulation/wheat","description":"Structured research sprints that turn technical questions into evidence-graded decisions. Claims, compilation, and coverage in one CLI.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"Grainulation","url":"https://grainulation.com"},"license":"https://opensource.org/licenses/MIT"}
+</script>
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to main content</a>
@@ -510,22 +516,41 @@ vs. 40-60%). The caching gap (r003) needs a solution first.
 <section class="faq" id="faq">
   <div class="container">
     <div class="section-label rv" style="text-align:center">Frequently asked questions</div>
-    <div class="faq-grid">
+    <div class="faq-list">
       <div class="faq-item rv rv-d1">
-        <h3>Do I need Node.js?</h3>
-        <p>Yes, Node 18 or later. But your project can use any language or framework — <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> works in any repo regardless of stack.</p>
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          Do I need Node.js?
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-a">
+          <p>Yes, Node 18 or later. But your project can use any language or framework — <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> works in any repo regardless of stack.</p>
+        </div>
       </div>
       <div class="faq-item rv rv-d2">
-        <h3>Does this require Claude Code?</h3>
-        <p>Yes. <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> runs as a set of slash commands inside Claude Code. It uses Claude's ability to read your codebase, search the web, and reason about evidence.</p>
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          Does this require Claude Code?
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-a">
+          <p>Yes. <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> runs as a set of slash commands inside Claude Code. It uses Claude's ability to read your codebase, search the web, and reason about evidence.</p>
+        </div>
       </div>
       <div class="faq-item rv rv-d3">
-        <h3>How does this compare to just asking Claude a question?</h3>
-        <p>Asking Claude gives you one answer. <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> gives you a structured research process — multiple rounds of evidence gathering, adversarial challenge, prototype validation, and conflict resolution. The output is an auditable decision brief, not a chat message.</p>
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          How does this compare to just asking Claude a question?
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-a">
+          <p>Asking Claude gives you one answer. <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> gives you a structured research process — multiple rounds of evidence gathering, adversarial challenge, prototype validation, and conflict resolution. The output is an auditable decision brief, not a chat message.</p>
+        </div>
       </div>
       <div class="faq-item rv rv-d4">
-        <h3>How long does a sprint take?</h3>
-        <p>A simple sprint can be done in 10-15 minutes. Complex questions with prototyping and multiple rounds of challenge might take an hour or spread across a few sessions. When running parallel sprints, <strong style="color:#fff;font-size:110%"><span style="color:#d4a574">o</span>rchard</strong> tracks dependencies between them.</p>
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          How long does a sprint take?
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-a">
+          <p>A simple sprint can be done in 10-15 minutes. Complex questions with prototyping and multiple rounds of challenge might take an hour or spread across a few sessions. When running parallel sprints, <strong style="color:#fff;font-size:110%"><span style="color:#d4a574">o</span>rchard</strong> tracks dependencies between them.</p>
       </div>
     </div>
   </div>
