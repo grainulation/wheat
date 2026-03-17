@@ -8,13 +8,13 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="wheat — Structured research sprints for decisions that matter">
 <meta property="og:description" content="Turn technical questions into evidence-graded decisions. A structured research framework that runs inside Claude Code. No more winging it.">
-<meta property="og:url" content="https://grainulation.github.io/wheat/">
-<meta property="og:image" content="https://grainulation.github.io/wheat/og-image.svg">
+<meta property="og:url" content="https://wheat.grainulation.com/">
+<meta property="og:image" content="https://wheat.grainulation.com/og-image.svg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="wheat — Structured research sprints for decisions that matter">
 <meta name="twitter:description" content="Turn technical questions into evidence-graded decisions. A structured research framework that runs inside Claude Code.">
-<meta name="twitter:image" content="https://grainulation.github.io/wheat/og-image.svg">
-<link rel="canonical" href="https://grainulation.github.io/wheat/">
+<meta name="twitter:image" content="https://wheat.grainulation.com/og-image.svg">
+<link rel="canonical" href="https://wheat.grainulation.com/">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text x='32' y='33' text-anchor='middle' dominant-baseline='central' fill='%23fbbf24' font-family='-apple-system,system-ui,sans-serif' font-size='48' font-weight='700'>W</text></svg>">
 <style>
 :root {
@@ -162,10 +162,15 @@ nav .container{display:flex;align-items:center;justify-content:space-between}
 
 /* FAQ */
 .faq{padding:80px 0}
-.faq-grid{display:grid;gap:16px;max-width:720px;margin:0 auto}
-.faq-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px 28px}
-.faq-item h3{font-size:.9375rem;font-weight:700;margin-bottom:12px;color:var(--text)}
-.faq-item p{font-size:.875rem;color:var(--text-2);line-height:1.6}
+.faq-list{max-width:700px;margin:0 auto}
+.faq-item{border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.faq-q{padding:20px 24px;font-weight:700;font-size:.9375rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--surface);transition:background .2s;user-select:none}
+.faq-q:hover{background:var(--surface-hover)}
+.faq-q svg{flex-shrink:0;transition:transform .25s var(--ease);color:var(--text-3)}
+.faq-item.open .faq-q svg{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s var(--ease),padding .35s var(--ease)}
+.faq-item.open .faq-a{max-height:300px;padding:12px 24px 20px}
+.faq-a p{color:var(--text-2);font-size:.875rem;line-height:1.65}
 
 /* Ecosystem */
 .ecosystem{padding:80px 0}
@@ -221,6 +226,7 @@ footer p{margin-bottom:6px}
 .copy-btn{min-width:44px;min-height:24px;display:inline-flex;align-items:center;justify-content:center}
 .nav-links a{min-height:44px;display:inline-flex;align-items:center}
 </style>
+<meta name="theme-color" content="#fbbf24">
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to main content</a>
@@ -231,7 +237,7 @@ footer p{margin-bottom:6px}
 
 <nav aria-label="Main navigation">
   <div class="container">
-    <a href="#" class="nav-logo"><svg width="92" height="48" viewBox="0 0 73 38" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle"><path d="M22,6 L15.5,6 C9.5,11.5 9.5,26.5 15.5,32 L22,32" stroke="#fbbf24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><text x="24" y="19" text-anchor="middle" dominant-baseline="central" fill="#fbbf24" font-family="-apple-system,system-ui,sans-serif" font-size="18.2" font-weight="800">W</text><text x="32.5" y="19" dominant-baseline="central" fill="#e8ecf1" font-family="-apple-system,system-ui,sans-serif" font-size="18.2" font-weight="800">heat</text></svg></a>
+    <a href="#" class="nav-logo"><svg width="92" height="48" viewBox="0 0 73 38" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;position:relative;top:-4px"><path d="M22,6 L15.5,6 C9.5,11.5 9.5,26.5 15.5,32 L22,32" stroke="#fbbf24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><text x="24" y="19" text-anchor="middle" dominant-baseline="central" fill="#fbbf24" font-family="-apple-system,system-ui,sans-serif" font-size="18.2" font-weight="800">W</text><text x="32.5" y="19" dominant-baseline="central" fill="#e8ecf1" font-family="-apple-system,system-ui,sans-serif" font-size="18.2" font-weight="800">heat</text></svg></a>
     <div class="nav-links">
       <a href="#what">About</a>
       <a href="#quickstart">Quick Start</a>
@@ -249,7 +255,7 @@ footer p{margin-bottom:6px}
     <p class="hf hf3" style="font-size:.8125rem;color:var(--text-3);margin-bottom:32px">Requires <a href="https://docs.anthropic.com/en/docs/claude-code" style="color:var(--text-3);text-decoration:underline">Claude Code</a> and Node.js 18+.</p>
     <div class="hero-actions hf hf4">
       <a href="#quickstart" class="btn btn-primary">
-        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;position:relative;top:-4px"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
         Get started
       </a>
       <a href="#example" class="btn btn-ghost">See a full sprint</a>
@@ -533,21 +539,21 @@ vs. 40-60%). The caching gap (r003) needs a solution first.
     <h2 class="section-title rv rv-d1">The ecosystem</h2>
     <p class="section-sub rv rv-d2" style="margin-left:auto;margin-right:auto"><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> is the core research engine. Add tools as you need them.</p>
     <div class="eco-grid rv rv-d3">
-      <a href="https://grainulation.github.io/wheat/" class="eco-chip current"><span class="eco-dot" style="background:#fbbf24"></span><span class="eco-name"><span style="color:#fbbf24">w</span>heat</span> research sprints</a>
-      <a href="https://grainulation.github.io/farmer/" class="eco-chip"><span class="eco-dot" style="background:#3b82f6"></span><span class="eco-name"><span style="color:#3b82f6">f</span>armer</span> permissions</a>
-      <a href="https://grainulation.github.io/barn/" class="eco-chip"><span class="eco-dot" style="background:#e11d48"></span><span class="eco-name"><span style="color:#e11d48">b</span>arn</span> shared tools</a>
-      <a href="https://grainulation.github.io/mill/" class="eco-chip"><span class="eco-dot" style="background:#a78bfa"></span><span class="eco-name"><span style="color:#a78bfa">m</span>ill</span> export</a>
-      <a href="https://grainulation.github.io/silo/" class="eco-chip"><span class="eco-dot" style="background:#6ee7b7"></span><span class="eco-name"><span style="color:#6ee7b7">s</span>ilo</span> knowledge packs</a>
-      <a href="https://grainulation.github.io/harvest/" class="eco-chip"><span class="eco-dot" style="background:#fb923c"></span><span class="eco-name"><span style="color:#fb923c">h</span>arvest</span> analytics</a>
-      <a href="https://grainulation.github.io/orchard/" class="eco-chip"><span class="eco-dot" style="background:#d4a574"></span><span class="eco-name"><span style="color:#d4a574">o</span>rchard</span> orchestration</a>
-      <a href="https://grainulation.github.io/grainulation/" class="eco-chip"><span class="eco-dot" style="background:#9ca3af"></span><span class="eco-name"><span style="color:#9ca3af">gr</span>ainulation</span> ecosystem</a>
+      <a href="https://wheat.grainulation.com/" class="eco-chip current"><span class="eco-dot" style="background:#fbbf24"></span><span class="eco-name"><span style="color:#fbbf24">w</span>heat</span> research sprints</a>
+      <a href="https://farmer.grainulation.com/" class="eco-chip"><span class="eco-dot" style="background:#3b82f6"></span><span class="eco-name"><span style="color:#3b82f6">f</span>armer</span> permissions</a>
+      <a href="https://barn.grainulation.com/" class="eco-chip"><span class="eco-dot" style="background:#e11d48"></span><span class="eco-name"><span style="color:#e11d48">b</span>arn</span> shared tools</a>
+      <a href="https://mill.grainulation.com/" class="eco-chip"><span class="eco-dot" style="background:#a78bfa"></span><span class="eco-name"><span style="color:#a78bfa">m</span>ill</span> export</a>
+      <a href="https://silo.grainulation.com/" class="eco-chip"><span class="eco-dot" style="background:#6ee7b7"></span><span class="eco-name"><span style="color:#6ee7b7">s</span>ilo</span> knowledge packs</a>
+      <a href="https://harvest.grainulation.com/" class="eco-chip"><span class="eco-dot" style="background:#fb923c"></span><span class="eco-name"><span style="color:#fb923c">h</span>arvest</span> analytics</a>
+      <a href="https://orchard.grainulation.com/" class="eco-chip"><span class="eco-dot" style="background:#d4a574"></span><span class="eco-name"><span style="color:#d4a574">o</span>rchard</span> orchestration</a>
+      <a href="https://grainulation.com/" class="eco-chip"><span class="eco-dot" style="background:#9ca3af"></span><span class="eco-name"><span style="color:#9ca3af">gr</span>ainulation</span> ecosystem</a>
     </div>
   </div>
 </section>
 
 </main>
 
-<footer><div class="container"><div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap"><a href="https://github.com/grainulation/wheat">GitHub</a><span style="color:var(--border-light)">·</span><a href="https://grainulation.github.io/grainulation/" style="text-decoration:none"><svg width="83" height="28" viewBox="0 0 140 38" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle"><path d="M22,6 L15.5,6 C9.5,11.5 9.5,26.5 15.5,32 L22,32" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><text x="23" y="19" text-anchor="middle" dominant-baseline="central" fill="#9ca3af" font-family="-apple-system,system-ui,sans-serif" font-size="18.2" font-weight="800">G</text><text x="29.5" y="19" dominant-baseline="central" fill="#e8ecf1" font-family="-apple-system,system-ui,sans-serif" font-size="18.2" font-weight="800">rainulation</text></svg></a><span style="color:var(--border-light)">·</span><a href="https://github.com/grainulation/wheat#readme">Docs</a></div></div></footer>
+<footer><div class="container"><div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap"><a href="https://github.com/grainulation/wheat">GitHub</a><a href="https://grainulation.com/" style="text-decoration:none;display:inline-flex;align-items:center"><svg width="120" height="40" viewBox="0 0 140 38" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;"><path d="M22,6 L15.5,6 C9.5,11.5 9.5,26.5 15.5,32 L22,32" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><text x="23" y="19" text-anchor="middle" dominant-baseline="central" fill="#9ca3af" font-family="-apple-system,system-ui,sans-serif" font-size="18.2" font-weight="800">G</text><text x="29.5" y="19" dominant-baseline="central" fill="#e8ecf1" font-family="-apple-system,system-ui,sans-serif" font-size="18.2" font-weight="800">rainulation</text></svg></a><a href="https://github.com/grainulation/wheat#readme">Docs</a></div></div></footer>
 
 </div>
 
