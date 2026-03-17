@@ -34,7 +34,7 @@ jobs:
           fi
 
       - name: Run integration tests
-        run: node --test test/
+        run: npm test
 
       - name: Compiler self-check
         run: |
