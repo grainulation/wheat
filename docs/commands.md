@@ -180,6 +180,26 @@ Combine findings from another sprint. Merges claims with prefixed IDs to avoid c
 
 Claims produced: `<sprint-slug>-<prefix>###` (merged claims keep original type)
 
+### `/evaluate`
+
+Test claims against reality and resolve conflicts. Combines evidence checking with conflict resolution.
+
+```
+/evaluate
+```
+
+Claims produced: `e###` (factual, risk)
+
+### `/next`
+
+Route next steps through Farmer. After a slash command completes, presents a summary and 2-4 suggested actions via AskUserQuestion so the user can respond from their phone.
+
+```
+/next
+```
+
+Claims produced: none (notification only)
+
 ## Command Patterns
 
 Every command that modifies claims follows this sequence:

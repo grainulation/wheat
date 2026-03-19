@@ -4,22 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
-<title>Wheat — Structured Research Sprints for Decisions That Matter</title>
-<meta name="description" content="Turn technical questions into evidence-graded decisions. A structured research framework that runs inside Claude Code. No more winging it.">
+<title>Wheat — Technical Decision Framework for Claude Code</title>
+<meta name="description" content="Make architecture decisions with structured evidence, not gut feelings. Wheat is a technical decision-making framework that runs inside Claude Code — research, prototype, challenge, and ship a validated brief. Open source, zero dependencies.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Grainulation">
 <meta property="og:locale" content="en_US">
-<meta property="og:title" content="wheat — Structured research sprints for decisions that matter">
-<meta property="og:description" content="Turn technical questions into evidence-graded decisions. A structured research framework that runs inside Claude Code. No more winging it.">
+<meta property="og:title" content="Wheat — Make Better Architecture Decisions with Evidence">
+<meta property="og:description" content="Stop winging technical decisions. Wheat is a decision-making framework for Claude Code that validates your research like CI validates your code. Open source, zero dependencies.">
 <meta property="og:url" content="https://wheat.grainulation.com/">
 <meta property="og:image" content="https://wheat.grainulation.com/og-image.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="wheat — Structured research sprints for decisions that matter">
-<meta name="twitter:description" content="Turn technical questions into evidence-graded decisions. A structured research framework that runs inside Claude Code.">
+<meta name="twitter:title" content="Wheat — Technical Decision Framework for Claude Code">
+<meta name="twitter:description" content="Stop winging architecture decisions. Research, prototype, challenge, and ship a validated brief — all inside Claude Code. Open source, zero deps.">
 <meta name="twitter:image" content="https://wheat.grainulation.com/og-image.png">
+<meta name="keywords" content="technical decision making, architecture decision record, ADR tool, technology evaluation framework, Claude Code tool, decision framework engineering, build vs buy, migration decision, evidence-based decisions, AI research tool">
 <link rel="canonical" href="https://wheat.grainulation.com/">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text x='32' y='33' text-anchor='middle' dominant-baseline='central' fill='%23fbbf24' font-family='-apple-system,system-ui,sans-serif' font-size='48' font-weight='700'>W</text></svg>">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -235,7 +236,13 @@ footer p{margin-bottom:6px}
 </style>
 <meta name="theme-color" content="#fbbf24">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"@grainulation/wheat","description":"Structured research sprints that turn technical questions into evidence-graded decisions. Claims, compilation, and coverage in one CLI.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"Grainulation","url":"https://grainulation.com"},"license":"https://opensource.org/licenses/MIT"}
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Wheat","alternateName":"@grainulation/wheat","description":"A technical decision-making framework for engineering teams. Research options, prototype solutions, challenge assumptions, and compile evidence-backed architecture decisions. Runs inside Claude Code as slash commands.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"Grainulation","url":"https://grainulation.com"},"license":"https://opensource.org/licenses/MIT","softwareVersion":"1.0.1","downloadUrl":"https://www.npmjs.com/package/@grainulation/wheat","applicationSubCategory":"Decision Support","programmingLanguage":"JavaScript","runtimePlatform":"Node.js","keywords":"technical decision making, architecture decision record, ADR, technology evaluation, Claude Code, decision framework, build vs buy, migration decision, engineering research"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do you make better technical decisions in engineering?","acceptedAnswer":{"@type":"Answer","text":"Use a structured decision-making framework like Wheat. Instead of debating in Slack or writing a one-time doc, Wheat lets you gather evidence from multiple angles, prototype solutions, adversarially challenge assumptions, and compile everything into a validated decision brief. Every finding is typed and evidence-graded, and a compiler catches contradictions before you ship."}},{"@type":"Question","name":"What is a good alternative to architecture decision records (ADRs)?","acceptedAnswer":{"@type":"Answer","text":"Wheat is a modern alternative to ADRs that validates your reasoning as you go. Instead of writing a static document after the decision is made, Wheat tracks typed findings during the investigation — constraints, risks, estimates, recommendations — and compiles them into a decision brief with evidence tiers and conflict resolution. It runs inside Claude Code as slash commands."}},{"@type":"Question","name":"How do you evaluate technology options for a migration?","acceptedAnswer":{"@type":"Answer","text":"Wheat provides a structured evaluation process: /research explores each option, /prototype builds testable proof-of-concepts, /challenge stress-tests your assumptions, and /brief compiles a validated recommendation. Every finding is evidence-graded from 'stated' (someone said it) to 'tested' (prototype-validated) to 'production' (measured in prod). The compiler blocks output if contradictions exist."}},{"@type":"Question","name":"What tools work with Claude Code for technical research?","acceptedAnswer":{"@type":"Answer","text":"Wheat (@grainulation/wheat) is a technical decision framework that runs as 18 slash commands inside Claude Code. Commands like /research, /prototype, /challenge, and /brief guide you through structured investigation. It uses Claude's ability to read codebases, search the web, and reason about evidence. Zero npm dependencies, works in any repo."}},{"@type":"Question","name":"How do you decide between build vs buy for software?","acceptedAnswer":{"@type":"Answer","text":"Use a structured research process instead of gut instinct. With Wheat, you start by defining your question and constraints (/init), research both options with evidence tiers (/research), prototype the build option to validate estimates (/prototype), challenge your assumptions (/challenge), and compile everything into a decision brief (/brief). The compiler ensures you can't ship a recommendation built on contradictory or weak evidence."}}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"How to make a structured technical decision","description":"Use Wheat to evaluate technology options and produce an evidence-backed architecture decision in 3 steps. Works inside Claude Code.","totalTime":"PT30M","tool":[{"@type":"HowToTool","name":"Claude Code"},{"@type":"HowToTool","name":"Node.js 18+"}],"step":[{"@type":"HowToStep","name":"Define your question and constraints","text":"Run npx @grainulation/wheat init to start a structured investigation. Define what you're deciding (e.g. 'Should we migrate to GraphQL?'), who needs the answer, and what constraints exist. Wheat creates a claims file and 18 slash commands in your repo.","url":"https://wheat.grainulation.com/#quickstart"},{"@type":"HowToStep","name":"Research, prototype, and challenge","text":"Use /research to gather evidence from code, docs, and the web. Use /prototype to build testable proof-of-concepts. Use /challenge to adversarially stress-test your findings. Every finding is a typed assertion with an evidence tier from 'stated' to 'production-measured'.","url":"https://wheat.grainulation.com/#example"},{"@type":"HowToStep","name":"Compile and ship the decision brief","text":"Run /brief to compile all findings into a validated decision document. The compiler resolves conflicts, flags weak evidence, and produces a self-contained HTML brief you can share with stakeholders. If contradictions exist, the build fails until they're resolved.","url":"https://wheat.grainulation.com/#quickstart"}]}
 </script>
 </head>
 <body>
@@ -261,7 +268,7 @@ footer p{margin-bottom:6px}
 <main id="main">
 <section class="hero">
   <div class="container">    <h1 class="hf hf2">You're about to make a big<br>technical decision.<br><em>Most teams wing it.</em></h1>
-    <p class="hero-sub hf hf3"><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> is a structured research framework that runs inside Claude Code. You ask a question, gather evidence from multiple angles, stress-test your assumptions, and ship a decision brief — all tracked and auditable.</p>
+    <p class="hero-sub hf hf3"><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> is a decision-making framework that runs inside Claude Code. You research, prototype, stress-test, and compile your findings into a decision brief. A compiler validates everything — you can't ship a recommendation built on contradictions.</p>
     <p class="hf hf3" style="font-size:.8125rem;color:var(--text-3);margin-bottom:32px">Requires <a href="https://docs.anthropic.com/en/docs/claude-code" style="color:var(--text-3);text-decoration:underline">Claude Code</a> and Node.js 18+.</p>
     <div class="hero-actions hf hf4">
       <a href="#quickstart" class="btn btn-primary">
@@ -279,15 +286,15 @@ footer p{margin-bottom:6px}
   <div class="container">
     <div class="what-box rv">
       <h2>What is <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong>?</h2>
-      <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> is a research tool for developers who need to make technical decisions. You start a "sprint" by asking a question — like "Should we migrate to GraphQL?" — and <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> guides you through gathering evidence, testing assumptions, and resolving conflicts.</p>
-      <p>Every finding is tracked as a typed "claim" with a confidence level. When you are done, <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> compiles everything into a decision brief you can send to your team. It runs inside Claude Code, so you use natural language and slash commands — no new UI to learn.</p>
+      <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> is a structured way to answer technical questions. You start with a question — "Should we migrate to GraphQL?" — and use slash commands to research, prototype, and challenge your findings. Every finding is tracked as a typed claim with an evidence grade.</p>
+      <p>When you're ready, a compiler validates everything: catches contradictions, flags weak evidence, and blocks output until issues are resolved. The result is a decision brief you can send to your team. It all runs inside Claude Code — no new UI to learn.</p>
     </div>
   </div>
 </section>
 
 <section class="flow-diagram rv">
   <div class="container" style="text-align:center">
-    <div class="section-label">The sprint flow</div>
+    <div class="section-label">The pipeline</div>
     <div class="flow-row">
       <div class="flow-step">
         <div class="flow-circle" style="background:var(--accent-dim);color:var(--accent)">
@@ -334,8 +341,8 @@ footer p{margin-bottom:6px}
     <div class="qs-steps">
       <div class="qs-step rv rv-d1">
         <div class="qs-num">1</div>
-        <h3>Init a sprint</h3>
-        <p>Define your question. <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> scaffolds the research structure and creates a claims file.</p>
+        <h3>Ask the question</h3>
+        <p>Define what you're deciding. <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> sets up the investigation and creates a claims file to track your findings.</p>
         <div class="copy-wrap">
           <pre class="qs-code"><code><span class="dim">$</span> npx @grainulation/wheat init</code></pre>
           <button class="copy-btn" onclick="copyText(this,'npx @grainulation/wheat init')">Copy</button>
@@ -348,8 +355,8 @@ Sprint ready. Run /research to begin.</div>
       </div>
       <div class="qs-step rv rv-d2">
         <div class="qs-num">2</div>
-        <h3>Research the question</h3>
-        <p>Use natural language or slash commands. Every finding becomes a tracked, typed claim.</p>
+        <h3>Gather evidence</h3>
+        <p>Use slash commands to research, prototype, and challenge. Every finding is tracked with a type and an evidence grade.</p>
         <div class="copy-wrap">
           <pre class="qs-code"><code><span class="dim">/</span>research "GraphQL performance"</code></pre>
           <button class="copy-btn" onclick="copyText(this,'/research &quot;GraphQL performance&quot;')">Copy</button>
@@ -363,7 +370,7 @@ Sprint ready. Run /research to begin.</div>
       <div class="qs-step rv rv-d3">
         <div class="qs-num">3</div>
         <h3>Ship the brief</h3>
-        <p>The compiler validates all claims, resolves conflicts, and produces a decision document.</p>
+        <p>The compiler validates everything, resolves conflicts, and produces a decision document you can share.</p>
         <div class="copy-wrap">
           <pre class="qs-code"><code><span class="dim">/</span>brief</code></pre>
           <button class="copy-btn" onclick="copyText(this,'/brief')">Copy</button>
@@ -385,15 +392,15 @@ endpoints opportunistically.</div>
   <div class="container">
     <div class="section-label rv">Real example</div>
     <h2 class="section-title rv rv-d1">"Should we migrate from REST to GraphQL?"</h2>
-    <p class="section-sub rv rv-d2">A team needs to decide whether to invest 3-5 weeks in a GraphQL migration. They use <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> to research it properly instead of debating in Slack.</p>
+    <p class="section-sub rv rv-d2">A team needs to decide whether to invest 3-5 weeks in a GraphQL migration. Instead of debating in Slack, they use wheat to research it properly.</p>
 
     <div class="example-timeline">
       <div class="ex-step">
         <div class="ex-dot init">1</div>
         <div class="ex-body">
           <div class="ex-cmd">$ npx @grainulation/wheat init</div>
-          <h4>Start the sprint</h4>
-          <p>The team lead types the question: "Should we migrate from REST to GraphQL?" <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> asks for audience (backend team), constraints (must support existing mobile clients), and creates the sprint structure.</p>
+          <h4>Define the question</h4>
+          <p>The team lead types the question: "Should we migrate from REST to GraphQL?" <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> asks for audience (backend team), constraints (must support existing mobile clients), and scaffolds the investigation.</p>
         </div>
       </div>
 
@@ -402,7 +409,7 @@ endpoints opportunistically.</div>
         <div class="ex-body">
           <div class="ex-cmd">/research "GraphQL performance characteristics"</div>
           <h4>Gather evidence</h4>
-          <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> researches the codebase and the topic, producing typed claims. Each claim has a type (factual, risk, estimate) and an evidence tier (how well-verified it is).</p>
+          <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> reads your codebase, searches the web, and records what it finds. Each finding gets a type (factual, risk, estimate) and an evidence grade — from "stated" (someone said it) to "tested" (prototype-validated).</p>
           <div class="ex-output"><span class="claim">r001 [factual|documented]</span> GraphQL eliminates over-fetching for
   mobile clients, reducing payload size 40-60%
 <span class="claim">r002 [factual|web]</span> GraphQL N+1 query problem requires DataLoader
@@ -417,7 +424,7 @@ endpoints opportunistically.</div>
         <div class="ex-body">
           <div class="ex-cmd">/prototype</div>
           <h4>Build and measure</h4>
-          <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> builds a working proof-of-concept and benchmarks it. Findings from prototypes get the highest evidence tier — "tested" — because they come from real measurements, not blog posts.</p>
+          <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> builds a working proof-of-concept and benchmarks it. Findings from prototypes get the "tested" evidence grade — real measurements, not blog posts.</p>
           <div class="ex-output"><span class="claim">p001 [estimate|tested]</span> Migration effort: ~3 weeks for core
   endpoints, 2 weeks for mobile client updates
 <span class="claim">p002 [factual|tested]</span> DataLoader resolves N+1; p95 latency
@@ -429,8 +436,8 @@ endpoints opportunistically.</div>
         <div class="ex-dot challenge">4</div>
         <div class="ex-body">
           <div class="ex-cmd">/challenge r001</div>
-          <h4>Stress-test the claims</h4>
-          <p>This is where <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> shines. The adversarial review catches that the "40-60% payload reduction" was based on worst-case assumptions — the real number is lower because the team already field-filters their REST endpoints.</p>
+          <h4>Stress-test the findings</h4>
+          <p>The adversarial review catches that the "40-60% payload reduction" was based on worst-case assumptions — the real number is lower because the team already field-filters their REST endpoints.</p>
           <div class="ex-output"><span class="risk">x001 [risk|documented]</span> 40-60% payload reduction assumes
   worst-case REST over-fetching; our actual endpoints
   are already field-filtered — real reduction ~15-25%</div>
@@ -441,8 +448,8 @@ endpoints opportunistically.</div>
         <div class="ex-dot brief">5</div>
         <div class="ex-body">
           <div class="ex-cmd">/brief</div>
-          <h4>Get the answer</h4>
-          <p>The compiler resolves conflicts (higher evidence tiers win), validates all claims, and produces a self-contained HTML decision document the team lead can share in Slack or attach to a Jira ticket.</p>
+          <h4>Ship the decision</h4>
+          <p>The compiler resolves conflicts (higher evidence grades win), validates everything, and produces a self-contained HTML decision document. If there are contradictions, it tells you exactly what to fix first.</p>
           <div class="ex-output"><span class="hl">Recommendation:</span> Proceed with GraphQL for new endpoints only.
 Migrate existing REST endpoints opportunistically. Payload
 benefits are real but smaller than initially estimated (15-25%
@@ -455,7 +462,7 @@ vs. 40-60%). The caching gap (r003) needs a solution first.
     </div>
 
     <div style="margin-top:40px;text-align:center" class="rv">
-      <p style="color:var(--text-2);font-size:.9375rem;max-width:560px;margin:0 auto"><strong style="color:var(--text)">The outcome:</strong> Instead of a 45-minute meeting where the loudest voice wins, the team has a 14-claim brief with evidence tiers, conflict resolution, and a clear recommendation. The decision is traceable — anyone can run <code>git log claims.json</code> to see how they got there.</p>
+      <p style="color:var(--text-2);font-size:.9375rem;max-width:560px;margin:0 auto"><strong style="color:var(--text)">The outcome:</strong> Instead of a 45-minute meeting where the loudest voice wins, the team has a compiled brief with 14 validated findings, resolved conflicts, and a clear recommendation. Anyone can run <code>git log claims.json</code> to see how the decision was made.</p>
     </div>
   </div>
 </section>
@@ -465,51 +472,51 @@ vs. 40-60%). The caching gap (r003) needs a solution first.
 <section class="features" id="features">
   <div class="container">
     <div class="section-label rv">Key features</div>
-    <h2 class="section-title rv rv-d1">Built for real research</h2>
-    <p class="section-sub rv rv-d2">Everything you need to go from question to decision. Nothing you don't.</p>
+    <h2 class="section-title rv rv-d1">A decision-making framework built for engineers</h2>
+    <p class="section-sub rv rv-d2">Everything you need to go from question to architecture decision. Nothing you don't.</p>
 
     <div class="features-grid">
       <div class="feature-card rv rv-d1">
         <div class="feature-icon">
           <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
-        <h3>Evidence-Graded Claims</h3>
-        <p>Every finding is typed (factual, risk, estimate, recommendation) with a 5-tier evidence scale from "stated" to "production-measured". <strong style="color:#fff;font-size:110%"><span style="color:#6ee7b7">s</span>ilo</strong> stores proven claims as reusable packs for future sprints.</p>
+        <h3>Typed, Evidence-Graded Claims</h3>
+        <p>Every finding has a type (factual, risk, estimate, constraint, recommendation) and an evidence grade from "stated" (unverified) to "production" (measured in prod). Weak evidence gets flagged. <strong style="color:#fff;font-size:110%"><span style="color:#6ee7b7">s</span>ilo</strong> stores proven claims as reusable packs.</p>
       </div>
       <div class="feature-card rv rv-d2">
         <div class="feature-icon">
           <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
         </div>
         <h3>Compiler Validation</h3>
-        <p>Claims are compiled before any output. The compiler catches contradictions, flags weak evidence, and resolves disputes by tier.</p>
+        <p>A 7-pass compiler runs before any output is produced. It catches contradictions, flags weak evidence, and blocks output until issues are fixed. You can't ship a brief built on conflicting findings.</p>
       </div>
       <div class="feature-card rv rv-d3">
         <div class="feature-icon">
           <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         </div>
-        <h3>16 Slash Commands</h3>
-        <p><code>/init</code>, <code>/research</code>, <code>/prototype</code>, <code>/challenge</code>, <code>/witness</code>, <code>/blind-spot</code>, <code>/brief</code>, <code>/present</code>, <code>/status</code>, <code>/feedback</code>, <code>/handoff</code>, <code>/merge</code>, <code>/replay</code>, <code>/calibrate</code>, <code>/resolve</code>, <code>/evaluate</code>.</p>
+        <h3>18 Slash Commands</h3>
+        <p><code>/init</code>, <code>/research</code>, <code>/prototype</code>, <code>/challenge</code>, <code>/witness</code>, <code>/blind-spot</code>, <code>/brief</code>, <code>/present</code>, <code>/status</code>, <code>/feedback</code>, <code>/handoff</code>, <code>/merge</code>, <code>/replay</code>, <code>/calibrate</code>, <code>/resolve</code>, <code>/evaluate</code>, <code>/connect</code>, <code>/next</code>.</p>
       </div>
       <div class="feature-card rv rv-d4">
         <div class="feature-icon">
           <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
         </div>
         <h3>Git Audit Trail</h3>
-        <p>Every claim auto-commits. Run <code>git log --oneline claims.json</code> for the full history of your research sprint. <strong style="color:#fff;font-size:110%"><span style="color:#3b82f6">f</span>armer</strong> streams these tool calls to your phone for real-time approval.</p>
+        <p>Every finding auto-commits. <code>git log --oneline claims.json</code> is the complete history of how you reached your decision. <strong style="color:#fff;font-size:110%"><span style="color:#3b82f6">f</span>armer</strong> streams tool calls to your phone for real-time approval.</p>
       </div>
       <div class="feature-card rv">
         <div class="feature-icon">
           <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         </div>
-        <h3>Self-Contained Output</h3>
+        <h3>Shareable Decision Briefs</h3>
         <p>Briefs, presentations, and dashboards are single HTML files with inline CSS/JS. Send them to anyone — no hosting needed. Use <strong style="color:#fff;font-size:110%"><span style="color:#a78bfa">m</span>ill</strong> to export to PDF, CSV, or static sites.</p>
       </div>
       <div class="feature-card rv">
         <div class="feature-icon">
           <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
         </div>
-        <h3>Language Agnostic</h3>
-        <p>Any repo, any stack, any language. If Claude Code can read it, <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> can research it.</p>
+        <h3>Works in Any Tech Stack</h3>
+        <p>Any repo, any stack, any language. If Claude Code can read it, <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> can research it. Evaluate your Scala migration, Python monorepo, or Flutter rewrite.</p>
       </div>
     </div>
   </div>
@@ -541,20 +548,47 @@ vs. 40-60%). The caching gap (r003) needs a solution first.
       </div>
       <div class="faq-item rv rv-d3">
         <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
-          How does this compare to just asking Claude a question?
+          How is this different from just asking Claude for a recommendation?
           <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
         <div class="faq-a">
-          <p>Asking Claude gives you one answer. <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> gives you a structured research process — multiple rounds of evidence gathering, adversarial challenge, prototype validation, and conflict resolution. The output is an auditable decision brief, not a chat message.</p>
+          <p>Asking Claude gives you one answer. <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> gives you a structured process — multiple rounds of evidence gathering, adversarial challenge, prototype validation, and conflict resolution. The output is a compiled decision brief with an audit trail, not a chat message.</p>
         </div>
       </div>
       <div class="faq-item rv rv-d4">
         <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
-          How long does a sprint take?
+          How is this different from planning tools like Obra or Superpowers?
           <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
         <div class="faq-a">
-          <p>A simple sprint can be done in 10-15 minutes. Complex questions with prototyping and multiple rounds of challenge might take an hour or spread across a few sessions. When running parallel sprints, <strong style="color:#fff;font-size:110%"><span style="color:#d4a574">o</span>rchard</strong> tracks dependencies between them.</p>
+          <p>Most planning tools generate a big plan upfront, then you execute it. <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> validates continuously: every finding is checked as it comes in, conflicts are caught immediately, and the compiler blocks output if your evidence doesn't hold up. Your understanding evolves as you learn, not before.</p>
+        </div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          What's a "sprint"? Is this Agile?
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-a">
+          <p>No. A wheat sprint is a single investigation — one question, a set of findings, and a compiled output. It takes 15 minutes to an hour, not two weeks. Think <code>make</code>, not Jira.</p>
+        </div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          What are "claims"?
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-a">
+          <p>A claim is a single finding from your investigation. Each one has a type — <code>factual</code> ("the API returns paginated results"), <code>risk</code> ("connection pooling may bottleneck"), <code>constraint</code> ("must support Postgres 14+"), <code>estimate</code> ("migration: 2-4 weeks"), or <code>recommendation</code>. Each claim also has an evidence grade so you know how much to trust it. The compiler validates them all before you can produce output.</p>
+        </div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          How long does it take?
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-a">
+          <p>A simple question can be answered in 10-15 minutes. Bigger decisions with prototyping and multiple rounds of challenge might take an hour or spread across a few sessions. <strong style="color:#fff;font-size:110%"><span style="color:#d4a574">o</span>rchard</strong> tracks dependencies when you're running multiple sprints in parallel.</p>
       </div>
     </div>
   </div>

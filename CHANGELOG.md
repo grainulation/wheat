@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.1 — 2026-03-18
+
+### Changes
+
+- `wheat init` now accepts `--non-interactive` as an alias for `--headless`
+- MCP server exposes `wheat/init` tool for cross-session sprint bootstrap
+- `wheat connect farmer` now also runs `wheat update` (slash commands) and writes sprint paths to `.farmer-config.json`
+- Added `/next` slash command -- routes next steps through Farmer for mobile feedback
+- 18 slash command templates (was 17)
+- Compiler error messages now show expected claim shape when schema violations are detected
+- Pre-commit hook prefers local wheat binary over `npx --yes` (addresses Socket supply-chain flag)
+- MCP server uses `execFileSync` instead of `execSync` (no shell invocation)
+
+### Docs & Site
+
+- Rewritten landing page copy for clarity -- plain language, no forced analogies
+- Added FAQ entries: "What are claims?", "What's a sprint?", "How is this different from Obra?"
+- Added structured data for Google rich results: FAQPage, HowTo, enhanced SoftwareApplication schema
+- SEO keywords targeting real search queries (architecture decision, ADR, technology evaluation, Claude Code)
+- Updated concepts.md with engineering mental model table and sprint definition
+- Updated README tagline and "How it works" section
+- All docs now reference 18 slash commands
+
+## 1.0.0 — 2026-03-17
+
+First stable release. Published to npm as `@grainulation/wheat`.
+
 ## 0.9.0-beta.1 — 2026-03-13
 
 First public beta of Wheat, a research sprint framework for structured decision-making.
@@ -16,7 +43,7 @@ First public beta of Wheat, a research sprint framework for structured decision-
 - **Guard hook** (`lib/guard.js`) — PreToolUse hook for Claude Code that blocks output artifact generation unless compilation is fresh and passing
 - **Status checker** (`lib/status.js`) — terminal snapshot of sprint health
 - **Command updater** (`lib/update.js`) — syncs slash command templates to `.claude/commands/`
-- **17 slash command templates** — `/research`, `/prototype`, `/challenge`, `/witness`, `/blind-spot`, `/status`, `/brief`, `/present`, `/feedback`, `/resolve`, `/replay`, `/calibrate`, `/handoff`, `/merge`, `/connect`, `/evaluate`, `/init`
+- **18 slash command templates** — `/research`, `/prototype`, `/challenge`, `/witness`, `/blind-spot`, `/status`, `/brief`, `/present`, `/feedback`, `/resolve`, `/replay`, `/calibrate`, `/handoff`, `/merge`, `/connect`, `/evaluate`, `/init`, `/next`
 - **CLAUDE.md template** — auto-generated AI assistant configuration with intent router
 - **Explainer HTML template** — dark scroll-snap presentation template for output artifacts
 - **GitHub CI workflow** — tests across Node 18, 20, 22; verifies zero dependencies

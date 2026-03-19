@@ -6,13 +6,15 @@
   <a href="https://www.npmjs.com/package/@grainulation/wheat"><img src="https://img.shields.io/npm/v/@grainulation/wheat" alt="npm version"></a> <a href="https://www.npmjs.com/package/@grainulation/wheat"><img src="https://img.shields.io/npm/dm/@grainulation/wheat" alt="npm downloads"></a> <a href="https://github.com/grainulation/wheat/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/@grainulation/wheat" alt="license"></a> <a href="https://nodejs.org"><img src="https://img.shields.io/node/v/@grainulation/wheat" alt="node"></a> <a href="https://github.com/grainulation/wheat/actions"><img src="https://github.com/grainulation/wheat/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
 </p>
 
-<p align="center"><strong>The structured research engine for AI-assisted decisions.</strong></p>
+<p align="center"><strong>CI/CD for technical decisions.</strong></p>
 
 You're about to mass-migrate 200 microservices. Slow down.
 
 The migration will take months. It will cost real money. And right now, the decision to move is based on a Slack thread, a blog post, and a gut feeling from someone who left the company.
 
-Wheat exists because the most expensive engineering decisions are made with the least structured evidence. Not because people are careless -- because there's no tool that makes structured investigation feel natural.
+You'd never ship code without tests. Why ship a decision without validated evidence?
+
+Wheat is a continuous planning pipeline. Every finding is a typed assertion. A compiler validates them. You can't ship with contradictions, same as you can't merge with failing tests.
 
 ## Install
 
@@ -28,20 +30,20 @@ No dependencies are added to your project. No `node_modules` pollution. Wheat is
 npx @grainulation/wheat quickstart
 ```
 
-Creates a demo sprint with pre-seeded claims, an intentional conflict, compiles everything, and opens a dashboard. You'll see the compiler flag the conflict and block output until it's resolved.
+Creates a demo build with pre-seeded assertions, an intentional conflict, compiles everything, and opens a dashboard. You'll see the compiler flag the conflict and block output until it's resolved.
 
-## Start a real sprint
+## Start a real investigation
 
 ```bash
 npx @grainulation/wheat init
 ```
 
-Wheat asks a few questions -- what you're investigating, who needs the answer, what constraints exist. Then it sets up the sprint in your repo:
+Wheat asks a few questions -- what you're investigating, who needs the answer, what constraints exist. Then it scaffolds the investigation in your repo:
 
 ```
-claims.json          # Your evidence database
+claims.json          # Typed assertions (the test suite for your decision)
 CLAUDE.md            # AI assistant configuration
-.claude/commands/    # 17 research slash commands
+.claude/commands/    # 18 slash commands
 output/              # Where compiled artifacts land
 ```
 
@@ -57,20 +59,20 @@ Open Claude Code and start investigating:
 
 ## How it works
 
-Wheat uses a claim-based system inspired by compiler design:
+Wheat is a continuous planning pipeline. Findings are validated as they come in, not after the fact:
 
 ```
-You investigate  -->  Claims accumulate  -->  Compiler validates  -->  Artifacts compile
-   /research          claims.json            wheat compile            /brief, /present
-   /prototype         (typed, graded)        (7-pass pipeline)        (backed by evidence)
+You investigate  -->  Assertions accumulate  -->  Compiler validates  -->  Artifacts compile
+   /research          claims.json                 wheat compile            /brief, /present
+   /prototype         (typed, evidence-graded)    (7-pass pipeline)        (backed by evidence)
    /challenge
 ```
 
-**Claim types:** constraint, factual, estimate, risk, recommendation, feedback
+**Assertion types:** constraint, factual, estimate, risk, recommendation, feedback
 
-**Evidence tiers:** stated > web > documented > tested > production
+**Evidence tiers** (like test coverage): stated (untested) > web > documented > tested > production (battle-hardened)
 
-The compiler catches conflicts, warns about weak evidence, and blocks output when issues exist. You cannot ship a brief built on unresolved contradictions.
+The compiler catches conflicts, warns about weak evidence, and blocks the build when issues exist. You cannot ship a brief built on unresolved contradictions — same as you can't merge with failing tests.
 
 ## Commands
 
@@ -92,6 +94,8 @@ The compiler catches conflicts, warns about weak evidence, and blocks output whe
 | `/handoff` | Package sprint for knowledge transfer |
 | `/merge <path>` | Combine findings across sprints |
 | `/connect <type>` | Link external tools (Jira, docs, etc.) |
+| `/evaluate` | Test claims against reality, resolve conflicts |
+| `/next` | Route next steps through Farmer (mobile feedback) |
 
 ## Guard rails
 
@@ -115,7 +119,7 @@ Node built-in modules only. No npm install waterfall. No supply chain anxiety.
 | Tool | Role |
 |------|------|
 | **wheat** | Research engine -- grow structured evidence |
-| [farmer](https://github.com/grainulation/farmer) | Permission dashboard -- approve AI actions in real time |
+| [farmer](https://github.com/grainulation/farmer) | Permission dashboard -- approve AI actions in real time (admin + viewer roles) |
 | [barn](https://github.com/grainulation/barn) | Shared tools -- templates, validators, sprint detection |
 | [mill](https://github.com/grainulation/mill) | Format conversion -- export to PDF, CSV, slides, 24 formats |
 | [silo](https://github.com/grainulation/silo) | Knowledge storage -- reusable claim libraries and packs |
