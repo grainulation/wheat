@@ -26,6 +26,8 @@
 
 import fs from 'fs';
 import path from 'path';
+// execFileSync used to query git history (no shell, array args only).
+// Socket.dev flags this as "shell access" but execFileSync bypasses the shell.
 import { execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
 

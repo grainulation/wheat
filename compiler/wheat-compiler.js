@@ -914,6 +914,28 @@ if (args.includes('--summary')) {
     console.log('Errors:');
     c.errors.forEach(e => console.log(`  ${e.code}: ${e.message}`));
     console.log();
+
+    // Show expected shape if schema errors exist
+    const hasSchemaErrors = c.errors.some(e => e.code === 'E_SCHEMA' || e.code === 'E_TYPE' || e.code === 'E_EVIDENCE_TIER');
+    if (hasSchemaErrors) {
+      console.log('  Expected claim shape:');
+      console.log('    {');
+      console.log('      "id": "r001",');
+      console.log('      "type": "constraint|factual|estimate|risk|recommendation|feedback",');
+      console.log('      "topic": "topic-slug",');
+      console.log('      "content": "The claim text",');
+      console.log('      "source": { "origin": "research", "artifact": null, "connector": null },');
+      console.log('      "evidence": "stated|web|documented|tested|production",');
+      console.log('      "status": "active",');
+      console.log('      "phase_added": "define|research|prototype|evaluate|feedback|challenge",');
+      console.log('      "timestamp": "2026-01-01T00:00:00.000Z",');
+      console.log('      "conflicts_with": [],');
+      console.log('      "resolved_by": null,');
+      console.log('      "tags": []');
+      console.log('    }');
+      console.log();
+      console.log('  Hint: Run "wheat init --headless --question ..." to generate a valid claims.json');
+    }
   }
 
   if (c.warnings.length > 0) {

@@ -88,6 +88,7 @@ Examples:
   npx @grainulation/wheat init
   npx @grainulation/wheat compile --summary
   npx @grainulation/wheat init --question "Should we migrate to Postgres?"
+  npx @grainulation/wheat init --non-interactive --question "..." --audience "..." --done "..."
 
 Documentation: https://github.com/grainulation/wheat`);
   process.exit(0);
