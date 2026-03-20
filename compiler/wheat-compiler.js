@@ -17,7 +17,7 @@
 import fs from 'fs';
 import crypto from 'crypto';
 import path from 'path';
-import { execFileSync } from 'child_process';
+
 import { fileURLToPath } from 'url';
 
 // Sprint detection — git-based, no config pointer needed (p013/f001)

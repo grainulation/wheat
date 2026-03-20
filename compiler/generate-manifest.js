@@ -13,7 +13,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { execFileSync } from 'child_process';
+
 import { fileURLToPath } from 'url';
 import { detectSprints } from './detect-sprints.js';
 
