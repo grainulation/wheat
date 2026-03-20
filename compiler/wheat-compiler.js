@@ -22,6 +22,8 @@ import { fileURLToPath } from 'url';
 
 // Sprint detection — git-based, no config pointer needed (p013/f001)
 import { detectSprints } from './detect-sprints.js';
+// Direct manifest generation — avoids subprocess + redundant detectSprints call
+import { buildManifest } from './generate-manifest.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -570,33 +572,21 @@ function diffCompilations(before, after) {
 
 // ─── Manifest Generation (topic map) ─────────────────────────────────────────
 /**
- * Run generate-manifest.js to produce wheat-manifest.json.
- * Called automatically after each compilation. Failures are non-fatal
- * (manifest is an optimization, not a correctness requirement).
- * @param {object} compilation - The compiled output (unused, but available for future use)
+ * Generate wheat-manifest.json by calling buildManifest() directly.
+ * No subprocess — reuses the already-imported module and sprint data.
+ * Failures are non-fatal (manifest is an optimization, not a correctness requirement).
  */
-function generateManifest(compilation, dir) {
+function generateManifest(compilation, dir, sprintsInfo) {
   const baseDir = dir || TARGET_DIR;
-  const manifestScript = path.join(baseDir, 'generate-manifest.js');
-  if (!fs.existsSync(manifestScript)) {
-    // Manifest generator not present — skip silently
-    return;
-  }
   try {
-    const result = execFileSync(process.execPath, [manifestScript], {
-      cwd: baseDir,
-      timeout: 10000,
-      stdio: ['ignore', 'pipe', 'pipe'],
-    });
-    // Print manifest summary on --summary runs (stdout captured above)
-    const output = result.toString().trim();
-    if (output && process.argv.includes('--summary')) {
-      console.log(`\nManifest: ${output}`);
+    const result = buildManifest(baseDir, { sprintsInfo });
+    if (result && process.argv.includes('--summary')) {
+      console.log(`\nManifest: wheat-manifest.json generated`);
+      console.log(`  Topics: ${result.topicCount}  |  Files: ${result.fileCount}  |  Sprints: ${result.sprintCount}`);
     }
   } catch (err) {
     // Non-fatal: warn but don't block compilation
-    const stderr = err.stderr ? err.stderr.toString().trim() : err.message;
-    console.error(`Warning: manifest generation failed — ${stderr}`);
+    console.error(`Warning: manifest generation failed — ${err.message}`);
   }
 }
 
@@ -722,7 +712,8 @@ function compile(inputPath, outputPath, dir) {
   fs.writeFileSync(compilationOutputPath, JSON.stringify(compilation, null, 2));
 
   // Generate topic-map manifest (wheat-manifest.json)
-  generateManifest(compilation, baseDir);
+  // Pass sprintsInfo to avoid re-running detectSprints in manifest generator
+  generateManifest(compilation, baseDir, sprintsInfo);
 
   return compilation;
 }

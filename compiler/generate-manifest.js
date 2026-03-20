@@ -98,6 +98,27 @@ export function highestEvidence(claims) {
  * Falls back to a minimal scan if detect-sprints.js is unavailable.
  */
 function detectSprintsForManifest() {
+  // Check for cached sprint data from compiler (avoids re-running detectSprints)
+  if (process.env.WHEAT_SPRINTS_CACHE) {
+    try {
+      const parsed = JSON.parse(process.env.WHEAT_SPRINTS_CACHE);
+      const sprints = {};
+      for (const s of (parsed.sprints || [])) {
+        sprints[s.name] = {
+          question: s.question || '',
+          phase: s.phase || 'unknown',
+          claims_count: s.claims_count || 0,
+          active_claims: s.active_claims || 0,
+          path: s.path,
+          status: s.status,
+          last_git_activity: s.last_git_activity,
+          git_commit_count: s.git_commit_count,
+        };
+      }
+      return sprints;
+    } catch { /* fall through to live detection */ }
+  }
+
   // Try to use the exported function directly
   try {
     const parsed = detectSprints(ROOT);
@@ -148,20 +169,21 @@ function detectSprintsForManifest() {
   return sprints;
 }
 
-// --- Main (only when run directly) ---
+// --- Callable manifest generation ---
 
-const isMain = process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
+/**
+ * Generate the manifest. Can be called directly (no subprocess needed).
+ * @param {string} dir - Root directory of the sprint
+ * @param {object} [opts] - Options
+ * @param {object} [opts.sprintsInfo] - Pre-computed sprint data (avoids re-running detectSprints)
+ * @returns {{ manifest: object, topicCount: number, fileCount: number, sprintCount: number }}
+ */
+export function buildManifest(dir, opts = {}) {
+  const rootDir = dir || ROOT;
+  const claims = loadJSON(path.join(rootDir, 'claims.json'));
+  const compilation = loadJSON(path.join(rootDir, 'compilation.json'));
 
-if (isMain) {
-  const t0 = performance.now();
-
-  const claims = loadJSON(path.join(ROOT, 'claims.json'));
-  const compilation = loadJSON(path.join(ROOT, 'compilation.json'));
-
-  if (!claims) {
-    console.error('Error: claims.json not found or invalid at', path.join(ROOT, 'claims.json'));
-    process.exit(1);
-  }
+  if (!claims) return null;
 
   // 1. Build topic map from claims
   const topicMap = {};
@@ -183,8 +205,8 @@ if (isMain) {
   const scanDirs = ['research', 'prototypes', 'output', 'evidence', 'templates', 'test', 'docs'];
   const allFiles = {};
 
-  for (const dir of scanDirs) {
-    const files = walk(path.join(ROOT, dir));
+  for (const d of scanDirs) {
+    const files = walk(path.join(rootDir, d));
     for (const f of files) {
       const type = classifyFile(f);
       allFiles[f] = { topics: [], type };
@@ -192,18 +214,20 @@ if (isMain) {
   }
 
   // Also include root-level scripts/configs
-  for (const entry of fs.readdirSync(ROOT)) {
-    if (entry.startsWith('.') || entry === 'node_modules') continue;
-    const full = path.join(ROOT, entry);
-    try {
-      if (fs.statSync(full).isFile()) {
-        const type = classifyFile(entry);
-        if (type !== 'other') {
-          allFiles[entry] = { topics: [], type };
+  try {
+    for (const entry of fs.readdirSync(rootDir)) {
+      if (entry.startsWith('.') || entry === 'node_modules') continue;
+      const full = path.join(rootDir, entry);
+      try {
+        if (fs.statSync(full).isFile()) {
+          const type = classifyFile(entry);
+          if (type !== 'other') {
+            allFiles[entry] = { topics: [], type };
+          }
         }
-      }
-    } catch { /* skip */ }
-  }
+      } catch { /* skip */ }
+    }
+  } catch { /* skip */ }
 
   // 3. Map files to topics using claim source artifacts and keyword heuristics
   const topicKeywords = {
@@ -217,14 +241,12 @@ if (isMain) {
   for (const [filePath, fileInfo] of Object.entries(allFiles)) {
     const lower = filePath.toLowerCase();
 
-    // Heuristic: match file paths to topics via keywords
     for (const [topic, keywords] of Object.entries(topicKeywords)) {
       if (keywords.some(kw => lower.includes(kw))) {
         if (!fileInfo.topics.includes(topic)) fileInfo.topics.push(topic);
       }
     }
 
-    // Claims that reference files as artifacts
     for (const claim of claims.claims) {
       if (claim.source?.artifact && filePath.includes(claim.source.artifact.replace(/^.*[/\\]prototypes[/\\]/, 'prototypes/'))) {
         if (!fileInfo.topics.includes(claim.topic)) {
@@ -233,7 +255,6 @@ if (isMain) {
       }
     }
 
-    // Add files to topic map
     for (const topic of fileInfo.topics) {
       if (topicMap[topic]) {
         topicMap[topic].files.add(filePath);
@@ -246,14 +267,31 @@ if (isMain) {
     topicMap[topic].files = [...topicMap[topic].files].sort();
   }
 
-  // 5. Detect sprints
-  const sprints = detectSprintsForManifest();
+  // 5. Detect sprints (use cached data if provided)
+  let sprints;
+  if (opts.sprintsInfo) {
+    sprints = {};
+    for (const s of (opts.sprintsInfo.sprints || [])) {
+      sprints[s.name] = {
+        question: s.question || '',
+        phase: s.phase || 'unknown',
+        claims_count: s.claims_count || 0,
+        active_claims: s.active_claims || 0,
+        path: s.path,
+        status: s.status,
+        last_git_activity: s.last_git_activity,
+        git_commit_count: s.git_commit_count,
+      };
+    }
+  } else {
+    sprints = detectSprintsForManifest();
+  }
 
   // 6. Build final manifest
   const topicFiles = {};
-  for (const [filePath, info] of Object.entries(allFiles)) {
-    if (info.topics.length > 0) {
-      topicFiles[filePath] = info;
+  for (const [filePath, mInfo] of Object.entries(allFiles)) {
+    if (mInfo.topics.length > 0) {
+      topicFiles[filePath] = mInfo;
     }
   }
 
@@ -266,15 +304,32 @@ if (isMain) {
     files: topicFiles
   };
 
-  fs.writeFileSync(OUT_PATH, JSON.stringify(manifest, null, 2) + '\n');
+  const outPath = path.join(rootDir, 'wheat-manifest.json');
+  fs.writeFileSync(outPath, JSON.stringify(manifest, null, 2) + '\n');
+
+  return {
+    manifest,
+    topicCount: Object.keys(topicMap).length,
+    fileCount: Object.keys(topicFiles).length,
+    sprintCount: Object.keys(sprints).length,
+  };
+}
+
+// --- Main (only when run directly) ---
+
+const isMain = process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
+
+if (isMain) {
+  const t0 = performance.now();
+
+  const result = buildManifest(ROOT);
+  if (!result) {
+    console.error('Error: claims.json not found or invalid at', path.join(ROOT, 'claims.json'));
+    process.exit(1);
+  }
+
   const elapsed = (performance.now() - t0).toFixed(1);
-
-  // Summary
-  const topicCount = Object.keys(topicMap).length;
-  const fileCount = Object.keys(topicFiles).length;
-  const sprintCount = Object.keys(sprints).length;
-  const sizeBytes = Buffer.byteLength(JSON.stringify(manifest, null, 2));
-
+  const sizeBytes = Buffer.byteLength(JSON.stringify(result.manifest, null, 2));
   console.log(`wheat-manifest.json generated in ${elapsed}ms`);
-  console.log(`  Topics: ${topicCount}  |  Files: ${fileCount}  |  Sprints: ${sprintCount}  |  Size: ${(sizeBytes / 1024).toFixed(1)}KB`);
+  console.log(`  Topics: ${result.topicCount}  |  Files: ${result.fileCount}  |  Sprints: ${result.sprintCount}  |  Size: ${(sizeBytes / 1024).toFixed(1)}KB`);
 }

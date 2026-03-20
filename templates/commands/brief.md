@@ -2,6 +2,8 @@
 
 You are compiling the final decision brief for this Wheat sprint. This is the Bran compilation step — deterministic output from resolved claims.
 
+**Default behavior:** Generate next steps only (fast). The full brief is opt-in via `--full`.
+
 ## Process
 
 1. **Run the compiler with check**:
@@ -15,9 +17,17 @@ You are compiling the final decision brief for this Wheat sprint. This is the Br
    - Suggest specific commands to fix each blocker
    - Do NOT proceed until compilation passes
 
-2. **Read compilation.json** — use ONLY `resolved_claims` as your source material. Never read claims.json directly for the brief.
+2. **Always: Generate next steps** — Read compilation.json, summarize sprint state (claim counts, conflicts, coverage), and suggest 2-4 concrete next actions. Then run `/next` to route through Farmer.
 
-3. **Generate the brief as markdown**: Create `output/brief.md` with this structure:
+3. **If `--full` flag is passed OR user explicitly asks for the brief:** Launch brief generation as a background agent so it's non-blocking. The user continues deciding next steps while the brief builds.
+
+   To launch in background: use the Agent tool with `run_in_background: true` to generate the full brief (steps 4-7 below). Tell the user "Brief generating in background — I'll let you know when it's ready."
+
+   If no `--full` flag, skip steps 4-7 entirely.
+
+4. **Read compilation.json** — use ONLY `resolved_claims` as your source material. Never read claims.json directly for the brief.
+
+5. **Generate the brief as markdown**: Create `output/brief.md` with this structure:
 
    ```markdown
    # Decision Brief: [Sprint Question]
@@ -47,7 +57,12 @@ You are compiling the final decision brief for this Wheat sprint. This is the Br
    Compilation certificate: [hash] | Compiler: wheat v[version] | Claims: [count] | Compiled: [timestamp]
    ```
 
-4. **Also generate brief as HTML**: Create `output/brief.html` — a clean, print-friendly HTML version for browser viewing.
+6. **Generate PDF** (if build-pdf.js exists):
+   ```bash
+   node build-pdf.js output/brief.md
+   ```
+
+7. **Also generate brief as HTML**: Create `output/brief.html` — a clean, print-friendly HTML version for browser viewing.
 
 ## Key rules
 
@@ -64,9 +79,10 @@ Commit: `wheat: /brief compiled — [total] claims, [conflicts resolved] conflic
 
 ## Tell the user
 
-- The brief is ready at `output/brief.md` and `output/brief.html`
+- If next-steps only: show the sprint summary and route via `/next`
+- If `--full`: confirm brief is generating in background, show next steps immediately
+- When brief completes: notify with paths to `output/brief.md` and `output/brief.html`
 - Show the compilation certificate
-- Remind them they can share these with stakeholders
 - Mention `/present` if they need a presentation version
 - Mention `/feedback` for incorporating stakeholder responses
 

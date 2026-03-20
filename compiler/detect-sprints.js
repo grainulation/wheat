@@ -48,10 +48,83 @@ function loadJSON(filePath) {
 }
 
 /**
+ * Batch git queries for all sprint files at once.
+ * Two git calls total instead of 2 per sprint (20x faster for 16 sprints).
+ * Returns Map<filePath, { date: string|null, count: number }>
+ */
+let _gitCache = null;
+
+function batchGitInfo(filePaths) {
+  if (_gitCache) return _gitCache;
+  const info = new Map();
+  // Build a map from relative path (as git returns it) back to original filePath
+  const relToOrig = new Map();
+  const relPaths = [];
+  for (const fp of filePaths) {
+    const rel = path.relative(ROOT, path.resolve(ROOT, fp));
+    relToOrig.set(rel, fp);
+    relPaths.push(rel);
+    info.set(fp, { date: null, count: 0 });
+  }
+
+  if (filePaths.length === 0) { _gitCache = info; return info; }
+
+  // Batch 1: last commit date per file
+  // git log outputs: date line, blank line, filename(s), blank line, ...
+  // First occurrence of each file = most recent commit
+  try {
+    const result = execFileSync('git', [
+      'log', '--format=%aI', '--name-only', '--diff-filter=ACMR',
+      '--', ...relPaths
+    ], { cwd: ROOT, timeout: 10000, stdio: ['ignore', 'pipe', 'pipe'] });
+    const lines = result.toString().trim().split('\n');
+    const seen = new Set();
+    let currentDate = null;
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue; // skip blank lines (git puts them between date and filename)
+      if (/^\d{4}-/.test(trimmed)) {
+        currentDate = trimmed;
+      } else if (currentDate && !seen.has(trimmed)) {
+        seen.add(trimmed);
+        const orig = relToOrig.get(trimmed);
+        if (orig) info.get(orig).date = currentDate;
+      }
+    }
+  } catch { /* git unavailable, dates stay null */ }
+
+  // Batch 2: commit counts per file (count filename occurrences in log)
+  try {
+    const result = execFileSync('git', [
+      'log', '--format=', '--name-only',
+      '--', ...relPaths
+    ], { cwd: ROOT, timeout: 10000, stdio: ['ignore', 'pipe', 'pipe'] });
+    const lines = result.toString().split('\n');
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+      const orig = relToOrig.get(trimmed);
+      if (orig) info.get(orig).count++;
+    }
+  } catch { /* counts stay 0 */ }
+
+  _gitCache = info;
+  return info;
+}
+
+/** Reset git cache (called when ROOT changes). */
+function resetGitCache() { _gitCache = null; }
+
+/**
  * Get the ISO timestamp of the most recent git commit touching a file.
  * Returns null if file is untracked or git is unavailable.
+ * Uses batch cache when available.
  */
 function lastGitCommitDate(filePath) {
+  if (_gitCache) {
+    const entry = _gitCache.get(filePath);
+    return entry ? entry.date : null;
+  }
   try {
     const result = execFileSync('git', [
       'log', '-1', '--format=%aI', '--', filePath
@@ -65,8 +138,13 @@ function lastGitCommitDate(filePath) {
 
 /**
  * Count git commits touching a file (proxy for activity level).
+ * Uses batch cache when available.
  */
 function gitCommitCount(filePath) {
+  if (_gitCache) {
+    const entry = _gitCache.get(filePath);
+    return entry ? entry.count : 0;
+  }
   try {
     const result = execFileSync('git', [
       'rev-list', '--count', 'HEAD', '--', filePath
@@ -193,7 +271,12 @@ function analyzeSprint(root) {
  */
 export function detectSprints(rootDir) {
   if (rootDir) ROOT = rootDir;
+  resetGitCache();
   const roots = findSprintRoots();
+
+  // Batch all git queries upfront: 2 git calls instead of 2 per sprint
+  batchGitInfo(roots.map(r => r.claimsPath));
+
   const sprints = roots.map(analyzeSprint).filter(Boolean);
 
   // Separate candidates from archived/examples
