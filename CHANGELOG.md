@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.2 — 2026-03-20
+
+### Performance
+
+- **14x compile speedup** (3.5s to 0.25s) via three changes:
+  - Batch git queries in detect-sprints.js (2 calls instead of 32)
+  - Export `buildManifest()` from generate-manifest.js for direct import
+  - Replace subprocess spawn in wheat-compiler.js with inline `buildManifest()` call
+- Slim `compilation.json` — strip claim content from `resolved_claims` (25% smaller, ~17K fewer tokens per read). Build scripts hydrate content from claims.json on demand.
+
+### Changes
+
+- MCP server version now reads from package.json instead of hardcoded constant
+- `/brief` defaults to fast next-steps only; full brief is opt-in via `--full` flag
+
 ## 1.0.1 — 2026-03-18
 
 ### Changes

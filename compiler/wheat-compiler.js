@@ -688,7 +688,12 @@ function compile(inputPath, outputPath, dir) {
     status,
     errors: readiness.blockers,
     warnings: readiness.warnings,
-    resolved_claims: resolvedClaims,
+    resolved_claims: resolvedClaims.map(c => ({
+      id: c.id, type: c.type, topic: c.topic,
+      evidence: c.evidence, status: c.status, phase_added: c.phase_added,
+      source: c.source, conflicts_with: c.conflicts_with, resolved_by: c.resolved_by,
+      tags: c.tags,
+    })),
     conflict_graph: conflictGraph,
     coverage: coverageResult.coverage,
     corroboration: coverageResult.corroboration,
