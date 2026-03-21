@@ -40,6 +40,8 @@ When the user sends a plain message (no slash command), assess whether a Wheat c
 | "the stakeholder said X", "new constraint: X", "change of direction" | `/feedback` | Stakeholder input |
 | "resolve the conflict", "pick between X and Y" | `/resolve` | Conflict adjudication |
 | "connect to <repo/jira/docs>" | `/connect <type> <target>` | External source linking |
+| "publish to confluence", "push to wiki", "sync to slack" | `/sync <target>` | Artifact publishing |
+| "pull from deepwiki", "import from confluence", "backfill from repo" | `/pull <source>` | External knowledge backfill |
 
 **When NOT to route:** Questions about the framework itself ("how does the compiler work?"), code edits to wheat files, general conversation, ambiguous intent. When in doubt, ask: "That sounds like it could be a `/research` -- want me to run it as a full research pass, or just answer the question?"
 
@@ -92,6 +94,8 @@ Every slash command MUST end its output with a "Next steps" section suggesting 2
 - Sprint is late-phase with gaps -> suggest `/blind-spot`
 - Claims untested against reality -> suggest `/calibrate`
 - Sprint ready for output -> suggest `/brief`, `/present`, or `/handoff`
+- Sprint ready and external wiki configured -> suggest `/sync confluence`
+- Need external context -> suggest `/pull deepwiki <repo>` or `/pull confluence`
 - Multiple sprints exist -> suggest `/merge`
 - Want to understand history -> suggest `/replay`
 

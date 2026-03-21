@@ -19,34 +19,40 @@
  * Zero npm dependencies.
  */
 
-import path from 'path';
-import { readFileSync } from 'fs';
-import { fileURLToPath } from 'url';
-import { track as trackInstall, maybePrompt as installPrompt } from '../lib/install-prompt.js';
+import path from "path";
+import { readFileSync } from "fs";
+import { fileURLToPath } from "url";
+import {
+  track as trackInstall,
+  maybePrompt as installPrompt,
+} from "../lib/install-prompt.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const VERSION = JSON.parse(readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8')).version;
+const VERSION = JSON.parse(
+  readFileSync(path.join(__dirname, "..", "package.json"), "utf8")
+).version;
 
 // ─── Parse arguments ─────────────────────────────────────────────────────────
 
-const verbose = process.argv.includes('--verbose');
+const verbose = process.argv.includes("--verbose");
 function vlog(...a) {
   if (!verbose) return;
   const ts = new Date().toISOString();
-  process.stderr.write(`[${ts}] wheat: ${a.join(' ')}\n`);
+  process.stderr.write(`[${ts}] wheat: ${a.join(" ")}\n`);
 }
 export { vlog, verbose };
 
 const args = process.argv.slice(2);
 const subcommand = args[0];
 
-vlog('startup', `subcommand=${subcommand || '(none)'}`, `cwd=${process.cwd()}`);
+vlog("startup", `subcommand=${subcommand || "(none)"}`, `cwd=${process.cwd()}`);
 
 // Extract --dir or --root flag (applies to all subcommands)
 let targetDir = process.cwd();
-const dirIdx = args.indexOf('--dir') !== -1 ? args.indexOf('--dir') : args.indexOf('--root');
+const dirIdx =
+  args.indexOf("--dir") !== -1 ? args.indexOf("--dir") : args.indexOf("--root");
 if (dirIdx !== -1 && args[dirIdx + 1]) {
   targetDir = path.resolve(args[dirIdx + 1]);
   args.splice(dirIdx, 2);
@@ -57,7 +63,7 @@ const subArgs = args.slice(1);
 
 // ─── Help / Version ──────────────────────────────────────────────────────────
 
-if (!subcommand || subcommand === '--help' || subcommand === '-h') {
+if (!subcommand || subcommand === "--help" || subcommand === "-h") {
   console.log(`wheat v${VERSION} — Research-driven development framework
 
 Usage:
@@ -94,7 +100,7 @@ Documentation: https://github.com/grainulation/wheat`);
   process.exit(0);
 }
 
-if (subcommand === '--version' || subcommand === '-v') {
+if (subcommand === "--version" || subcommand === "-v") {
   console.log(`wheat v${VERSION}`);
   process.exit(0);
 }
@@ -109,28 +115,27 @@ installPrompt(subcommand);
 // ─── Dispatch ────────────────────────────────────────────────────────────────
 
 const commands = {
-  init:       '../lib/init.js',
-  quickstart: '../lib/quickstart.js',
-  compile:    '../lib/compiler.js',
-  guard:   '../lib/guard.js',
-  status:  '../lib/status.js',
-  stats:   '../lib/stats.js',
-  update:  '../lib/update.js',
-  serve:   '../lib/server.js',
-  mcp:     '../lib/serve-mcp.js',
+  init: "../lib/init.js",
+  quickstart: "../lib/quickstart.js",
+  compile: "../lib/compiler.js",
+  guard: "../lib/guard.js",
+  status: "../lib/status.js",
+  stats: "../lib/stats.js",
+  update: "../lib/update.js",
+  serve: "../lib/server.js",
+  mcp: "../lib/serve-mcp.js",
 };
 
 // ─── wheat migrate (not yet implemented) ────────────────────────────────────
-if (subcommand === 'migrate') {
-  console.error('wheat migrate is not yet available');
+if (subcommand === "migrate") {
+  console.error("wheat migrate is not yet available");
   process.exit(1);
 }
 
-
 // Handle "wheat connect <target>" as a compound subcommand
-if (subcommand === 'connect') {
+if (subcommand === "connect") {
   const target = subArgs[0];
-  if (!target || target === '--help' || target === '-h') {
+  if (!target || target === "--help" || target === "-h") {
     console.log(`wheat connect — Link external tools
 
 Usage:
@@ -139,9 +144,11 @@ Usage:
 Run "wheat connect farmer --help" for options.`);
     process.exit(0);
   }
-  if (target === 'farmer') {
-    const connectModule = await import(new URL('../lib/connect.js', import.meta.url).href);
-    await connectModule.run(targetDir, subArgs.slice(1)).catch(err => {
+  if (target === "farmer") {
+    const connectModule = await import(
+      new URL("../lib/connect.js", import.meta.url).href
+    );
+    await connectModule.run(targetDir, subArgs.slice(1)).catch((err) => {
       console.error(`\nwheat connect farmer failed:`, err.message);
       if (process.env.WHEAT_DEBUG) console.error(err.stack);
       process.exit(1);
@@ -153,9 +160,9 @@ Run "wheat connect farmer --help" for options.`);
 }
 
 // Handle "wheat disconnect <target>" as a compound subcommand
-if (subcommand === 'disconnect') {
+if (subcommand === "disconnect") {
   const target = subArgs[0];
-  if (!target || target === '--help' || target === '-h') {
+  if (!target || target === "--help" || target === "-h") {
     console.log(`wheat disconnect — Remove external tool hooks
 
 Usage:
@@ -164,16 +171,20 @@ Usage:
 Run "wheat disconnect farmer --help" for options.`);
     process.exit(0);
   }
-  if (target === 'farmer') {
-    const disconnectModule = await import(new URL('../lib/disconnect.js', import.meta.url).href);
-    await disconnectModule.run(targetDir, subArgs.slice(1)).catch(err => {
+  if (target === "farmer") {
+    const disconnectModule = await import(
+      new URL("../lib/disconnect.js", import.meta.url).href
+    );
+    await disconnectModule.run(targetDir, subArgs.slice(1)).catch((err) => {
       console.error(`\nwheat disconnect farmer failed:`, err.message);
       if (process.env.WHEAT_DEBUG) console.error(err.stack);
       process.exit(1);
     });
     process.exit(0);
   }
-  console.error(`wheat: unknown disconnect target: ${target}\nAvailable: farmer`);
+  console.error(
+    `wheat: unknown disconnect target: ${target}\nAvailable: farmer`
+  );
   process.exit(1);
 }
 
@@ -184,10 +195,10 @@ if (!commands[subcommand]) {
 }
 
 // Load and run the subcommand module
-vlog('dispatch', `loading module for "${subcommand}"`);
+vlog("dispatch", `loading module for "${subcommand}"`);
 const modulePath = new URL(commands[subcommand], import.meta.url).href;
 const handler = await import(modulePath);
-handler.run(targetDir, subArgs).catch(err => {
+handler.run(targetDir, subArgs).catch((err) => {
   console.error(`\nwheat ${subcommand} failed:`, err.message);
   if (process.env.WHEAT_DEBUG) console.error(err.stack);
   process.exit(1);
