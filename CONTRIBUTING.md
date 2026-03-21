@@ -1,85 +1,44 @@
 # Contributing to Wheat
 
-Thanks for considering contributing. Wheat is a small project with big ambitions, and every contribution matters.
+Thanks for your interest in contributing to wheat.
 
-## Quick setup
+## Getting started
 
 ```bash
 git clone https://github.com/grainulation/wheat.git
 cd wheat
-node bin/wheat.js --help
+npm test
 ```
 
-No `npm install` needed — wheat has zero dependencies.
+## Filing issues
 
-## How to contribute
+- Search existing issues before opening a new one
+- Include steps to reproduce for bugs
+- For feature requests, describe the use case and expected behavior
 
-### Report a bug
-Open an issue with:
-- What you expected
-- What happened instead
-- Your Node version (`node --version`)
-- Steps to reproduce
+## Pull requests
 
-### Suggest a feature
-Open an issue describing the use case, not just the solution. "I need X because Y" is more useful than "add X."
+1. Fork the repo and create a branch from `main`
+2. Add tests if you're adding functionality
+3. Make sure `npm test` passes
+4. Keep PRs focused -- one change per PR
 
-### Submit a PR
-1. Fork the repo
-2. Create a branch (`git checkout -b fix/description`)
-3. Make your changes
-4. Run the compiler to verify: `node compiler/wheat-compiler.js --check`
-5. Commit with a clear message
-6. Open a PR
+## Development
 
-### Add a slash command
-Slash commands live in `templates/commands/`. Each is a Markdown file that Claude Code reads as a prompt. To add one:
+Wheat is zero-dependency (Node built-in modules only). Do not add external dependencies.
 
-1. Create `templates/commands/your-command.md`
-2. Follow the pattern of existing commands
-3. Make sure it references `npx @grainulation/wheat compile` (not hardcoded paths)
-4. Add it to the README commands table
-
-## Architecture
-
+```bash
+npm test              # Run all tests
+node compiler/wheat-compiler.js --summary   # Test the compiler
 ```
-bin/wheat.js          CLI entrypoint — dispatches subcommands
-lib/init.js           Conversational sprint bootstrapper
-lib/compiler.js       Thin wrapper → delegates to real compiler
-lib/guard.js          PreToolUse hook for Claude Code
-lib/status.js         Sprint status checker
-lib/update.js         Slash command updater
-compiler/             Full Bran compiler (7-pass pipeline)
-templates/            CLAUDE.md + slash command templates
-```
-
-The key architectural principle: **wheat runs in your project but doesn't live in it.** The package ships the framework; your repo stores the sprint data.
 
 ## Code style
 
-- Zero dependencies. If you need something, write it or use Node built-ins.
-- No transpilation. Ship what you write.
-- CommonJS (`require`). The package must work with Node 18+ without flags.
-- Keep functions small. If a function needs a scroll, split it.
+- No external dependencies
+- No emojis in output or UI
+- Self-contained HTML artifacts (inline CSS/JS, no CDN links)
+- Exit codes: 0 = success, 1 = error/blocked
 
-## Testing
+## License
 
-```bash
-node --test test/
-```
-
-Tests use Node's built-in test runner. No test framework dependencies.
-
-## Commit messages
-
-Follow the existing pattern:
-```
-wheat: <what changed> (<claim IDs if applicable>)
-```
-
-Examples:
-```
-wheat: add /calibrate command
-wheat: fix compiler conflict detection for same-tier claims
-wheat: guard blocks output when compilation stale (p008)
-```
+By contributing, you agree that your contributions will be licensed under the MIT License.
