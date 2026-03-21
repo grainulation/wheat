@@ -142,7 +142,11 @@ function checkAndMigrateSchema(claimsData) {
   return { data: claimsData, errors: [] };
 }
 
-export { CURRENT_SCHEMA, SCHEMA_MIGRATIONS, checkAndMigrateSchema, compareVersions };
+export { CURRENT_SCHEMA, SCHEMA_MIGRATIONS, checkAndMigrateSchema };
+
+// Internal utilities — exported for testing only. Not part of the public API
+// surface and may be removed or changed without notice.
+export const _internals = { compareVersions };
 
 // ─── Pass 1: Schema Validation (+ burn-residue safety check) ────────────────
 function validateSchema(claims) {

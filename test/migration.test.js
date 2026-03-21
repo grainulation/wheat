@@ -14,8 +14,10 @@ import {
   CURRENT_SCHEMA,
   SCHEMA_MIGRATIONS,
   checkAndMigrateSchema,
-  compareVersions,
+  _internals,
 } from '../compiler/wheat-compiler.js';
+
+const { compareVersions } = _internals;
 import { loadClaims } from '../lib/load-claims.js';
 
 // ── compareVersions ──────────────────────────────────────────────────────────
