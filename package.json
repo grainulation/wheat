@@ -32,7 +32,8 @@
     "./server": "./lib/server.js",
     "./guard": "./lib/guard.js",
     "./connect": "./lib/connect.js",
-    "./mcp": "./lib/serve-mcp.js"
+    "./mcp": "./lib/serve-mcp.js",
+    "./load-claims": "./lib/load-claims.js"
   },
   "bin": {
     "wheat": "bin/wheat.js"
@@ -45,9 +46,12 @@
     "templates/"
   ],
   "scripts": {
-    "test": "node --test test/cli.test.js test/compiler.test.js test/guard.test.js test/init.test.js"
+    "test": "node --test test/cli.test.js test/compiler.test.js test/guard.test.js test/init.test.js test/migration.test.js"
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.30.0"
   }
 }

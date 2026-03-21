@@ -111,8 +111,10 @@ function compareVersions(a, b) {
  * - If schema_version < CURRENT_SCHEMA, runs migrations in order.
  */
 function checkAndMigrateSchema(claimsData) {
-  const meta = claimsData.meta || {};
-  const fileVersion = meta.schema_version || '1.0';
+  // schema_version lives at the JSON root (document envelope), not inside meta.
+  // init.js writes it at root; we read from root with fallback to meta for
+  // backwards compatibility with any files that stored it in meta.
+  const fileVersion = claimsData.schema_version || (claimsData.meta || {}).schema_version || '1.0';
 
   // Future version — this compiler cannot handle it
   if (compareVersions(fileVersion, CURRENT_SCHEMA) > 0) {
@@ -132,8 +134,8 @@ function checkAndMigrateSchema(claimsData) {
         compareVersions(currentVersion, CURRENT_SCHEMA) < 0) {
       claimsData = migration.migrate(claimsData);
       currentVersion = migration.to;
-      if (!claimsData.meta) claimsData.meta = {};
-      claimsData.meta.schema_version = currentVersion;
+      // Write schema_version at root level (document envelope convention)
+      claimsData.schema_version = currentVersion;
     }
   }
 

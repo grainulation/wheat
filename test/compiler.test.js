@@ -23,6 +23,7 @@ const COMPILER_PATH = path.resolve(__dirname, '..', 'compiler', 'wheat-compiler.
 /** Build a minimal valid claims.json payload */
 function minimalClaims(overrides = {}) {
   return {
+    schema_version: overrides.schema_version || '1.0',
     meta: {
       question: 'Integration test question',
       initiated: '2026-01-01',
