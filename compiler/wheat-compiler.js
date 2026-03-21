@@ -597,7 +597,7 @@ function generateManifest(compilation, dir, sprintsInfo) {
  * @param {string|null} outputPath - Path to write compilation.json (null = default from config)
  * @returns {object} The compiled output object
  */
-function compile(inputPath, outputPath, dir) {
+function compile(inputPath, outputPath, dir, opts = {}) {
   const compilerVersion = '0.2.0';
   const baseDir = dir || TARGET_DIR;
   const claimsPath = inputPath || path.join(baseDir, config.compiler.claims);
@@ -661,25 +661,28 @@ function compile(inputPath, outputPath, dir) {
 
   // ── Sprint detection (git-based, non-fatal) ──────────────────────────────
   let sprintsInfo = { active: null, sprints: [] };
-  try {
-    sprintsInfo = detectSprints(baseDir);
-  } catch (err) {
-    // Non-fatal: sprint detection failure should not block compilation
-    console.error(`Warning: sprint detection failed — ${err.message}`);
-  }
+  let sprintSummaries = [];
+  if (!opts.skipSprintDetection) {
+    try {
+      sprintsInfo = detectSprints(baseDir);
+    } catch (err) {
+      // Non-fatal: sprint detection failure should not block compilation
+      console.error(`Warning: sprint detection failed — ${err.message}`);
+    }
 
-  // Build sprint summaries: active sprint gets full compilation, others get summary entries
-  const sprintSummaries = sprintsInfo.sprints.map(s => ({
-    name: s.name,
-    path: s.path,
-    status: s.status,
-    phase: s.phase,
-    question: s.question,
-    claims_count: s.claims_count,
-    active_claims: s.active_claims,
-    last_git_activity: s.last_git_activity,
-    git_commit_count: s.git_commit_count,
-  }));
+    // Build sprint summaries: active sprint gets full compilation, others get summary entries
+    sprintSummaries = sprintsInfo.sprints.map(s => ({
+      name: s.name,
+      path: s.path,
+      status: s.status,
+      phase: s.phase,
+      question: s.question,
+      claims_count: s.claims_count,
+      active_claims: s.active_claims,
+      last_git_activity: s.last_git_activity,
+      git_commit_count: s.git_commit_count,
+    }));
+  }
 
   const compilation = {
     compiled_at: new Date().toISOString(),  // Non-deterministic metadata (excluded from certificate)
@@ -718,7 +721,9 @@ function compile(inputPath, outputPath, dir) {
 
   // Generate topic-map manifest (wheat-manifest.json)
   // Pass sprintsInfo to avoid re-running detectSprints in manifest generator
-  generateManifest(compilation, baseDir, sprintsInfo);
+  if (!opts.skipSprintDetection) {
+    generateManifest(compilation, baseDir, sprintsInfo);
+  }
 
   return compilation;
 }
@@ -784,6 +789,7 @@ Usage:
 
 Options:
   --dir <path>  Resolve all paths relative to <path> instead of script location
+  --quiet, -q   One-liner output (for scripts and AI agents)
   --help, -h    Show this help message
   --json        Output as JSON (works with --summary, --check, --gate, --scan, --next)`);
   process.exit(0);
@@ -860,8 +866,31 @@ if (outputIdx !== -1 && args[outputIdx + 1]) {
   outputPath = path.resolve(args[outputIdx + 1]);
 }
 
-const compilation = compile(inputPath, outputPath);
 const jsonFlag = args.includes('--json');
+const quietFlag = args.includes('--quiet') || args.includes('-q');
+const compilation = compile(inputPath, outputPath, undefined, { skipSprintDetection: quietFlag && !args.includes('--summary') });
+
+// --quiet / -q: one-liner output for scripts and AI agents (~13 tokens vs ~4,600)
+if (quietFlag && !args.includes('--summary')) {
+  const c = compilation;
+  const conflicts = c.sprint_meta.conflicted_claims || 0;
+  const suffix = conflicts > 0 ? ` (${conflicts} conflicts)` : '';
+  const line = `wheat: compiled ${c.sprint_meta.total_claims} claims, ${Object.keys(c.coverage).length} topics${suffix}`;
+  if (jsonFlag) {
+    console.log(JSON.stringify({
+      status: c.status,
+      claims: c.sprint_meta.total_claims,
+      active: c.sprint_meta.active_claims,
+      conflicts,
+      topics: Object.keys(c.coverage).length,
+      errors: c.errors.length,
+      warnings: c.warnings.length,
+    }));
+  } else {
+    console.log(line);
+  }
+  process.exit(c.status === 'blocked' ? 1 : 0);
+}
 
 if (args.includes('--summary')) {
   const c = compilation;
