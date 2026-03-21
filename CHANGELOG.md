@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.3 — 2026-03-21
+
+### Performance
+
+- **`--quiet` mode** now skips sprint detection and manifest generation (3.5x faster)
+- `detect-sprints.js` consolidated from 2 batch git calls to 1
+
+### Docs & Governance
+
+- Added CODE_OF_CONDUCT.md and CONTRIBUTING.md
+
 ## 1.0.2 — 2026-03-20
 
 ### Performance
