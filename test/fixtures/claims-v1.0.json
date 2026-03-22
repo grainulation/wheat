@@ -13,7 +13,11 @@
       "type": "constraint",
       "topic": "test-topic",
       "content": "This is a v1.0 fixture claim for migration testing.",
-      "source": { "origin": "stakeholder", "artifact": null, "connector": null },
+      "source": {
+        "origin": "stakeholder",
+        "artifact": null,
+        "connector": null
+      },
       "evidence": "stated",
       "status": "active",
       "phase_added": "define",
@@ -27,7 +31,11 @@
       "type": "factual",
       "topic": "test-topic",
       "content": "A second claim to ensure multi-claim migration works.",
-      "source": { "origin": "web", "artifact": "https://example.com", "connector": null },
+      "source": {
+        "origin": "web",
+        "artifact": "https://example.com",
+        "connector": null
+      },
       "evidence": "web",
       "status": "active",
       "phase_added": "research",

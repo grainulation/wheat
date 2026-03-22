@@ -5,6 +5,7 @@ You are checking what actually happened after a sprint's recommendations were im
 ## Process
 
 1. **Parse the outcome**: The user provides outcome data, either as:
+
    - Free text: `/calibrate --outcome "Shipped Auth0. Took 3 weeks not 2. Costs $18K/year not $15K."`
    - Claim-specific: `/calibrate e003 "actual: 3 weeks, $18K/year"`
 
@@ -15,6 +16,7 @@ You are checking what actually happened after a sprint's recommendations were im
 4. **Compute accuracy scorecard** by evidence tier, source origin, and claim type.
 
 5. **Write/update calibration.json** and add claims to claims.json:
+
    ```bash
    npx @grainulation/wheat compile --summary
    ```

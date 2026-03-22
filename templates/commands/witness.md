@@ -5,6 +5,7 @@ You are corroborating (or contradicting) a specific claim using an external sour
 ## Process
 
 1. **Parse arguments**: The user provides a claim ID and an external URL.
+
    - Example: `/witness p001 https://nodejs.org/api/http.html`
    - If only a claim ID is given, ask for the URL
    - If only a URL is given, ask which claim to witness
@@ -14,13 +15,15 @@ You are corroborating (or contradicting) a specific claim using an external sour
 3. **Fetch the external source**: Use web fetch to read the URL. If it's documentation, source code, or an article, extract the relevant content.
 
 4. **Classify the relationship** between the external evidence and the claim:
+
    - **Full support** -> external source confirms the claim completely
    - **Partial support** -> confirms some assertions but adds caveats
    - **Partial contradiction** -> external source challenges some assertions
    - **Full contradiction** -> external source directly contradicts the claim
 
 5. **Determine evidence tier** based on source type:
-   - Official docs (*.nodejs.org, docs.*, RFC) -> `documented`
+
+   - Official docs (_.nodejs.org, docs._, RFC) -> `documented`
    - Blog posts, Stack Overflow, tutorials -> `web`
    - GitHub source code, changelogs -> `documented`
    - Production metrics, dashboards -> `production`
@@ -52,6 +55,7 @@ You are corroborating (or contradicting) a specific claim using an external sour
 ```
 
 **Important relationship -> action mapping:**
+
 - Full/partial support: No `conflicts_with`. The witness corroborates.
 - Partial contradiction: Set `conflicts_with: ["<target claim ID>"]`. Explain the contradiction clearly in content.
 - Full contradiction: Set `conflicts_with: ["<target claim ID>"]`. This becomes a challenge claim effectively.

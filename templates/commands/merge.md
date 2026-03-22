@@ -5,10 +5,12 @@ You are merging claims from another sprint into the current one. This is for whe
 ## Process
 
 1. **Parse the argument**: The user provides a path to another sprint's claims.json.
+
    - Example: `/merge ../auth-sprint/claims.json`
    - If no path given, ask for it.
 
 2. **Validate both claim sets**:
+
    - Read the current `claims.json`
    - Read the incoming claims file
    - Validate both against the compiler schema:
@@ -19,6 +21,7 @@ You are merging claims from another sprint into the current one. This is for whe
 3. **Determine the sprint slug**: Derive from the incoming sprint's `meta.question`.
 
 4. **Resolve ID collisions**: Prefix all incoming claim IDs with the sprint slug:
+
    - `r001` -> `auth-r001`
    - Also update all `conflicts_with` and `resolved_by` references.
 

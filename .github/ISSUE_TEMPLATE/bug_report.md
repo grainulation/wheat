@@ -1,9 +1,9 @@
 ---
 name: Bug report
 about: Something isn't working as expected
-title: ''
+title: ""
 labels: bug
-assignees: ''
+assignees: ""
 ---
 
 **What happened?**
@@ -13,10 +13,12 @@ A clear description of the bug.
 What should have happened instead.
 
 **Steps to reproduce**
+
 1. Run `wheat ...`
 2. ...
 
 **Environment**
+
 - Node version: `node --version`
 - OS: (macOS/Linux/Windows)
 - Wheat version: `wheat --version`

@@ -7,6 +7,7 @@ You are building a proof-of-concept for the current Wheat sprint. Read CLAUDE.md
 1. **Determine what to prototype**: Based on the user's argument and existing research claims. If no argument given, look at the research and suggest the most promising option to test.
 
 2. **Build it**: Create a working prototype in `prototypes/<name>/`. This should be:
+
    - Minimal — just enough to test the hypothesis
    - Runnable — include a README or run script
    - Measurable — produce output that can be evaluated
@@ -39,6 +40,7 @@ Every prototype finding becomes a claim with evidence tier `tested`:
 ```
 
 **Critical**: Check if any existing research claims (evidence: "web") are contradicted by prototype results. If so:
+
 - Set `conflicts_with` on both claims
 - The compiler will auto-resolve in favor of `tested` over `web`
 

@@ -23,34 +23,36 @@ When the user sends a plain message (no slash command), assess whether a Wheat c
 
 **Route by intent:**
 
-| User says something like... | Route to | Why |
-|---|---|---|
-| "look into X", "what about X", "explore X", "how does X work" | `/research X` | Information gathering |
-| "build X", "try X", "make a quick X", "test whether X" | `/prototype` | Hands-on validation |
-| "is p001 really true?", "I doubt X", "what if X is wrong" | `/challenge <id>` | Adversarial testing |
-| "check this: <url>", "does <url> support X", "verify X against <url>" | `/witness <id> <url>` | External corroboration |
-| "what are we missing", "any gaps?", "what haven't we considered" | `/blind-spot` | Structural gap analysis |
-| "where are we", "what's the status", "show me the dashboard" | `/status` | Sprint snapshot |
-| "write it up", "give me the recommendation", "summarize for the team" | `/brief` | Decision document |
-| "make slides", "prepare for the meeting" | `/present` | Stakeholder presentation |
-| "someone else is taking over", "hand this off", "document for successor" | `/handoff` | Knowledge transfer |
-| "combine with the other sprint", "merge these" | `/merge <path>` | Cross-sprint merge |
-| "how did we get here", "show the history", "what changed over time" | `/replay` | Sprint archaeology |
-| "we shipped, here's what happened", "actual results were X" | `/calibrate --outcome "X"` | Prediction scoring |
-| "the stakeholder said X", "new constraint: X", "change of direction" | `/feedback` | Stakeholder input |
-| "resolve the conflict", "pick between X and Y" | `/resolve` | Conflict adjudication |
-| "connect to <repo/jira/docs>" | `/connect <type> <target>` | External source linking |
-| "publish to confluence", "push to wiki", "sync to slack" | `/sync <target>` | Artifact publishing |
-| "pull from deepwiki", "import from confluence", "backfill from repo" | `/pull <source>` | External knowledge backfill |
+| User says something like...                                              | Route to                   | Why                         |
+| ------------------------------------------------------------------------ | -------------------------- | --------------------------- |
+| "look into X", "what about X", "explore X", "how does X work"            | `/research X`              | Information gathering       |
+| "build X", "try X", "make a quick X", "test whether X"                   | `/prototype`               | Hands-on validation         |
+| "is p001 really true?", "I doubt X", "what if X is wrong"                | `/challenge <id>`          | Adversarial testing         |
+| "check this: <url>", "does <url> support X", "verify X against <url>"    | `/witness <id> <url>`      | External corroboration      |
+| "what are we missing", "any gaps?", "what haven't we considered"         | `/blind-spot`              | Structural gap analysis     |
+| "where are we", "what's the status", "show me the dashboard"             | `/status`                  | Sprint snapshot             |
+| "write it up", "give me the recommendation", "summarize for the team"    | `/brief`                   | Decision document           |
+| "make slides", "prepare for the meeting"                                 | `/present`                 | Stakeholder presentation    |
+| "someone else is taking over", "hand this off", "document for successor" | `/handoff`                 | Knowledge transfer          |
+| "combine with the other sprint", "merge these"                           | `/merge <path>`            | Cross-sprint merge          |
+| "how did we get here", "show the history", "what changed over time"      | `/replay`                  | Sprint archaeology          |
+| "we shipped, here's what happened", "actual results were X"              | `/calibrate --outcome "X"` | Prediction scoring          |
+| "the stakeholder said X", "new constraint: X", "change of direction"     | `/feedback`                | Stakeholder input           |
+| "resolve the conflict", "pick between X and Y"                           | `/resolve`                 | Conflict adjudication       |
+| "connect to <repo/jira/docs>"                                            | `/connect <type> <target>` | External source linking     |
+| "publish to confluence", "push to wiki", "sync to slack"                 | `/sync <target>`           | Artifact publishing         |
+| "pull from deepwiki", "import from confluence", "backfill from repo"     | `/pull <source>`           | External knowledge backfill |
 
 **When NOT to route:** Questions about the framework itself ("how does the compiler work?"), code edits to wheat files, general conversation, ambiguous intent. When in doubt, ask: "That sounds like it could be a `/research` -- want me to run it as a full research pass, or just answer the question?"
 
 **Announce the routing:** Always tell the user what you're doing:
+
 > Running as `/research "SSE scalability"` -- this will create claims and compile. Say "just answer" if you wanted a quick response instead.
 
 This gives the user a chance to redirect before the full pipeline runs.
 
 ### Claims System (Bran IR)
+
 - All findings are tracked as typed claims in `claims.json`
 - Every slash command that produces findings MUST append claims
 - Every slash command that produces output artifacts MUST run `wheat compile` first
@@ -58,6 +60,7 @@ This gives the user a chance to redirect before the full pipeline runs.
 - The compiler is the enforcement layer -- if it says blocked, no artifact gets produced
 
 ### Claim Types
+
 - `constraint` -- hard requirements, non-negotiable boundaries
 - `factual` -- verifiable statements about the world
 - `estimate` -- projections, approximations, ranges
@@ -66,6 +69,7 @@ This gives the user a chance to redirect before the full pipeline runs.
 - `feedback` -- stakeholder input, opinions, direction changes
 
 ### Evidence Tiers (lowest to highest)
+
 1. `stated` -- stakeholder said it, no verification
 2. `web` -- found online, not independently verified
 3. `documented` -- in source code, official docs, or ADRs
@@ -73,6 +77,7 @@ This gives the user a chance to redirect before the full pipeline runs.
 5. `production` -- measured from live production systems
 
 ### Claim ID Prefixes
+
 - `d###` -- define phase (from /init)
 - `r###` -- research phase (from /research)
 - `p###` -- prototype phase (from /prototype)
@@ -85,6 +90,7 @@ This gives the user a chance to redirect before the full pipeline runs.
 - `<sprint-slug>-<prefix>###` -- merged claims keep original prefix with sprint slug (from /merge)
 
 ### Next Command Hints
+
 Every slash command MUST end its output with a "Next steps" section suggesting 2-4 concrete commands the user could run next, based on the current sprint state. Use this decision tree:
 
 - Unresolved conflicts exist -> suggest `/resolve`
@@ -100,6 +106,7 @@ Every slash command MUST end its output with a "Next steps" section suggesting 2
 - Want to understand history -> suggest `/replay`
 
 Format:
+
 ```
 Next steps:
   /challenge p001     -- stress-test the zero-deps claim
@@ -108,18 +115,21 @@ Next steps:
 ```
 
 ### Git Discipline
+
 - Every slash command that modifies claims.json auto-commits
 - Commit format: `wheat: /<command> <summary> -- added/updated <claim IDs>`
 - `git log --oneline claims.json` = the sprint event log
 - Compilation certificate references the claims hash for reproducibility
 
 ### Output Artifacts
+
 - HTML files are self-contained (inline CSS/JS, no external deps)
 - Use the dark scroll-snap template for explainers and presentations
 - Use the dashboard template for status and comparisons
 - PDFs generated via `node build-pdf.js <file.md>`
 
 ### Directory Structure
+
 - `research/` -- topic explainers (HTML + MD)
 - `prototypes/` -- working proof-of-concepts
 - `evidence/` -- evaluation results and comparison dashboards

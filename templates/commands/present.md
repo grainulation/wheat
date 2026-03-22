@@ -5,6 +5,7 @@ You are generating a presentation for this Wheat sprint. Same Bran compilation g
 ## Process
 
 1. **Run the compiler with check**:
+
    ```bash
    npx @grainulation/wheat compile --check
    ```
@@ -16,6 +17,7 @@ You are generating a presentation for this Wheat sprint. Same Bran compilation g
 3. **Generate presentation HTML**: Create `output/presentation.html` — a self-contained, scroll-snap presentation using a dark theme.
 
    Structure the slides as:
+
    1. **Title slide**: Sprint question, date, audience
    2. **The Problem**: Why this research was needed (from constraint claims)
    3. **What We Found**: Key research findings (2-3 slides, from factual claims)
@@ -26,6 +28,7 @@ You are generating a presentation for this Wheat sprint. Same Bran compilation g
    8. **Appendix**: Compilation certificate, claim count, evidence summary
 
    Each slide should:
+
    - Be visually clean (use the dark theme, accent colors, cards)
    - Reference claim IDs subtly (small text at bottom of relevant sections)
    - Include data visualizations where relevant (CSS-only charts, comparison tables)

@@ -11,6 +11,7 @@ You are stress-testing a specific claim by researching the **strongest possible 
 3. **Research AGAINST the claim**: Use web search to find the strongest counter-evidence. Search for problems, limitations, failure modes, alternatives, and contradictions. Be adversarial — your job is to find what's wrong, not confirm what's right.
 
    Guidelines for research:
+
    - Focus on factual counter-evidence, not opinion
    - Only challenge claims at `web` tier or above (challenging `stated` is pointless — they're already known-weak)
    - Distinguish "contradicts the claim" from "adds a related concern"
@@ -46,9 +47,11 @@ You are stress-testing a specific claim by researching the **strongest possible 
 ```
 
 5. **Run the compiler**:
+
    ```bash
    npx @grainulation/wheat compile --summary
    ```
+
    Report whether challenges created new conflicts and whether the compiler auto-resolved any.
 
 6. **Assess the outcome**:

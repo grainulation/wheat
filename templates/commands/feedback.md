@@ -7,6 +7,7 @@ Read CLAUDE.md and claims.json for context.
 ## Process
 
 1. **Parse the feedback**: The user's argument contains stakeholder input. This could be:
+
    - A new constraint ("CTO says prioritize speed over cost")
    - A correction ("the compliance team says we need SOC2 Type II, not Type I")
    - A direction change ("skip the custom build option, focus on Auth0 vs Clerk")
@@ -38,6 +39,7 @@ Read CLAUDE.md and claims.json for context.
 3. **Check for conflicts**: Does this feedback contradict existing claims? If a stakeholder says "budget is $10K max" but existing research shows a solution costing $15K, that's a conflict. Mark it.
 
 4. **Run the compiler**:
+
    ```bash
    npx @grainulation/wheat compile --summary
    ```

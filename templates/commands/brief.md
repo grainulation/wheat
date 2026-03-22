@@ -7,11 +7,13 @@ You are compiling the final decision brief for this Wheat sprint. This is the Br
 ## Process
 
 1. **Run the compiler with check**:
+
    ```bash
    npx @grainulation/wheat compile --check
    ```
 
    **If the compiler returns an error (exit code 1), STOP.** Do not generate a brief. Instead:
+
    - Show the user the compilation errors
    - Explain what needs to be resolved
    - Suggest specific commands to fix each blocker
@@ -32,32 +34,40 @@ You are compiling the final decision brief for this Wheat sprint. This is the Br
    ```markdown
    # Decision Brief: [Sprint Question]
 
-   **Date**: [date]  |  **Audience**: [audience]  |  **Phase**: Compiled
+   **Date**: [date] | **Audience**: [audience] | **Phase**: Compiled
 
    ## Executive Summary
+
    [2-3 sentences: the recommendation and why]
 
    ## Recommendation
+
    [The recommended course of action, with specific next steps]
 
    ## Evidence Summary
+
    [For each topic: key findings, evidence tier, source]
    [Every statement must cite a claim ID]
 
    ## Tradeoffs and Risks
+
    [Risks identified, with evidence tier for each]
 
    ## Resolved Conflicts
+
    [What disagreed, how it was resolved, what evidence won]
 
    ## Appendix: Claim Inventory
+
    [Table of all resolved claims: ID, type, content, evidence, source]
 
    ---
+
    Compilation certificate: [hash] | Compiler: wheat v[version] | Claims: [count] | Compiled: [timestamp]
    ```
 
 6. **Generate PDF** (if build-pdf.js exists):
+
    ```bash
    node build-pdf.js output/brief.md
    ```

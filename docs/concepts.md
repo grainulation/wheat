@@ -6,15 +6,15 @@ This guide explains the core ideas behind wheat. If you've run `npx @grainulatio
 
 If you've used CI/CD, you already understand wheat. The analogy:
 
-| You know this | Wheat equivalent |
-|---|---|
-| Test assertion | Claim (typed finding about the decision space) |
-| Test suite | `claims.json` (all assertions for this investigation) |
-| CI pipeline | The compiler (7-pass validation) |
-| Build artifact | Decision brief, presentation, handoff doc |
-| Test coverage | Evidence tier (how well-verified each assertion is) |
-| Failing test | Unresolved conflict (contradicting assertions) |
-| Green build | Clean compilation — safe to ship |
+| You know this  | Wheat equivalent                                      |
+| -------------- | ----------------------------------------------------- |
+| Test assertion | Claim (typed finding about the decision space)        |
+| Test suite     | `claims.json` (all assertions for this investigation) |
+| CI pipeline    | The compiler (7-pass validation)                      |
+| Build artifact | Decision brief, presentation, handoff doc             |
+| Test coverage  | Evidence tier (how well-verified each assertion is)   |
+| Failing test   | Unresolved conflict (contradicting assertions)        |
+| Green build    | Clean compilation — safe to ship                      |
 
 Traditional planning tools (Notion docs, ADRs, tools like Obra) generate a big plan upfront, then you execute. That's waterfall planning — same problem as writing all your code then testing at the end. Wheat validates continuously: every finding is checked as it comes in, conflicts are caught immediately, and the compiler blocks output if your evidence doesn't hold up.
 
@@ -47,14 +47,14 @@ A wheat "sprint" is closer to a build than a Scrum sprint. It's a single investi
 
 A wheat sprint moves through phases. Each phase has commands that produce claims with matching ID prefixes:
 
-| Phase | What happens | Commands | Claim prefix |
-|-------|-------------|----------|-------------|
-| **Define** | Frame the question, set constraints | `/init` | `d###` |
-| **Research** | Gather evidence, explore the problem space | `/research`, `/witness` | `r###`, `w###` |
-| **Prototype** | Build something testable, validate findings | `/prototype` | `p###` |
-| **Evaluate** | Challenge assumptions, find blind spots | `/challenge`, `/blind-spot` | `x###` |
-| **Feedback** | Incorporate stakeholder input, recalibrate | `/feedback`, `/calibrate` | `f###`, `cal###` |
-| **Output** | Compile the decision document | `/brief`, `/present`, `/handoff` | (consumes claims, doesn't create them) |
+| Phase         | What happens                                | Commands                         | Claim prefix                           |
+| ------------- | ------------------------------------------- | -------------------------------- | -------------------------------------- |
+| **Define**    | Frame the question, set constraints         | `/init`                          | `d###`                                 |
+| **Research**  | Gather evidence, explore the problem space  | `/research`, `/witness`          | `r###`, `w###`                         |
+| **Prototype** | Build something testable, validate findings | `/prototype`                     | `p###`                                 |
+| **Evaluate**  | Challenge assumptions, find blind spots     | `/challenge`, `/blind-spot`      | `x###`                                 |
+| **Feedback**  | Incorporate stakeholder input, recalibrate  | `/feedback`, `/calibrate`        | `f###`, `cal###`                       |
+| **Output**    | Compile the decision document               | `/brief`, `/present`, `/handoff` | (consumes claims, doesn't create them) |
 
 Phases are not strictly sequential. You can jump back to research after a prototype reveals gaps, or challenge a claim at any point. The claim IDs tell you where each finding came from.
 
@@ -62,13 +62,13 @@ Phases are not strictly sequential. You can jump back to research after a protot
 
 Not all evidence is equal. Wheat grades every claim on a five-tier scale — think of it like test coverage for your assertions:
 
-| Tier | Meaning | Analogy | Example |
-|------|---------|---------|---------|
-| `stated` | Someone said it, no verification | Untested code | "The CTO mentioned we need HIPAA compliance" |
-| `web` | Found online, not independently verified | Manual QA | "Stack Overflow says this library handles 10k connections" |
-| `documented` | In source code, official docs, or ADRs | Unit tests | "The Postgres docs say JSONB supports GIN indexes" |
-| `tested` | Verified via prototype or benchmark | Integration tests | "Our prototype handled 500 concurrent connections in 43ms" |
-| `production` | Measured from live production systems | Battle-tested in prod | "Our APM shows p99 latency of 120ms under real traffic" |
+| Tier         | Meaning                                  | Analogy               | Example                                                    |
+| ------------ | ---------------------------------------- | --------------------- | ---------------------------------------------------------- |
+| `stated`     | Someone said it, no verification         | Untested code         | "The CTO mentioned we need HIPAA compliance"               |
+| `web`        | Found online, not independently verified | Manual QA             | "Stack Overflow says this library handles 10k connections" |
+| `documented` | In source code, official docs, or ADRs   | Unit tests            | "The Postgres docs say JSONB supports GIN indexes"         |
+| `tested`     | Verified via prototype or benchmark      | Integration tests     | "Our prototype handled 500 concurrent connections in 43ms" |
+| `production` | Measured from live production systems    | Battle-tested in prod | "Our APM shows p99 latency of 120ms under real traffic"    |
 
 The compiler uses evidence tiers to warn you. A recommendation backed only by `stated` evidence gets flagged — like shipping code with 0% coverage. You don't have to fix every warning, but you have to see them.
 

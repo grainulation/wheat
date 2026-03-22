@@ -5,6 +5,7 @@ You are generating the current status dashboard for this Wheat sprint.
 ## Process
 
 1. **Run the compiler**:
+
    ```bash
    npx @grainulation/wheat compile --summary
    ```
@@ -12,6 +13,7 @@ You are generating the current status dashboard for this Wheat sprint.
 2. **Read compilation.json** for all dashboard data.
 
 3. **Read git log** for recent activity:
+
    ```bash
    git log --oneline -20 claims.json
    ```
@@ -23,12 +25,14 @@ You are generating the current status dashboard for this Wheat sprint.
    **Phase Progress**: Visual progress through define -> research -> prototype -> evaluate -> compile. Show which phases have claims.
 
    **Evidence Strength by Topic**: For each topic in coverage, show:
+
    - Topic name
    - Number of claims
    - Highest evidence tier (with color coding: green=tested/production, amber=documented, red=web/stated)
    - Visual bar representing depth
 
    **Conflict Status**:
+
    - Resolved conflicts with winner/loser and reason
    - Unresolved conflicts highlighted as blockers
    - "Compilation readiness" indicator

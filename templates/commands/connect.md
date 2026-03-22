@@ -5,41 +5,51 @@ You are connecting an external tool or data source to this Wheat sprint. Connect
 ## Connector Types
 
 ### GitHub Repository
+
 ```
 /connect github <org/repo>
 ```
+
 - Read the repo's README, key source files, architecture
 - Extract claims about existing infrastructure, patterns, dependencies
 - Evidence tier: `documented`
 - Track as connector in claims.json source field
 
 ### Atlas File
+
 ```
 /connect atlas <path-to-atlas.yaml>
 ```
+
 - Read a RepoAtlas-style YAML file for multi-repo routing intelligence
 - Extract claims about repo ownership, dependencies, infrastructure
 - Evidence tier: `documented`
 
 ### Jira / Linear (via MCP)
+
 ```
 /connect jira <project-key>
 ```
+
 - Read relevant tickets, priorities, blockers
 - Extract constraint and risk claims
 - Evidence tier: `stated` (tickets are stakeholder input)
 
 ### Monitoring (Datadog, Grafana, etc.)
+
 ```
 /connect monitoring <dashboard-name>
 ```
+
 - Pull current metrics if accessible
 - Evidence tier: `production` (highest tier)
 
 ### Confluence / Notion (via MCP)
+
 ```
 /connect docs <space/page>
 ```
+
 - Read existing documentation, ADRs, decision records
 - Evidence tier: `documented`
 
@@ -78,6 +88,7 @@ You are connecting an external tool or data source to this Wheat sprint. Connect
 ```
 
 4. **Register the connector** in claims.json `meta.connectors`:
+
 ```json
 { "type": "github", "target": "org/repo", "connected": "<ISO timestamp>" }
 ```

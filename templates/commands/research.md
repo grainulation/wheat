@@ -50,6 +50,7 @@ Check for new conflicts introduced. Report them to the user.
 ## Generate HTML explainer
 
 Create `research/<topic-slug>.html` — a self-contained HTML explainer using the dark scroll-snap template style. This should be:
+
 - Beautiful and presentable (stakeholders will see this)
 - Organized into logical sections (scroll-snap slides)
 - Include key findings, comparisons, tradeoffs

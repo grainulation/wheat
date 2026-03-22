@@ -7,18 +7,22 @@ Read CLAUDE.md for sprint context and claims.json for all existing claims.
 ## Process
 
 1. **Run the compiler first**:
+
    ```bash
    npx @grainulation/wheat compile --summary
    ```
+
    Identify conflicts, weak evidence areas, and coverage gaps.
 
 2. **Evaluate systematically**: For each topic with weak or conflicting evidence:
+
    - Run benchmarks, cost calculations, feature comparisons
    - Test prototypes against real conditions
    - Pull production metrics from connected tools if available
    - Cross-reference claims against each other
 
 3. **Resolve conflicts**: When evaluation produces a clear answer:
+
    - Update the winning claim's evidence tier
    - Mark the losing claim as `superseded` with `resolved_by`
    - Add new evaluation claims (evidence: "tested") if needed

@@ -5,6 +5,7 @@ You are pulling knowledge from external sources into the current Wheat sprint. R
 ## Process
 
 1. **Identify the source**: The user's argument tells you where to pull from. Supported sources:
+
    - **DeepWiki** (`deepwiki <github-org/repo>`): Pull architecture docs and dependency analysis from deepwiki.com
    - **Confluence** (`confluence <space-key>` or `confluence <page-url>`): Pull content from Confluence pages via Atlassian MCP
    - **Silo** (`silo <pack-name>`): Pull a knowledge pack via the silo MCP server
@@ -13,6 +14,7 @@ You are pulling knowledge from external sources into the current Wheat sprint. R
    - No argument: scan CLAUDE.md connectors and pull from all configured sources
 
 2. **Fetch content**: Use the appropriate MCP server or web fetch:
+
    - **DeepWiki**: Fetch `https://deepwiki.com/<org>/<repo>` — extract architecture overview, component descriptions, dependency graph, and key design decisions. DeepWiki auto-generates structured wiki docs from public GitHub repos. If the silo MCP is available, check `mcp__silo__silo_search` for cached DeepWiki content first.
    - **Confluence**: Use `mcp__atlassian__confluence_search` or `mcp__atlassian__confluence_get_page` to fetch page content
    - **Silo**: Use `mcp__silo__silo_pull` to retrieve the knowledge pack
@@ -20,6 +22,7 @@ You are pulling knowledge from external sources into the current Wheat sprint. R
    - **URL**: Use web fetch to retrieve content
 
 3. **Extract claims from content**: Parse the fetched content into typed claims:
+
    - Architecture descriptions → `factual` claims about system structure
    - Version numbers, metrics, stats → `factual` claims with evidence tier `documented` (for official sources) or `web` (for community content)
    - Known issues, limitations → `risk` claims
@@ -28,11 +31,13 @@ You are pulling knowledge from external sources into the current Wheat sprint. R
    - Estimates, projections → `estimate` claims
 
 4. **Deduplicate against existing claims**: Before adding, check claims.json for:
+
    - Exact content matches (skip)
    - Semantic overlaps (flag as potential conflict with `conflicts_with`)
    - Claims that the new data supersedes (mark conflicts)
 
 5. **Add claims**: Append new claims with IDs continuing the `r###` sequence. Set source appropriately:
+
    ```json
    {
      "source": {
@@ -69,6 +74,7 @@ You are pulling knowledge from external sources into the current Wheat sprint. R
 ## DeepWiki integration notes
 
 DeepWiki (deepwiki.com) auto-generates structured documentation for any public GitHub repo. It provides:
+
 - Architecture overviews with component descriptions
 - Dependency graphs and data flow diagrams
 - API documentation extracted from source code
@@ -77,6 +83,7 @@ DeepWiki (deepwiki.com) auto-generates structured documentation for any public G
 To use: replace `github.com` with `deepwiki.com` in any repo URL. For self-hosted repos, DeepWiki-Open can be deployed internally.
 
 When pulling from DeepWiki, prioritize:
+
 1. Architecture claims (system structure, component relationships)
 2. Dependency claims (what depends on what, version requirements)
 3. API surface claims (public interfaces, protocols)
@@ -85,6 +92,7 @@ When pulling from DeepWiki, prioritize:
 ## Next steps suggestions
 
 After pull completes, suggest based on what was found:
+
 ```
 Next steps:
   /research <topic>     -- deep dive on topics surfaced by pull

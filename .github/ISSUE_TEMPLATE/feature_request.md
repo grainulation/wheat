@@ -1,9 +1,9 @@
 ---
 name: Feature request
 about: Suggest a new command, claim type, or capability
-title: ''
+title: ""
 labels: enhancement
-assignees: ''
+assignees: ""
 ---
 
 **What's the use case?**

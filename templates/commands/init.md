@@ -16,6 +16,7 @@ Update the Sprint section of CLAUDE.md with the question, audience, constraints,
 ## Step 2: Seed claims.json
 
 Update claims.json with:
+
 - `meta.question` — the sprint question
 - `meta.initiated` — today's date (ISO format)
 - `meta.audience` — array of audience labels
@@ -23,6 +24,7 @@ Update claims.json with:
 - `meta.connectors` — empty array
 
 Add constraint claims (type: "constraint") for each hard requirement identified. Use IDs starting with `d001`. Each claim needs:
+
 ```json
 {
   "id": "d001",
@@ -61,6 +63,7 @@ Commit with message: `wheat: /init "<sprint question short>" — seeded <claim I
 ## Step 6: Tell the user what's next
 
 Tell them:
+
 - Their problem statement is in `output/problem-statement.html` — they can open it in a browser and share it
 - Next step: `/research <topic>` to start exploring, or `/connect` to link org tools
 - Remind them that `/status` shows the dashboard at any time

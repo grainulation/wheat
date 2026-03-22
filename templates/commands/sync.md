@@ -7,12 +7,14 @@ You are publishing the current Wheat sprint's artifacts to external platforms. R
 1. **Compile first**: Run `wheat compile --summary` to ensure compilation is fresh. If compilation is blocked, stop and tell the user to fix issues first.
 
 2. **Detect available targets**: Check which MCP servers are available:
+
    - **Confluence** (via Atlassian MCP): Push the compiled brief as a Confluence page. Use `mcp__atlassian__confluence_create_page` or `mcp__atlassian__confluence_update_page`.
    - **Slack** (via Slack MCP): Post a sprint summary to a channel. Use `mcp__slack__send_message`.
    - **Notion** (via Notion MCP): Create a page with the brief content.
    - **Local file export**: Always available — write to `output/` directory.
 
 3. **Confluence publish** (primary target):
+
    - Read `compilation.json` for the certified output
    - Read `output/brief.html` if it exists, otherwise generate the brief first via `/brief`
    - Convert the brief to Confluence Storage Format (XHTML subset):
@@ -27,6 +29,7 @@ You are publishing the current Wheat sprint's artifacts to external platforms. R
    - Add a comment with sync metadata: timestamp, claims hash from compilation certificate, claim count
 
 4. **Build sync manifest**: After publishing, append a sync record to `output/sync-log.json`:
+
    ```json
    {
      "timestamp": "<ISO>",
@@ -39,13 +42,18 @@ You are publishing the current Wheat sprint's artifacts to external platforms. R
    ```
 
 5. **Add a sync claim**: Append a claim recording the sync event:
+
    ```json
    {
      "id": "r<next>",
      "type": "factual",
      "topic": "sync",
      "content": "Sprint artifacts published to <target> at <url>. Claims hash: <hash>. <count> active claims at time of sync.",
-     "source": { "origin": "mcp", "artifact": "<url>", "connector": "<target>" },
+     "source": {
+       "origin": "mcp",
+       "artifact": "<url>",
+       "connector": "<target>"
+     },
      "evidence": "documented",
      "status": "active",
      "phase_added": "<phase>",
@@ -76,6 +84,7 @@ You are publishing the current Wheat sprint's artifacts to external platforms. R
 ## Next steps suggestions
 
 After sync completes, suggest:
+
 ```
 Next steps:
   /status              -- verify sync claim was recorded

@@ -9,6 +9,7 @@ Use AskUserQuestion to present what just happened and what comes next. This is t
 1. **Summarize** what was just produced in the question text (1-2 sentences -- claim counts, key findings, what changed)
 
 2. **Pick 2-4 next steps** based on sprint state. Use this decision tree:
+
    - Unresolved conflicts exist -> suggest `/resolve`
    - Claim has no corroboration -> suggest `/witness <id> <url>`
    - Topic has weak evidence -> suggest `/research <topic>` or `/prototype`

@@ -5,6 +5,7 @@ You are manually resolving a conflict between claims that the compiler couldn't 
 ## Process
 
 1. **Run the compiler** to see current conflicts:
+
    ```bash
    npx @grainulation/wheat compile --summary
    ```
@@ -16,11 +17,13 @@ You are manually resolving a conflict between claims that the compiler couldn't 
 4. **Ask the user to decide** (or decide based on additional research if the user asks you to investigate).
 
 5. **Update claims.json**:
+
    - Set the winning claim's status to `active`
    - Set the losing claim's status to `superseded` and `resolved_by` to the winner's ID
    - Remove the conflict references from `conflicts_with`
 
 6. **Run the compiler again**:
+
    ```bash
    npx @grainulation/wheat compile --summary
    ```
