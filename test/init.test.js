@@ -4,7 +4,7 @@
  * Verifies that `wheat init` in quick mode creates the expected files:
  *   - claims.json (with meta.question and claims array)
  *   - CLAUDE.md (with sprint question)
- *   - .claude/commands/ (populated with slash commands)
+ *   - .claude/commands/wheat/ (populated with slash commands)
  *
  * Uses node:test + node:assert — zero dependencies.
  */
@@ -86,9 +86,9 @@ describe("wheat init --question (quick mode)", () => {
     );
   });
 
-  it("creates .claude/commands/ with slash command files", () => {
-    const commandsDir = path.join(tmpDir, ".claude", "commands");
-    assert.ok(fs.existsSync(commandsDir), ".claude/commands/ should exist");
+  it("creates .claude/commands/wheat/ with slash command files", () => {
+    const commandsDir = path.join(tmpDir, ".claude", "commands", "wheat");
+    assert.ok(fs.existsSync(commandsDir), ".claude/commands/wheat/ should exist");
 
     const files = fs.readdirSync(commandsDir);
     assert.ok(files.length > 0, "should have at least one command file");

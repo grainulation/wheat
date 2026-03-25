@@ -19,6 +19,7 @@ import crypto from "crypto";
 import path from "path";
 
 import { fileURLToPath } from "url";
+import { maybeHint } from "../lib/hints.js";
 
 // Sprint detection — git-based, no config pointer needed (p013/f001)
 import { detectSprints } from "./detect-sprints.js";
@@ -1194,6 +1195,17 @@ Options:
     console.log(
       `Certificate: ${c.compilation_certificate.input_hash.slice(0, 20)}...`
     );
+
+    if (!jsonFlag) {
+      try {
+        const hint = maybeHint(compilation, { context: "compile" });
+        if (hint) {
+          process.stderr.write("\n" + hint + "\n");
+        }
+      } catch {
+        // hints are non-critical — fail silently
+      }
+    }
 
     if (jsonFlag) {
       console.log(JSON.stringify(c, null, 2));

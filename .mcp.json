@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "wheat": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@grainulation/wheat",
+        "mcp"
+      ]
+    }
+  }
+}
