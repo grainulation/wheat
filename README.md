@@ -15,15 +15,34 @@ The migration will take months. It will cost real money. And right now, the deci
 
 You'd never ship code without tests. Why ship a decision without validated evidence?
 
-Wheat is a continuous planning pipeline. Every finding is a typed assertion. A compiler validates them. You can't ship with contradictions, same as you can't merge with failing tests.
-
-## Install
+## Quick start
 
 ```bash
-npx @grainulation/wheat init
+npx @grainulation/wheat "Should we migrate to GraphQL?"
 ```
 
-No dependencies are added to your project. No `node_modules` pollution. Wheat is a tool you run, not a library you import.
+One command. Zero prompts. Sprint ready in under 3 seconds.
+
+Then open your AI coding tool and start investigating:
+
+```
+/research "GraphQL performance vs REST"
+/challenge r003
+/blind-spot
+/brief
+```
+
+Works with [Claude Code](https://claude.com/claude-code), [Cursor](https://cursor.com), [GitHub Copilot](https://github.com/features/copilot), or standalone via CLI.
+
+## Full MCP integration (optional)
+
+For native tool access in Claude Code:
+
+```bash
+claude mcp add wheat -- npx -y @grainulation/wheat mcp
+```
+
+This gives Claude direct access to wheat's claims engine — add-claim, compile, search, status — without shelling out.
 
 ## See it in 30 seconds
 
@@ -31,102 +50,64 @@ No dependencies are added to your project. No `node_modules` pollution. Wheat is
 npx @grainulation/wheat quickstart
 ```
 
-Creates a demo build with pre-seeded assertions, an intentional conflict, compiles everything, and opens a dashboard. You'll see the compiler flag the conflict and block output until it's resolved.
-
-## Start a real investigation
-
-```bash
-npx @grainulation/wheat init
-```
-
-Wheat asks a few questions -- what you're investigating, who needs the answer, what constraints exist. Then it scaffolds the investigation in your repo:
-
-```
-claims.json          # Typed assertions (the test suite for your decision)
-CLAUDE.md            # AI assistant configuration
-.claude/commands/    # 18 slash commands
-output/              # Where compiled artifacts land
-```
-
-Open Claude Code and start investigating:
-
-```
-/research "Postgres migration risks"
-/prototype                              # build something testable
-/challenge r003                         # stress-test a finding
-/blind-spot                             # what are we missing?
-/brief                                  # compile the decision document
-```
+Creates a demo sprint with pre-seeded claims, an intentional conflict, compiles everything, and opens a dashboard. The compiler flags the conflict and blocks output until it's resolved.
 
 ## How it works
 
-Wheat is a continuous planning pipeline. Findings are validated as they come in, not after the fact:
+Wheat is a continuous planning pipeline. Findings are validated as they come in:
 
 ```
-You investigate  -->  Assertions accumulate  -->  Compiler validates  -->  Artifacts compile
-   /research          claims.json                 wheat compile            /brief, /present
-   /prototype         (typed, evidence-graded)    (7-pass pipeline)        (backed by evidence)
-   /challenge
+You investigate  →  Claims accumulate  →  Compiler validates  →  Brief compiles
+  /research          typed, evidence-graded   7-pass pipeline       backed by evidence
+  /prototype
+  /challenge
 ```
 
-**Assertion types:** constraint, factual, estimate, risk, recommendation, feedback
+**Claim types:** constraint, factual, estimate, risk, recommendation, feedback
 
-**Evidence tiers** (like test coverage): stated (untested) > web > documented > tested > production (battle-hardened)
+**Evidence tiers:** stated → web → documented → tested → production
 
-The compiler catches conflicts, warns about weak evidence, and blocks the build when issues exist. You cannot ship a brief built on unresolved contradictions — same as you can't merge with failing tests.
+The compiler catches conflicts, flags weak evidence, and blocks the build when issues exist. You can't ship a brief built on contradictions — same as you can't merge with failing tests.
 
 ## Commands
 
-| Command               | What it does                                      |
-| --------------------- | ------------------------------------------------- |
-| `/init`               | Bootstrap a new research sprint                   |
-| `/research <topic>`   | Deep dive on a topic, creates claims              |
-| `/prototype`          | Build something testable                          |
-| `/challenge <id>`     | Adversarial stress-test of a claim                |
-| `/witness <id> <url>` | External corroboration                            |
-| `/blind-spot`         | Find gaps in your investigation                   |
-| `/status`             | Sprint dashboard                                  |
-| `/brief`              | Compile the decision document                     |
-| `/present`            | Generate a stakeholder presentation               |
-| `/feedback`           | Incorporate stakeholder input                     |
-| `/resolve`            | Adjudicate conflicts between claims               |
-| `/replay`             | Time-travel through sprint history                |
-| `/calibrate`          | Score predictions against actual outcomes         |
-| `/handoff`            | Package sprint for knowledge transfer             |
-| `/merge <path>`       | Combine findings across sprints                   |
-| `/connect <type>`     | Link external tools (Jira, docs, etc.)            |
-| `/evaluate`           | Test claims against reality, resolve conflicts    |
-| `/next`               | Route next steps through Farmer (mobile feedback) |
+| Command | What it does |
+|---------|-------------|
+| `/research <topic>` | Deep dive on a topic, creates claims |
+| `/prototype` | Build something testable |
+| `/challenge <id>` | Adversarial stress-test of a claim |
+| `/witness <id> <url>` | External corroboration |
+| `/blind-spot` | Find gaps in your investigation |
+| `/brief` | Compile the decision document |
+| `/status` | Sprint dashboard |
+| `/present` | Generate a stakeholder presentation |
+| `/resolve` | Adjudicate conflicts between claims |
 
 ## Guard rails
 
-Wheat installs two guard mechanisms:
+Wheat installs two optional guard mechanisms:
 
-1. **Git pre-commit hook** -- prevents committing broken `claims.json`
-2. **Claude Code guard hook** -- prevents generating output artifacts from stale or blocked compilations
+1. **Git pre-commit hook** — prevents committing broken claims
+2. **Claude Code guard hook** — prevents generating output from stale compilations
 
-Both are optional and can be removed.
+## Works everywhere
 
-## Works in any repo
-
-Wheat doesn't care what language you use. Your Scala project, your Python monorepo, your Flutter app -- wheat works the same everywhere. Node 18+ is the only requirement.
-
-## Zero dependencies
-
-Node built-in modules only. No npm install waterfall. No supply chain anxiety.
+Wheat doesn't care what language you use or what AI tool you run. Your Scala project, your Python monorepo, your Flutter app — wheat works the same everywhere. Node 20+ is the only requirement. Zero npm dependencies.
 
 ## Part of the grainulation ecosystem
 
-| Tool                                                         | Role                                                                           |
-| ------------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| **wheat**                                                    | Research engine -- grow structured evidence                                    |
-| [farmer](https://github.com/grainulation/farmer)             | Permission dashboard -- approve AI actions in real time (admin + viewer roles) |
-| [barn](https://github.com/grainulation/barn)                 | Shared tools -- templates, validators, sprint detection                        |
-| [mill](https://github.com/grainulation/mill)                 | Format conversion -- export to PDF, CSV, slides, 24 formats                    |
-| [silo](https://github.com/grainulation/silo)                 | Knowledge storage -- reusable claim libraries and packs                        |
-| [harvest](https://github.com/grainulation/harvest)           | Analytics -- cross-sprint patterns and prediction scoring                      |
-| [orchard](https://github.com/grainulation/orchard)           | Orchestration -- multi-sprint coordination and dependencies                    |
-| [grainulation](https://github.com/grainulation/grainulation) | Unified CLI -- single entry point to the ecosystem                             |
+| Tool | Role |
+|------|------|
+| **wheat** | Research engine — grow structured evidence |
+| [farmer](https://github.com/grainulation/farmer) | Permission dashboard — approve AI actions in real time |
+| [barn](https://github.com/grainulation/barn) | Shared tools — templates, validators, sprint detection |
+| [mill](https://github.com/grainulation/mill) | Format conversion — export to PDF, CSV, slides |
+| [silo](https://github.com/grainulation/silo) | Knowledge storage — reusable claim libraries |
+| [harvest](https://github.com/grainulation/harvest) | Analytics — cross-sprint patterns and prediction scoring |
+| [orchard](https://github.com/grainulation/orchard) | Orchestration — multi-sprint coordination |
+| [grainulation](https://github.com/grainulation/grainulation) | Unified CLI — single entry point to the ecosystem |
+
+**You don't need all eight.** Start with wheat. That's it.
 
 ## License
 
