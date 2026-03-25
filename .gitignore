@@ -5,3 +5,10 @@ node_modules/
 # Wheat sprint artifacts (generated, not checked in)
 compilation.json
 wheat-manifest.json
+claims.json
+CLAUDE.md
+.claude/
+output/
+research/
+prototypes/
+evidence/
