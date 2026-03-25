@@ -242,7 +242,7 @@ footer p{margin-bottom:6px}
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do you make better technical decisions in engineering?","acceptedAnswer":{"@type":"Answer","text":"Use a structured decision-making framework like Wheat. Instead of debating in Slack or writing a one-time doc, Wheat lets you gather evidence from multiple angles, prototype solutions, adversarially challenge assumptions, and compile everything into a validated decision brief. Every finding is typed and evidence-graded, and a compiler catches contradictions before you ship."}},{"@type":"Question","name":"What is a good alternative to architecture decision records (ADRs)?","acceptedAnswer":{"@type":"Answer","text":"Wheat is a modern alternative to ADRs that validates your reasoning as you go. Instead of writing a static document after the decision is made, Wheat tracks typed findings during the investigation — constraints, risks, estimates, recommendations — and compiles them into a decision brief with evidence tiers and conflict resolution. It runs inside Claude Code as slash commands."}},{"@type":"Question","name":"How do you evaluate technology options for a migration?","acceptedAnswer":{"@type":"Answer","text":"Wheat provides a structured evaluation process: /research explores each option, /prototype builds testable proof-of-concepts, /challenge stress-tests your assumptions, and /brief compiles a validated recommendation. Every finding is evidence-graded from 'stated' (someone said it) to 'tested' (prototype-validated) to 'production' (measured in prod). The compiler blocks output if contradictions exist."}},{"@type":"Question","name":"What tools work with Claude Code for technical research?","acceptedAnswer":{"@type":"Answer","text":"Wheat (@grainulation/wheat) is a technical decision framework that runs as 18 slash commands inside Claude Code. Commands like /research, /prototype, /challenge, and /brief guide you through structured investigation. It uses Claude's ability to read codebases, search the web, and reason about evidence. Zero npm dependencies, works in any repo."}},{"@type":"Question","name":"How do you decide between build vs buy for software?","acceptedAnswer":{"@type":"Answer","text":"Use a structured research process instead of gut instinct. With Wheat, you start by defining your question and constraints (/init), research both options with evidence tiers (/research), prototype the build option to validate estimates (/prototype), challenge your assumptions (/challenge), and compile everything into a decision brief (/brief). The compiler ensures you can't ship a recommendation built on contradictory or weak evidence."}}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"HowTo","name":"How to make a structured technical decision","description":"Use Wheat to evaluate technology options and produce an evidence-backed architecture decision in 3 steps. Works inside Claude Code.","totalTime":"PT30M","tool":[{"@type":"HowToTool","name":"Claude Code"},{"@type":"HowToTool","name":"Node.js 18+"}],"step":[{"@type":"HowToStep","name":"Define your question and constraints","text":"Run npx @grainulation/wheat init to start a structured investigation. Define what you're deciding (e.g. 'Should we migrate to GraphQL?'), who needs the answer, and what constraints exist. Wheat creates a claims file and 18 slash commands in your repo.","url":"https://wheat.grainulation.com/#quickstart"},{"@type":"HowToStep","name":"Research, prototype, and challenge","text":"Use /research to gather evidence from code, docs, and the web. Use /prototype to build testable proof-of-concepts. Use /challenge to adversarially stress-test your findings. Every finding is a typed assertion with an evidence tier from 'stated' to 'production-measured'.","url":"https://wheat.grainulation.com/#example"},{"@type":"HowToStep","name":"Compile and ship the decision brief","text":"Run /brief to compile all findings into a validated decision document. The compiler resolves conflicts, flags weak evidence, and produces a self-contained HTML brief you can share with stakeholders. If contradictions exist, the build fails until they're resolved.","url":"https://wheat.grainulation.com/#quickstart"}]}
+{"@context":"https://schema.org","@type":"HowTo","name":"How to make a structured technical decision","description":"Use Wheat to evaluate technology options and produce an evidence-backed architecture decision in 3 steps. Works inside Claude Code.","totalTime":"PT30M","tool":[{"@type":"HowToTool","name":"Claude Code"},{"@type":"HowToTool","name":"Node.js 20+"}],"step":[{"@type":"HowToStep","name":"Define your question and constraints","text":"Run npx @grainulation/wheat 'Should we migrate to GraphQL?' — one command, zero prompts. Wheat creates a sprint with smart defaults in under 3 seconds.","url":"https://wheat.grainulation.com/#quickstart"},{"@type":"HowToStep","name":"Research, prototype, and challenge","text":"Use /research to gather evidence from code, docs, and the web. Use /prototype to build testable proof-of-concepts. Use /challenge to adversarially stress-test your findings. Every finding is a typed assertion with an evidence tier from 'stated' to 'production-measured'.","url":"https://wheat.grainulation.com/#example"},{"@type":"HowToStep","name":"Compile and ship the decision brief","text":"Run /brief to compile all findings into a validated decision document. The compiler resolves conflicts, flags weak evidence, and produces a self-contained HTML brief you can share with stakeholders. If contradictions exist, the build fails until they're resolved.","url":"https://wheat.grainulation.com/#quickstart"}]}
 </script>
 </head>
 <body>
@@ -269,7 +269,7 @@ footer p{margin-bottom:6px}
 <section class="hero">
   <div class="container">    <h1 class="hf hf2">You're about to make a big<br>technical decision.<br><em>Most teams wing it.</em></h1>
     <p class="hero-sub hf hf3"><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> is a decision-making framework that runs inside Claude Code. You research, prototype, stress-test, and compile your findings into a decision brief. A compiler validates everything — you can't ship a recommendation built on contradictions.</p>
-    <p class="hf hf3" style="font-size:.8125rem;color:var(--text-3);margin-bottom:32px">Requires <a href="https://docs.anthropic.com/en/docs/claude-code" style="color:var(--text-3);text-decoration:underline">Claude Code</a> and Node.js 18+.</p>
+    <p class="hf hf3" style="font-size:.8125rem;color:var(--text-3);margin-bottom:32px">Works with <a href="https://docs.anthropic.com/en/docs/claude-code" style="color:var(--text-3);text-decoration:underline">Claude Code</a>, <a href="https://cursor.com" style="color:var(--text-3);text-decoration:underline">Cursor</a>, <a href="https://github.com/features/copilot" style="color:var(--text-3);text-decoration:underline">Copilot</a>, or standalone. Node.js 20+.</p>
     <div class="hero-actions hf hf4">
       <a href="#quickstart" class="btn btn-primary">
         <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
@@ -337,21 +337,19 @@ footer p{margin-bottom:6px}
 
 <section class="quickstart" id="quickstart">
   <div class="container">
-    <div class="qs-label rv">Quick start — 3 commands</div>
+    <div class="qs-label rv">Quick start — 1 command</div>
     <div class="qs-steps">
       <div class="qs-step rv rv-d1">
         <div class="qs-num">1</div>
-        <h3>Ask the question</h3>
-        <p>Define what you're deciding. <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> sets up the investigation and creates a claims file to track your findings.</p>
+        <h3>Ask your question</h3>
+        <p>One command. Zero prompts. Sprint ready in under 3 seconds.</p>
         <div class="copy-wrap">
-          <pre class="qs-code"><code><span class="dim">$</span> npx @grainulation/wheat init</code></pre>
-          <button class="copy-btn" onclick="copyText(this,'npx @grainulation/wheat init')">Copy</button>
+          <pre class="qs-code"><code><span class="dim">$</span> npx @grainulation/wheat "Should we migrate to GraphQL?"</code></pre>
+          <button class="copy-btn" onclick="copyText(this,'npx @grainulation/wheat &quot;Should we migrate to GraphQL?&quot;')">Copy</button>
         </div>
-        <div class="qs-output"><span class="dim">? What question are you researching?</span>
-<span class="dim">&gt;</span> Should we migrate to GraphQL?
-
-<span style="color:var(--green)">Created:</span> wheat.config.json, claims.json
-Sprint ready. Run /research to begin.</div>
+        <div class="qs-output"><span style="color:var(--accent)">wheat</span> — sprint created
+Should we migrate to GraphQL?
+1 constraint(s) seeded</div>
       </div>
       <div class="qs-step rv rv-d2">
         <div class="qs-num">2</div>
