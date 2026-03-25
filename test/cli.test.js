@@ -75,17 +75,20 @@ describe("wheat CLI", () => {
     assert.ok(output.trim().includes(PKG.version), "-v should show version");
   });
 
-  it("unknown command exits non-zero", () => {
+  it("unknown flag exits non-zero", () => {
     assert.throws(() => {
-      execFileSync(process.execPath, [WHEAT_BIN, "nonexistent"], {
+      execFileSync(process.execPath, [WHEAT_BIN, "--nonexistent"], {
         encoding: "utf8",
         timeout: 5_000,
         stdio: "pipe",
       });
-    }, "unknown command should exit non-zero");
+    }, "unknown flag should exit non-zero");
   });
 
-  it("unknown command mentions available help", () => {
+  it("verb-less mode treats unknown word as question", () => {
+    // "nonexistent" is now a valid question in verb-less mode
+    // It should NOT error — it should try to init a sprint
+    // (may fail due to no temp dir, but should not say "unknown command")
     let stderr = "";
     try {
       execFileSync(process.execPath, [WHEAT_BIN, "nonexistent"], {
@@ -96,6 +99,6 @@ describe("wheat CLI", () => {
     } catch (err) {
       stderr = err.stderr || "";
     }
-    assert.ok(stderr.includes("--help"), "error should suggest --help");
+    assert.ok(!stderr.includes("unknown command"), "should not say unknown command");
   });
 });

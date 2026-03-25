@@ -67,7 +67,8 @@ if (!subcommand || subcommand === "--help" || subcommand === "-h") {
   console.log(`wheat v${VERSION} — Research-driven development framework
 
 Usage:
-  wheat <command> [options]
+  wheat "your question"          Start a sprint instantly (recommended)
+  wheat <command> [options]      Run a specific command
 
 Commands:
   init       Bootstrap a new research sprint in this repo
@@ -90,11 +91,9 @@ Global options:
   --help         Show this help
 
 Examples:
-  npx @grainulation/wheat quickstart
+  npx @grainulation/wheat "Should we migrate to Postgres?"
   npx @grainulation/wheat init
   npx @grainulation/wheat compile --summary
-  npx @grainulation/wheat init --question "Should we migrate to Postgres?"
-  npx @grainulation/wheat init --non-interactive --question "..." --audience "..." --done "..."
 
 Documentation: https://github.com/grainulation/wheat`);
   process.exit(0);
@@ -189,6 +188,19 @@ Run "wheat disconnect farmer --help" for options.`);
 }
 
 if (!commands[subcommand]) {
+  // Verb-less mode: wheat "my question" → dispatch to init with auto defaults
+  const compoundCmds = ["connect", "disconnect", "migrate"];
+  if (subcommand && !subcommand.startsWith("-") && !compoundCmds.includes(subcommand)) {
+    vlog("dispatch", `verb-less mode: treating "${subcommand}" as question`);
+    const initPath = new URL(commands.init, import.meta.url).href;
+    const initHandler = await import(initPath);
+    await initHandler.run(targetDir, ["--question", subcommand, "--auto"]).catch((err) => {
+      console.error(`\nwheat failed:`, err.message);
+      if (process.env.WHEAT_DEBUG) console.error(err.stack);
+      process.exit(1);
+    });
+    process.exit(0);
+  }
   console.error(`wheat: unknown command: ${subcommand}\n`);
   console.error('Run "wheat --help" for available commands.');
   process.exit(1);

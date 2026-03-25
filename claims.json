@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "meta": {
+    "question": "nonexistent",
+    "initiated": "2026-03-25",
+    "audience": [
+      "engineers"
+    ],
+    "phase": "define",
+    "connectors": []
+  },
+  "claims": [
+    {
+      "id": "d001",
+      "type": "constraint",
+      "topic": "done-criteria",
+      "content": "Done looks like: Decision-ready brief with evidence",
+      "source": {
+        "origin": "stakeholder",
+        "artifact": null,
+        "connector": null
+      },
+      "evidence": "stated",
+      "status": "active",
+      "phase_added": "define",
+      "timestamp": "2026-03-25T04:26:21.408Z",
+      "conflicts_with": [],
+      "resolved_by": null,
+      "tags": [
+        "done-criteria"
+      ]
+    }
+  ]
+}
