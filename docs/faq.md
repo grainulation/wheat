@@ -4,9 +4,9 @@
 
 ### Do I need Node.js?
 
-You need Node 18+ to run wheat. But wheat does not add any dependencies to your project — no `node_modules`, no entries in your `package.json`. It runs via `npx` as an external tool.
+You need Node 20+ to run wheat. But wheat does not add any dependencies to your project — no `node_modules`, no entries in your `package.json`. It runs via `npx` as an external tool.
 
-If your team doesn't use Node at all, you still need it to run wheat — there is no standalone binary. Install Node 18+ and use:
+If your team doesn't use Node at all, you still need it to run wheat — there is no standalone binary. Install Node 20+ and use:
 
 ```bash
 npx @grainulation/wheat

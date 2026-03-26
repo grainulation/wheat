@@ -106,7 +106,7 @@ Both hooks can be removed. They exist because the riskiest moment in a research 
 
 ## Slash Commands
 
-Wheat provides 18 slash commands inside Claude Code. Each command follows a pattern: investigate, record claims, compile, and suggest what to do next. See [commands.md](commands.md) for the full reference.
+Wheat provides 20 slash commands inside Claude Code. Each command follows a pattern: investigate, record claims, compile, and suggest what to do next. See [commands.md](commands.md) for the full reference.
 
 ## How It All Fits Together
 
