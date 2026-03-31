@@ -1,6 +1,6 @@
 {
   "name": "@grainulation/wheat",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Research-driven development framework — structured claims, compiled evidence, deterministic output",
   "license": "MIT",
   "author": "grainulation contributors",
@@ -36,7 +36,8 @@
     "./load-claims": "./lib/load-claims.js"
   },
   "bin": {
-    "wheat": "bin/wheat.js"
+    "wheat": "bin/wheat.js",
+    "wheat-mcp": "bin/wheat-mcp.js"
   },
   "files": [
     "bin/",
