@@ -39,10 +39,12 @@ Works with [Claude Code](https://claude.com/claude-code), [Cursor](https://curso
 For native tool access in Claude Code:
 
 ```bash
-claude mcp add wheat -- npx -y @grainulation/wheat mcp
+claude mcp add wheat -- npx -y @grainulation/wheat-mcp
 ```
 
 This gives Claude direct access to wheat's claims engine — add-claim, compile, search, status — without shelling out.
+
+> **Note:** `wheat mcp` still works as a subcommand, but the dedicated `wheat-mcp` entry point is recommended for MCP integrations — it bypasses CLI dispatch and starts the server directly.
 
 ## See it in 30 seconds
 

@@ -47,7 +47,7 @@
     "templates/"
   ],
   "scripts": {
-    "test": "node --test test/cli.test.js test/compiler.test.js test/guard.test.js test/init.test.js test/migration.test.js"
+    "test": "node --test test/cli.test.js test/compiler.test.js test/guard.test.js test/init.test.js test/migration.test.js test/mcp.test.js"
   },
   "engines": {
     "node": ">=20"
