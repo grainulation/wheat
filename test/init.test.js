@@ -125,3 +125,126 @@ describe("wheat init --question (quick mode)", () => {
     }, "should exit non-zero when sprint already exists");
   });
 });
+
+// ─── CLAUDE.md preservation ──────────────────────────────────────────────────
+
+const INIT_FLAGS = [
+  "--question",
+  "Test question?",
+  "--audience",
+  "engineering",
+  "--constraints",
+  "None",
+  "--done",
+  "A recommendation",
+];
+
+describe("CLAUDE.md preservation", () => {
+  describe("appends wheat section to existing CLAUDE.md", () => {
+    let tmpDir;
+
+    before(() => {
+      tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "wheat-claude-append-"));
+      execFileSync("git", ["init"], { cwd: tmpDir, stdio: "ignore" });
+      fs.writeFileSync(
+        path.join(tmpDir, "CLAUDE.md"),
+        "# My Project\nSome content"
+      );
+    });
+
+    after(() => {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    });
+
+    it("preserves original content and appends wheat section with separator", () => {
+      execFileSync(
+        process.execPath,
+        [WHEAT_BIN, "init", ...INIT_FLAGS, "--dir", tmpDir],
+        { timeout: 10_000 }
+      );
+
+      const content = fs.readFileSync(path.join(tmpDir, "CLAUDE.md"), "utf8");
+      assert.ok(
+        content.startsWith("# My Project"),
+        "should start with original heading"
+      );
+      assert.ok(content.includes("---"), "should contain separator");
+      assert.ok(
+        content.includes("## Sprint"),
+        "should contain wheat sprint section"
+      );
+    });
+  });
+
+  describe("creates backup with --force on existing CLAUDE.md", () => {
+    let tmpDir;
+    const originalContent = "# Existing Project\nImportant notes here";
+
+    before(() => {
+      tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "wheat-claude-force-"));
+      execFileSync("git", ["init"], { cwd: tmpDir, stdio: "ignore" });
+      // First init to create claims.json (so --force has something to override)
+      execFileSync(
+        process.execPath,
+        [WHEAT_BIN, "init", ...INIT_FLAGS, "--dir", tmpDir],
+        { timeout: 10_000 }
+      );
+      // Overwrite CLAUDE.md with known content before --force reinit
+      fs.writeFileSync(path.join(tmpDir, "CLAUDE.md"), originalContent);
+    });
+
+    after(() => {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    });
+
+    it("backs up existing CLAUDE.md to CLAUDE.md.bak", () => {
+      execFileSync(
+        process.execPath,
+        [WHEAT_BIN, "init", "--force", ...INIT_FLAGS, "--dir", tmpDir],
+        { timeout: 10_000 }
+      );
+
+      const bakPath = path.join(tmpDir, "CLAUDE.md.bak");
+      assert.ok(fs.existsSync(bakPath), "CLAUDE.md.bak should exist");
+      assert.equal(
+        fs.readFileSync(bakPath, "utf8"),
+        originalContent,
+        "backup should contain original content"
+      );
+    });
+  });
+
+  describe("writes fresh CLAUDE.md when none exists", () => {
+    let tmpDir;
+
+    before(() => {
+      tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "wheat-claude-fresh-"));
+      execFileSync("git", ["init"], { cwd: tmpDir, stdio: "ignore" });
+    });
+
+    after(() => {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    });
+
+    it("creates CLAUDE.md with wheat template content", () => {
+      execFileSync(
+        process.execPath,
+        [WHEAT_BIN, "init", ...INIT_FLAGS, "--dir", tmpDir],
+        { timeout: 10_000 }
+      );
+
+      const claudePath = path.join(tmpDir, "CLAUDE.md");
+      assert.ok(fs.existsSync(claudePath), "CLAUDE.md should exist");
+
+      const content = fs.readFileSync(claudePath, "utf8");
+      assert.ok(
+        content.startsWith("# Wheat"),
+        "should start with wheat template heading"
+      );
+      assert.ok(
+        content.includes("## Sprint"),
+        "should contain sprint section"
+      );
+    });
+  });
+});
