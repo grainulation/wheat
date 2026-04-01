@@ -104,6 +104,16 @@ if (subcommand === "--version" || subcommand === "-v") {
   process.exit(0);
 }
 
+// ─── Fast MCP dispatch ──────────────────────────────────────────────────────
+// MCP is machine-invoked via stdio — skip install-prompt and arg parsing.
+// This matches mill/silo's pattern of early bail-out before any overhead.
+if (subcommand === "mcp") {
+  const { startServer } = await import(
+    new URL("../lib/serve-mcp.js", import.meta.url).href
+  );
+  startServer(targetDir);
+} else {
+
 // ─── Install prompt tracking ─────────────────────────────────────────────────
 // Track npx usage and maybe suggest installing. Both calls are sync, <5ms,
 // and fail silently. Only fires for real subcommands (not --help/--version).
@@ -215,3 +225,4 @@ handler.run(targetDir, subArgs).catch((err) => {
   if (process.env.WHEAT_DEBUG) console.error(err.stack);
   process.exit(1);
 });
+} // end else (non-mcp subcommands)
