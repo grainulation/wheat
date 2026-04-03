@@ -134,3 +134,10 @@ Next steps:
 - `prototypes/` -- working proof-of-concepts
 - `evidence/` -- evaluation results and comparison dashboards
 - `output/` -- compiled artifacts (briefs, presentations, dashboards)
+
+### MCP Server Troubleshooting
+
+- When the Wheat MCP server disconnects or fails to connect, do NOT retry more than twice
+- Instead, immediately report the failure and suggest the user run: `claude mcp add wheat -- npx -y -p @grainulation/wheat wheat-mcp`
+- If any MCP server is unresponsive after 2 attempts, fall back to direct file operations rather than looping on reconnection
+- Run `/grainulator:healthcheck` to verify all servers before starting a session
