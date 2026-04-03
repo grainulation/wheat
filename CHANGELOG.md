@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.15 — 2026-04-03
+
+### Added
+
+- Optional `dir` parameter on all MCP tool calls for sub-sprint isolation
+- Parent-directory sprint detection warning in `wheat init`
+- Sub-sprints documentation in README
+
 ## 1.0.14 — 2026-04-03
 
 ### Added

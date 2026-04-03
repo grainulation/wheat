@@ -46,6 +46,16 @@ This gives Claude direct access to wheat's claims engine — add-claim, compile,
 
 > **Note:** `wheat mcp` still works as a subcommand, but the dedicated `wheat-mcp` entry point is recommended for MCP integrations — it bypasses CLI dispatch and starts the server directly.
 
+### Sub-sprints
+
+Every MCP tool accepts an optional `dir` parameter to target a sub-sprint in a different directory. This lets you run multiple sprints without restarting the MCP server:
+
+```json
+{ "name": "wheat/add-claim", "arguments": { "dir": "./sub-sprint", "id": "r001", ... } }
+```
+
+If omitted, tools default to the server's startup directory.
+
 ## See it in 30 seconds
 
 ```bash
