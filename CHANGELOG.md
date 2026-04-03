@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.14 — 2026-04-03
+
+### Added
+
+- MCP Server Troubleshooting section in `templates/claude.md` — every `wheat init` now includes max-2-retry rule, manual re-add command, and `/grainulator:healthcheck` reference
+
 ## 1.0.3 — 2026-03-21
 
 ### Performance
