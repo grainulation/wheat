@@ -3,17 +3,31 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@grainulation/wheat"><img src="https://img.shields.io/npm/v/@grainulation/wheat?label=%40grainulation%2Fwheat" alt="npm version"></a> <a href="https://www.npmjs.com/package/@grainulation/wheat"><img src="https://img.shields.io/npm/dm/@grainulation/wheat" alt="npm downloads"></a> <a href="https://github.com/grainulation/wheat/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a> <a href="https://nodejs.org"><img src="https://img.shields.io/node/v/@grainulation/wheat" alt="node"></a> <a href="https://github.com/grainulation/wheat/actions"><img src="https://github.com/grainulation/wheat/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://www.npmjs.com/package/@grainulation/wheat"><img src="https://img.shields.io/npm/v/@grainulation/wheat?label=%40grainulation%2Fwheat" alt="npm version"></a>
+  <a href="https://github.com/grainulation/wheat/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
   <a href="https://deepwiki.com/grainulation/wheat"><img src="https://deepwiki.com/badge.svg" alt="Explore on DeepWiki"></a>
 </p>
 
-<p align="center"><strong>CI/CD for technical decisions.</strong></p>
+## The problem
 
-You're about to mass-migrate 200 microservices. Slow down.
+You're about to mass-migrate 200 microservices. The decision is based on a Slack thread, a blog post, and a gut feeling from someone who left the company.
 
-The migration will take months. It will cost real money. And right now, the decision to move is based on a Slack thread, a blog post, and a gut feeling from someone who left the company.
+Claude contradicts itself over long sessions. Decisions accumulate silently conflicting evidence. And nobody notices until the migration is six months in and the original assumptions were wrong.
 
-You'd never ship code without tests. Why ship a decision without validated evidence?
+**You'd never ship code without tests. Why ship a decision without validated evidence?**
+
+## What wheat does
+
+Wheat is a CLI that turns your AI coding tool into a structured research engine. Every finding becomes a typed, evidence-graded claim. A 7-pass compiler catches contradictions, flags weak evidence, and blocks output until issues are resolved.
+
+```
+You investigate  →  Claims accumulate  →  Compiler validates  →  Brief compiles
+  /research          typed + graded        catches conflicts      backed by evidence
+  /prototype         with evidence tiers   blocks on issues
+  /challenge
+```
+
+The result: a decision document backed by validated evidence, not vibes.
 
 ## Quick start
 
@@ -21,40 +35,23 @@ You'd never ship code without tests. Why ship a decision without validated evide
 npx @grainulation/wheat "Should we migrate to GraphQL?"
 ```
 
-One command. Zero prompts. Sprint ready in under 3 seconds.
+One command. Zero config. Sprint ready in under 3 seconds.
 
 Then open your AI coding tool and start investigating:
 
-```
-/research "GraphQL performance vs REST"
-/challenge r003
-/blind-spot
-/brief
+```bash
+wheat add r001 --type factual --topic "graphql-performance" \
+  --content "GraphQL N+1 queries cause 3-10x latency without DataLoader" \
+  --evidence documented
+
+wheat search --topic "graphql"
+
+wheat compile   # 7-pass validation: conflicts, weak evidence, coverage gaps
+
+wheat resolve   # fix what the compiler flags
 ```
 
 Works with [Claude Code](https://claude.com/claude-code), [Cursor](https://cursor.com), [GitHub Copilot](https://github.com/features/copilot), or standalone via CLI.
-
-## Full MCP integration (optional)
-
-For native tool access in Claude Code:
-
-```bash
-claude mcp add wheat -- npx -y @grainulation/wheat-mcp
-```
-
-This gives Claude direct access to wheat's claims engine — add-claim, compile, search, status — without shelling out.
-
-> **Note:** `wheat mcp` still works as a subcommand, but the dedicated `wheat-mcp` entry point is recommended for MCP integrations — it bypasses CLI dispatch and starts the server directly.
-
-### Sub-sprints
-
-Every MCP tool accepts an optional `dir` parameter to target a sub-sprint in a different directory. This lets you run multiple sprints without restarting the MCP server:
-
-```json
-{ "name": "wheat/add-claim", "arguments": { "dir": "./sub-sprint", "id": "r001", ... } }
-```
-
-If omitted, tools default to the server's startup directory.
 
 ## See it in 30 seconds
 
@@ -64,102 +61,82 @@ npx @grainulation/wheat quickstart
 
 Creates a demo sprint with pre-seeded claims, an intentional conflict, compiles everything, and opens a dashboard. The compiler flags the conflict and blocks output until it's resolved.
 
-## How it works
+## What you get
 
-Wheat is a continuous planning pipeline. Findings are validated as they come in:
+After a sprint, `wheat compile` produces a `compilation.json` with:
 
+- **Conflict detection** -- contradictory claims are surfaced and must be resolved
+- **Evidence coverage** -- which topics have only "someone said so" vs. tested proof
+- **Type diversity** -- flags when every claim is the same type (all risks, no facts)
+- **Echo chamber warnings** -- same source corroborating itself
+
+The compiler is the enforcement layer. If it says blocked, no brief gets produced. Same principle as CI: red build = no deploy.
+
+## MCP integration (optional)
+
+For native tool access in Claude Code:
+
+```bash
+claude mcp add wheat -- npx -y @grainulation/wheat-mcp
 ```
-You investigate  →  Claims accumulate  →  Compiler validates  →  Brief compiles
-  /research          typed, evidence-graded   7-pass pipeline       backed by evidence
-  /prototype
-  /challenge
-```
 
-**Claim types:** constraint, factual, estimate, risk, recommendation, feedback
-
-**Evidence tiers:** stated → web → documented → tested → production
-
-The compiler catches conflicts, flags weak evidence, and blocks the build when issues exist. You can't ship a brief built on contradictions — same as you can't merge with failing tests.
+This gives Claude direct access to wheat's claims engine -- add-claim, compile, search, status -- without shelling out.
 
 ## Commands
 
 | Command | What it does |
 |---------|-------------|
-| `/research <topic>` | Deep dive on a topic, creates claims |
-| `/prototype` | Build something testable |
+| `/research <topic>` | Deep dive, creates evidence-graded claims |
+| `/prototype` | Build something testable, upgrade evidence to `tested` |
 | `/challenge <id>` | Adversarial stress-test of a claim |
-| `/witness <id> <url>` | External corroboration |
+| `/witness <id> <url>` | External corroboration from primary sources |
 | `/blind-spot` | Find gaps in your investigation |
+| `/resolve` | Adjudicate conflicts between claims |
 | `/brief` | Compile the decision document |
 | `/status` | Sprint dashboard |
-| `/present` | Generate a stakeholder presentation |
-| `/resolve` | Adjudicate conflicts between claims |
+
+## Claim types and evidence tiers
+
+**Types:** constraint, factual, estimate, risk, recommendation, feedback
+
+**Evidence tiers** (lowest to highest): stated → web → documented → tested → production
+
+The compiler uses these to score coverage. A topic with 5 `stated` claims is weaker than one with 2 `tested` claims.
 
 ## Guard rails
 
 Wheat installs two optional guard mechanisms:
 
-1. **Git pre-commit hook** — prevents committing broken claims
-2. **Claude Code guard hook** — prevents generating output from stale compilations
+1. **Git pre-commit hook** -- prevents committing broken claims
+2. **Claude Code guard hook** -- prevents generating output from stale compilations
 
-## Works everywhere
+## Requirements
 
-Wheat doesn't care what language you use or what AI tool you run. Your Scala project, your Python monorepo, your Flutter app — wheat works the same everywhere. Node 20+ is the only requirement. Zero npm dependencies.
+Node 20+. Zero npm dependencies.
+
+Wheat doesn't care what language your project uses. Your Scala project, your Python monorepo, your Flutter app -- wheat validates decisions, not code.
 
 ## Part of the grainulation ecosystem
 
-| Tool | Role |
-|------|------|
-| **wheat** | Research engine — grow structured evidence |
-| [farmer](https://github.com/grainulation/farmer) | Permission dashboard — approve AI actions in real time |
-| [barn](https://github.com/grainulation/barn) | Shared tools — templates, validators, sprint detection |
-| [mill](https://github.com/grainulation/mill) | Format conversion — export to PDF, CSV, slides |
-| [silo](https://github.com/grainulation/silo) | Knowledge storage — reusable claim libraries |
-| [harvest](https://github.com/grainulation/harvest) | Analytics — cross-sprint patterns and prediction scoring |
-| [orchard](https://github.com/grainulation/orchard) | Orchestration — multi-sprint coordination |
-| [grainulation](https://github.com/grainulation/grainulation) | Unified CLI — single entry point to the ecosystem |
+Start with wheat. That's the only tool you need.
 
-**You don't need all eight.** Start with wheat. That's it.
+If you grow into multi-sprint coordination, the ecosystem has you covered: [orchard](https://github.com/grainulation/orchard) for orchestration, [farmer](https://github.com/grainulation/farmer) for permission management, and more at [grainulation.com](https://grainulation.com).
 
 ## Removing Wheat
 
-To cleanly remove wheat from a repository, delete the files and hooks it created during `wheat init`:
-
 ```bash
-# 1. Remove sprint files
+# Remove sprint files
 rm -f claims.json compilation.json CLAUDE.md.bak
 
-# 2. Remove wheat section from CLAUDE.md
-#    If wheat created the file, delete it entirely:
+# Remove wheat section from CLAUDE.md (or delete if wheat created it)
 rm -f CLAUDE.md
-#    If wheat appended to an existing CLAUDE.md, manually remove the
-#    "# Wheat -- Research Sprint" section.
 
-# 3. Remove wheat section from AGENTS.md
-#    If wheat created the file, delete it entirely:
-rm -f AGENTS.md
-#    If wheat appended to an existing AGENTS.md, manually remove the
-#    "# Wheat Research Sprint" section.
-
-# 4. Remove slash commands and MCP config
+# Remove slash commands and MCP config
 rm -rf .claude/commands/wheat/
-rm -f .mcp.json   # or remove just the "wheat" entry if other servers exist
+rm -f .mcp.json   # or remove just the "wheat" entry
 
-# 5. Remove wheat entries from .gitignore
-#    Delete the "# Wheat" section from .gitignore (between the
-#    "# Wheat -- git tracking guide" header and the end of the block).
-
-# 6. Remove the pre-commit hook snippet
-#    Edit .git/hooks/pre-commit and delete everything between
-#    "# wheat-guard" and the next blank line (or end of file).
-#    If wheat created the hook file, delete it entirely:
-rm -f .git/hooks/pre-commit
-
-# 7. Optionally remove output directories (if empty / wheat-only)
-rmdir output research prototypes evidence 2>/dev/null
+# Remove pre-commit hook snippet (or delete .git/hooks/pre-commit)
 ```
-
-If you installed wheat globally or via npx, no global cleanup is needed -- npx caches are managed by npm.
 
 ## License
 
