@@ -12,3 +12,11 @@ output/
 research/
 prototypes/
 evidence/
+
+# Farmer runtime tokens
+.farmer-token
+.farmer-config.json
+
+# Grainulator runtime files
+.wheat-tips.md
+.wheat-compile.lock
