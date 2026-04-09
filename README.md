@@ -121,6 +121,46 @@ Wheat doesn't care what language you use or what AI tool you run. Your Scala pro
 
 **You don't need all eight.** Start with wheat. That's it.
 
+## Removing Wheat
+
+To cleanly remove wheat from a repository, delete the files and hooks it created during `wheat init`:
+
+```bash
+# 1. Remove sprint files
+rm -f claims.json compilation.json CLAUDE.md.bak
+
+# 2. Remove wheat section from CLAUDE.md
+#    If wheat created the file, delete it entirely:
+rm -f CLAUDE.md
+#    If wheat appended to an existing CLAUDE.md, manually remove the
+#    "# Wheat -- Research Sprint" section.
+
+# 3. Remove wheat section from AGENTS.md
+#    If wheat created the file, delete it entirely:
+rm -f AGENTS.md
+#    If wheat appended to an existing AGENTS.md, manually remove the
+#    "# Wheat Research Sprint" section.
+
+# 4. Remove slash commands and MCP config
+rm -rf .claude/commands/wheat/
+rm -f .mcp.json   # or remove just the "wheat" entry if other servers exist
+
+# 5. Remove wheat entries from .gitignore
+#    Delete the "# Wheat" section from .gitignore (between the
+#    "# Wheat -- git tracking guide" header and the end of the block).
+
+# 6. Remove the pre-commit hook snippet
+#    Edit .git/hooks/pre-commit and delete everything between
+#    "# wheat-guard" and the next blank line (or end of file).
+#    If wheat created the hook file, delete it entirely:
+rm -f .git/hooks/pre-commit
+
+# 7. Optionally remove output directories (if empty / wheat-only)
+rmdir output research prototypes evidence 2>/dev/null
+```
+
+If you installed wheat globally or via npx, no global cleanup is needed -- npx caches are managed by npm.
+
 ## License
 
 MIT
