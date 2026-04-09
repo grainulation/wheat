@@ -74,6 +74,9 @@ Commands:
   init       Bootstrap a new research sprint in this repo
   quickstart Zero-to-dashboard demo sprint (under 90 seconds)
   compile    Run the Bran compiler on claims.json
+  add        Add a typed claim to the sprint
+  search     Search claims by topic, type, evidence, or text
+  resolve    Resolve a conflict between two claims
   serve      Start the sprint dashboard UI
   connect    Connect to external tools (e.g. wheat connect farmer)
   disconnect Remove external tool hooks (e.g. wheat disconnect farmer)
@@ -127,6 +130,9 @@ const commands = {
   init: "../lib/init.js",
   quickstart: "../lib/quickstart.js",
   compile: "../lib/compiler.js",
+  add: "../lib/cli-add.js",
+  search: "../lib/cli-search.js",
+  resolve: "../lib/cli-resolve.js",
   guard: "../lib/guard.js",
   status: "../lib/status.js",
   stats: "../lib/stats.js",
