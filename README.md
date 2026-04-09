@@ -5,6 +5,7 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/@grainulation/wheat"><img src="https://img.shields.io/npm/v/@grainulation/wheat?label=%40grainulation%2Fwheat" alt="npm version"></a> <a href="https://www.npmjs.com/package/@grainulation/wheat"><img src="https://img.shields.io/npm/dm/@grainulation/wheat" alt="npm downloads"></a>
   <a href="https://github.com/grainulation/wheat/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
+  <a href="https://github.com/grainulation/wheat/actions"><img src="https://github.com/grainulation/wheat/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://deepwiki.com/grainulation/wheat"><img src="https://deepwiki.com/badge.svg" alt="Explore on DeepWiki"></a>
 </p>
 
