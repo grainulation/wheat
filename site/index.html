@@ -5,8 +5,8 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
-<title>Wheat — Technical Decision Framework for Claude Code</title>
-<meta name="description" content="Make architecture decisions with structured evidence, not gut feelings. Wheat is a technical decision-making framework that runs inside Claude Code — research, prototype, challenge, and ship a validated brief. Open source, zero dependencies.">
+<title>Wheat — Structured Research Sprints for Claude Code</title>
+<meta name="description" content="Make architecture decisions with structured evidence, not gut feelings. Turn questions into typed claims with evidence grades, then compile into a validated brief. Try it: npx wheat init. Zero dependencies.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Grainulation">
 <meta property="og:locale" content="en_US">
@@ -269,7 +269,7 @@ footer p{margin-bottom:6px}
 <main id="main">
 <section class="hero">
   <div class="container">    <h1 class="hf hf2">You're about to make a big<br>technical decision.<br><em>Most teams wing it.</em></h1>
-    <p class="hero-sub hf hf3"><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> is a decision-making framework that runs inside Claude Code. You research, prototype, stress-test, and compile your findings into a decision brief. A compiler validates everything — you can't ship a recommendation built on contradictions.</p>
+    <p class="hero-sub hf hf3">ChatGPT gives you a paragraph. <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> gives you typed claims with conflicts highlighted. You research, prototype, stress-test — then a compiler catches contradictions and blocks output until they are resolved. A build system for decisions.</p>
     <p class="hf hf3" style="font-size:.8125rem;color:var(--text-3);margin-bottom:32px">Works with <a href="https://docs.anthropic.com/en/docs/claude-code" style="color:var(--text-3);text-decoration:underline">Claude Code</a>, <a href="https://cursor.com" style="color:var(--text-3);text-decoration:underline">Cursor</a>, <a href="https://github.com/features/copilot" style="color:var(--text-3);text-decoration:underline">Copilot</a>, or standalone. Node.js 20+.</p>
     <div class="hero-actions hf hf4">
       <a href="#quickstart" class="btn btn-primary">
@@ -281,14 +281,37 @@ footer p{margin-bottom:6px}
   </div>
 </section>
 
+<section style="padding:24px 0 0;text-align:center">
+  <div class="container">
+    <code style="display:inline-block;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:8px;padding:12px 24px;font-size:1rem;color:var(--accent);letter-spacing:.01em">npx wheat init "Should we migrate to GraphQL?"</code>
+    <p style="font-size:.75rem;color:var(--text-3);margin-top:10px">Runs inside Claude Code. Node.js 20+. Zero npm dependencies.</p>
+  </div>
+</section>
+
 <hr class="sep">
 
 <section class="what-is" id="what">
   <div class="container">
     <div class="what-box rv">
       <h2>What is <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong>?</h2>
-      <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> is a structured way to answer technical questions. You start with a question — "Should we migrate to GraphQL?" — and use slash commands to research, prototype, and challenge your findings. Every finding is tracked as a typed claim with an evidence grade.</p>
-      <p>When you're ready, a compiler validates everything: catches contradictions, flags weak evidence, and blocks output until issues are resolved. The result is a decision brief you can send to your team. It all runs inside Claude Code — no new UI to learn.</p>
+      <p style="color:var(--text-2);font-size:.9375rem;margin-bottom:16px">Every finding in a wheat sprint is a <strong style="color:var(--accent)">claim</strong> — a single typed statement with an evidence grade. "Redis handles 100k ops/sec" is a factual claim at the "documented" tier. "We should use Redis" is a recommendation at the "stated" tier. The compiler treats them differently.</p>
+      <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> is a structured way to answer technical questions. You start with a question — "Should we migrate to GraphQL?" — and use slash commands to research, prototype, and challenge your findings. Every finding becomes a typed claim (factual, risk, estimate, constraint, recommendation) with an evidence tier from "someone said it" to "measured in production."</p>
+      <p>When you're ready, a compiler validates everything: catches contradictions, flags weak evidence, and blocks output until issues are resolved. The compiler is JavaScript code — not prompts, not an LLM call. Same claims in, same result out, every time. The output is a decision brief you can send to your team, with a git audit trail showing how every claim was collected and challenged.</p>
+    </div>
+  </div>
+</section>
+
+<section class="rv" style="padding:40px 0">
+  <div class="container" style="max-width:720px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px">
+        <p style="font-weight:700;color:var(--red);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">Without Wheat</p>
+        <p style="color:var(--text-2);font-size:.875rem;line-height:1.6">"We should probably use GraphQL because it's more modern and Jake said it worked well at his last company."</p>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--accent-dim);border-radius:12px;padding:24px">
+        <p style="font-weight:700;color:var(--accent);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">With Wheat</p>
+        <p style="color:var(--text-2);font-size:.875rem;line-height:1.6">14 typed claims. 3 risks flagged. 1 contradiction caught (Jake's company had 2 engineers; yours has 40). Recommendation: REST with selective GraphQL for the dashboard API. Every claim traceable to a source.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -487,7 +510,7 @@ vs. 40-60%). The caching gap (r003) needs a solution first.
           <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
         </div>
         <h3>Compiler Validation</h3>
-        <p>A 7-pass compiler runs before any output is produced. It catches contradictions, flags weak evidence, and blocks output until issues are fixed. You can't ship a brief built on conflicting findings.</p>
+        <p>A 7-pass compiler runs before any output is produced. It validates schemas, checks type distribution, sorts by evidence tier, detects conflicts, auto-resolves when evidence tiers differ, analyzes coverage, and checks readiness. Pure JavaScript — no LLM calls. You cannot ship a brief built on contradictions.</p>
       </div>
       <div class="feature-card rv rv-d3">
         <div class="feature-icon">
@@ -551,7 +574,7 @@ vs. 40-60%). The caching gap (r003) needs a solution first.
           <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
         <div class="faq-a">
-          <p>Asking Claude gives you one answer. <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> gives you a structured process — multiple rounds of evidence gathering, adversarial challenge, prototype validation, and conflict resolution. The output is a compiled decision brief with an audit trail, not a chat message.</p>
+          <p>Asking Claude gives you a paragraph of plausible-sounding advice with no way to verify it. <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> gives you 10-30 typed claims, each with a named evidence tier, run through a compiler that catches contradictions and flags weak evidence. The output is a decision brief with a git audit trail — <code>git log claims.json</code> shows exactly how you got there. Every claim is traceable. Every conflict is surfaced. Not a prompt wrapper — a build system for decisions.</p>
         </div>
       </div>
       <div class="faq-item rv rv-d4">
