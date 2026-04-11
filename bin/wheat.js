@@ -26,6 +26,7 @@ import {
   track as trackInstall,
   maybePrompt as installPrompt,
 } from "../lib/install-prompt.js";
+import { env } from "../lib/defaults.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -96,9 +97,7 @@ Global options:
 Examples:
   npx @grainulation/wheat "Should we migrate to Postgres?"
   npx @grainulation/wheat init
-  npx @grainulation/wheat compile --summary
-
-Documentation: https://github.com/grainulation/wheat`);
+  npx @grainulation/wheat compile --summary`);
   process.exit(0);
 }
 
@@ -165,7 +164,7 @@ Run "wheat connect farmer --help" for options.`);
     );
     await connectModule.run(targetDir, subArgs.slice(1)).catch((err) => {
       console.error(`\nwheat connect farmer failed:`, err.message);
-      if (process.env.WHEAT_DEBUG) console.error(err.stack);
+      if (env.WHEAT_DEBUG) console.error(err.stack);
       process.exit(1);
     });
     process.exit(0);
@@ -192,7 +191,7 @@ Run "wheat disconnect farmer --help" for options.`);
     );
     await disconnectModule.run(targetDir, subArgs.slice(1)).catch((err) => {
       console.error(`\nwheat disconnect farmer failed:`, err.message);
-      if (process.env.WHEAT_DEBUG) console.error(err.stack);
+      if (env.WHEAT_DEBUG) console.error(err.stack);
       process.exit(1);
     });
     process.exit(0);
@@ -211,7 +210,7 @@ if (!commands[subcommand]) {
     const initHandler = await import("../lib/init.js");
     await initHandler.run(targetDir, ["--question", subcommand, "--auto"]).catch((err) => {
       console.error(`\nwheat failed:`, err.message);
-      if (process.env.WHEAT_DEBUG) console.error(err.stack);
+      if (env.WHEAT_DEBUG) console.error(err.stack);
       process.exit(1);
     });
     process.exit(0);
@@ -243,7 +242,7 @@ switch (subcommand) {
 }
 handler.run(targetDir, subArgs).catch((err) => {
   console.error(`\nwheat ${subcommand} failed:`, err.message);
-  if (process.env.WHEAT_DEBUG) console.error(err.stack);
+  if (env.WHEAT_DEBUG) console.error(err.stack);
   process.exit(1);
 });
 } // end else (non-mcp subcommands)

@@ -16,6 +16,7 @@ import path from "path";
 
 import { fileURLToPath } from "url";
 import { detectSprints } from "./detect-sprints.js";
+import { env } from "../lib/defaults.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -100,9 +101,9 @@ export function highestEvidence(claims) {
  */
 function detectSprintsForManifest() {
   // Check for cached sprint data from compiler (avoids re-running detectSprints)
-  if (process.env.WHEAT_SPRINTS_CACHE) {
+  if (env.WHEAT_SPRINTS_CACHE) {
     try {
-      const parsed = JSON.parse(process.env.WHEAT_SPRINTS_CACHE);
+      const parsed = JSON.parse(env.WHEAT_SPRINTS_CACHE);
       const sprints = {};
       for (const s of parsed.sprints || []) {
         sprints[s.name] = {
