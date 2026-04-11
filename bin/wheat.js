@@ -208,8 +208,7 @@ if (!commands[subcommand]) {
   const compoundCmds = ["connect", "disconnect", "migrate"];
   if (subcommand && !subcommand.startsWith("-") && !compoundCmds.includes(subcommand)) {
     vlog("dispatch", `verb-less mode: treating "${subcommand}" as question`);
-    const initPath = new URL(commands.init, import.meta.url).href;
-    const initHandler = await import(initPath);
+    const initHandler = await import("../lib/init.js");
     await initHandler.run(targetDir, ["--question", subcommand, "--auto"]).catch((err) => {
       console.error(`\nwheat failed:`, err.message);
       if (process.env.WHEAT_DEBUG) console.error(err.stack);
@@ -222,10 +221,26 @@ if (!commands[subcommand]) {
   process.exit(1);
 }
 
-// Load and run the subcommand module
+// Load and run the subcommand module — static switch eliminates computed dynamic import
 vlog("dispatch", `loading module for "${subcommand}"`);
-const modulePath = new URL(commands[subcommand], import.meta.url).href;
-const handler = await import(modulePath);
+let handler;
+switch (subcommand) {
+  case "init":       handler = await import("../lib/init.js"); break;
+  case "quickstart": handler = await import("../lib/quickstart.js"); break;
+  case "compile":    handler = await import("../lib/compiler.js"); break;
+  case "add":        handler = await import("../lib/cli-add.js"); break;
+  case "search":     handler = await import("../lib/cli-search.js"); break;
+  case "resolve":    handler = await import("../lib/cli-resolve.js"); break;
+  case "guard":      handler = await import("../lib/guard.js"); break;
+  case "status":     handler = await import("../lib/status.js"); break;
+  case "stats":      handler = await import("../lib/stats.js"); break;
+  case "update":     handler = await import("../lib/update.js"); break;
+  case "serve":      handler = await import("../lib/server.js"); break;
+  case "mcp":        handler = await import("../lib/serve-mcp.js"); break;
+  default:
+    console.error(`wheat: unknown command: ${subcommand}\n`);
+    process.exit(1);
+}
 handler.run(targetDir, subArgs).catch((err) => {
   console.error(`\nwheat ${subcommand} failed:`, err.message);
   if (process.env.WHEAT_DEBUG) console.error(err.stack);
