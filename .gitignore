@@ -13,8 +13,11 @@ research/
 prototypes/
 evidence/
 
-# Farmer runtime tokens
+# Farmer runtime files
 .farmer-token
+.farmer-state.json
+.farmer.pid
+.farmer-audit*.jsonl
 .farmer-config.json
 
 # Grainulator runtime files
