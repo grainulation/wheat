@@ -42,7 +42,6 @@
   "files": [
     "bin/",
     "lib/",
-    "public/",
     "compiler/",
     "templates/"
   ],
