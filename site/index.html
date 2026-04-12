@@ -368,7 +368,7 @@ footer p{margin-bottom:6px}
         <h3>Ask your question</h3>
         <p>One command. Zero prompts. Sprint ready in under 3 seconds.</p>
         <div class="copy-wrap">
-          <pre class="qs-code"><code><span class="dim">$</span> npx @grainulation/wheat "Should we migrate to GraphQL?"</code></pre>
+          <pre class="qs-code"><code><span style="color:#6b7280">$</span> <span style="color:#e0e7ef">npx @grainulation/wheat</span> <span style="color:#9ba5b7">"Should we migrate to GraphQL?"</span></code></pre>
           <button class="copy-btn" onclick="copyText(this,'npx @grainulation/wheat &quot;Should we migrate to GraphQL?&quot;')">Copy</button>
         </div>
         <div class="qs-output"><span style="color:var(--accent)">wheat</span> — sprint created
@@ -380,21 +380,21 @@ Should we migrate to GraphQL?
         <h3>Gather evidence</h3>
         <p>Use slash commands to research, prototype, and challenge. Every finding is tracked with a type and an evidence grade.</p>
         <div class="copy-wrap">
-          <pre class="qs-code"><code><span class="dim">/</span>research "GraphQL performance"</code></pre>
+          <pre class="qs-code"><code><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/research</span> <span style="color:#9ba5b7">"GraphQL performance"</span></code></pre>
           <button class="copy-btn" onclick="copyText(this,'/research &quot;GraphQL performance&quot;')">Copy</button>
         </div>
-        <div class="qs-output"><span style="color:var(--green)">r001</span> [factual|documented] GraphQL eliminates
+        <div class="qs-output"><span style="color:#f59e0b">r001</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">documented</span><span style="color:#6b7280">]</span> GraphQL eliminates
   over-fetching, reducing payload 15-25%
-<span style="color:var(--red)">r002</span> [risk|documented] REST caching does not
+<span style="color:#f59e0b">r002</span> <span style="color:#6b7280">[</span><span style="color:#f87171">risk</span><span style="color:#6b7280">|</span><span style="color:#f87171">documented</span><span style="color:#6b7280">]</span> REST caching does not
   transfer to GraphQL without custom work
-<span style="color:var(--blue)">r003</span> [estimate|web] Migration: ~3 weeks core</div>
+<span style="color:#f59e0b">r003</span> <span style="color:#6b7280">[</span><span style="color:#a78bfa">estimate</span><span style="color:#6b7280">|</span><span style="color:#a78bfa">web</span><span style="color:#6b7280">]</span> Migration: ~3 weeks core</div>
       </div>
       <div class="qs-step rv rv-d3">
         <div class="qs-num">3</div>
         <h3>Ship the brief</h3>
         <p>The compiler validates everything, resolves conflicts, and produces a decision document you can share.</p>
         <div class="copy-wrap">
-          <pre class="qs-code"><code><span class="dim">/</span>brief</code></pre>
+          <pre class="qs-code"><code><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/brief</span></code></pre>
           <button class="copy-btn" onclick="copyText(this,'/brief')">Copy</button>
         </div>
         <div class="qs-output"><span style="color:var(--green)">Compiled</span> 14 claims, 3 conflicts resolved
@@ -420,7 +420,7 @@ endpoints opportunistically.</div>
       <div class="ex-step">
         <div class="ex-dot init">1</div>
         <div class="ex-body">
-          <div class="ex-cmd">$ npx @grainulation/wheat init</div>
+          <div class="ex-cmd"><span style="color:#6b7280">$</span> <span style="color:#e0e7ef">npx @grainulation/wheat</span> init</div>
           <h4>Define the question</h4>
           <p>The team lead types the question: "Should we migrate from REST to GraphQL?" <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> asks for audience (backend team), constraints (must support existing mobile clients), and scaffolds the investigation.</p>
         </div>
@@ -429,14 +429,14 @@ endpoints opportunistically.</div>
       <div class="ex-step">
         <div class="ex-dot research">2</div>
         <div class="ex-body">
-          <div class="ex-cmd">/research "GraphQL performance characteristics"</div>
+          <div class="ex-cmd"><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/research</span> <span style="color:#9ba5b7">"GraphQL performance characteristics"</span></div>
           <h4>Gather evidence</h4>
           <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> reads your codebase, searches the web, and records what it finds. Each finding gets a type (factual, risk, estimate) and an evidence grade — from "stated" (someone said it) to "tested" (prototype-validated).</p>
-          <div class="ex-output"><span class="claim">r001 [factual|documented]</span> GraphQL eliminates over-fetching for
+          <div class="ex-output"><span style="color:#f59e0b">r001</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">documented</span><span style="color:#6b7280">]</span> GraphQL eliminates over-fetching for
   mobile clients, reducing payload size 40-60%
-<span class="claim">r002 [factual|web]</span> GraphQL N+1 query problem requires DataLoader
+<span style="color:#f59e0b">r002</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">web</span><span style="color:#6b7280">]</span> GraphQL N+1 query problem requires DataLoader
   or equivalent batching layer
-<span class="risk">r003 [risk|documented]</span> Existing REST caching (CDN, HTTP) does not
+<span style="color:#f59e0b">r003</span> <span style="color:#6b7280">[</span><span style="color:#f87171">risk</span><span style="color:#6b7280">|</span><span style="color:#f87171">documented</span><span style="color:#6b7280">]</span> Existing REST caching (CDN, HTTP) does not
   transfer to GraphQL without custom solutions</div>
         </div>
       </div>
@@ -444,12 +444,12 @@ endpoints opportunistically.</div>
       <div class="ex-step">
         <div class="ex-dot proto">3</div>
         <div class="ex-body">
-          <div class="ex-cmd">/prototype</div>
+          <div class="ex-cmd"><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/prototype</span></div>
           <h4>Build and measure</h4>
           <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> builds a working proof-of-concept and benchmarks it. Findings from prototypes get the "tested" evidence grade — real measurements, not blog posts.</p>
-          <div class="ex-output"><span class="claim">p001 [estimate|tested]</span> Migration effort: ~3 weeks for core
+          <div class="ex-output"><span style="color:#f59e0b">p001</span> <span style="color:#6b7280">[</span><span style="color:#a78bfa">estimate</span><span style="color:#6b7280">|</span><span style="color:#a78bfa">tested</span><span style="color:#6b7280">]</span> Migration effort: ~3 weeks for core
   endpoints, 2 weeks for mobile client updates
-<span class="claim">p002 [factual|tested]</span> DataLoader resolves N+1; p95 latency
+<span style="color:#f59e0b">p002</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">tested</span><span style="color:#6b7280">]</span> DataLoader resolves N+1; p95 latency
   within 12% of REST equivalent</div>
         </div>
       </div>
@@ -457,10 +457,10 @@ endpoints opportunistically.</div>
       <div class="ex-step">
         <div class="ex-dot challenge">4</div>
         <div class="ex-body">
-          <div class="ex-cmd">/challenge r001</div>
+          <div class="ex-cmd"><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/challenge</span> <span style="color:#f59e0b">r001</span></div>
           <h4>Stress-test the findings</h4>
           <p>The adversarial review catches that the "40-60% payload reduction" was based on worst-case assumptions — the real number is lower because the team already field-filters their REST endpoints.</p>
-          <div class="ex-output"><span class="risk">x001 [risk|documented]</span> 40-60% payload reduction assumes
+          <div class="ex-output"><span style="color:#f59e0b">x001</span> <span style="color:#6b7280">[</span><span style="color:#f87171">risk</span><span style="color:#6b7280">|</span><span style="color:#f87171">documented</span><span style="color:#6b7280">]</span> 40-60% payload reduction assumes
   worst-case REST over-fetching; our actual endpoints
   are already field-filtered — real reduction ~15-25%</div>
         </div>
@@ -469,16 +469,16 @@ endpoints opportunistically.</div>
       <div class="ex-step">
         <div class="ex-dot brief">5</div>
         <div class="ex-body">
-          <div class="ex-cmd">/brief</div>
+          <div class="ex-cmd"><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/brief</span></div>
           <h4>Ship the decision</h4>
           <p>The compiler resolves conflicts (higher evidence grades win), validates everything, and produces a self-contained HTML decision document. If there are contradictions, it tells you exactly what to fix first.</p>
-          <div class="ex-output"><span class="hl">Recommendation:</span> Proceed with GraphQL for new endpoints only.
+          <div class="ex-output"><span style="color:#fbbf24;font-weight:600">Recommendation:</span> Proceed with GraphQL for new endpoints only.
 Migrate existing REST endpoints opportunistically. Payload
 benefits are real but smaller than initially estimated (15-25%
-vs. 40-60%). The caching gap (r003) needs a solution first.
+vs. 40-60%). The caching gap (<span style="color:#f59e0b">r003</span>) needs a solution first.
 
-<span class="dim">14 claims | 3 conflicts resolved | evidence: 2 tested, 8 documented, 4 web</span>
-<span class="dim">-&gt; output/brief.html (self-contained, send to stakeholders)</span></div>
+<span style="color:#6b7280">14 claims | 3 conflicts resolved | evidence: 2 tested, 8 documented, 4 web</span>
+<span style="color:#6b7280">-&gt; output/brief.html (self-contained, send to stakeholders)</span></div>
         </div>
       </div>
     </div>
