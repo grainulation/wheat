@@ -91,14 +91,8 @@ const VALID_PHASES = [
   "evaluate",
   "feedback",
 ];
-const PHASE_ORDER = [
-  "init",
-  "define",
-  "research",
-  "prototype",
-  "evaluate",
-  "compile",
-];
+// Note: phase ordering for next-action logic uses inline arrays in computeNextActions().
+// PHASE_ORDER was previously defined here but was unused — removed to avoid dead code.
 
 // Burn-residue ID prefix — synthetic claims from /control-burn must never persist
 const BURN_PREFIX = "burn-";
@@ -700,7 +694,7 @@ function diffCompilations(before, after) {
  * No subprocess — reuses the already-imported module and sprint data.
  * Failures are non-fatal (manifest is an optimization, not a correctness requirement).
  */
-function generateManifest(compilation, dir, sprintsInfo) {
+function generateManifest(_compilation, dir, sprintsInfo) {
   const baseDir = dir || TARGET_DIR;
   try {
     const result = buildManifest(baseDir, { sprintsInfo });
@@ -1346,7 +1340,6 @@ function computeNextActions(comp) {
   const conflicts = comp.conflict_graph || { resolved: [], unresolved: [] };
   const phase = comp.sprint_meta?.phase || "init";
   const phases = comp.phase_summary || {};
-  const warnings = comp.warnings || [];
   const corroboration = comp.corroboration || {};
 
   // ── Priority 1: Unresolved conflicts (blocks compilation) ──────────────
