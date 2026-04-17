@@ -29,14 +29,6 @@ const ROOT =
     ? path.resolve(process.argv[_dirIdx + 1])
     : __dirname;
 
-// --- CLI args ---
-const args = process.argv.slice(2);
-function arg(name, fallback) {
-  const i = args.indexOf(`--${name}`);
-  return i !== -1 && args[i + 1] ? args[i + 1] : fallback;
-}
-const OUT_PATH = path.join(ROOT, arg("out", "wheat-manifest.json"));
-
 // --- Helpers ---
 
 /** Safely parse JSON from a file path; returns null on failure. */
