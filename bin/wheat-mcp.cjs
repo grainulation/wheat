@@ -8,11 +8,12 @@
  */
 
 const dirIdx = process.argv.indexOf("--dir");
-const dir = dirIdx !== -1 && process.argv[dirIdx + 1]
-  ? process.argv[dirIdx + 1]
-  : process.cwd();
+const dir =
+	dirIdx !== -1 && process.argv[dirIdx + 1]
+		? process.argv[dirIdx + 1]
+		: process.cwd();
 
 // Dynamic import of ESM module from CJS
 import("../lib/serve-mcp.js").then((mod) => {
-  mod.startServer(dir);
+	mod.startServer(dir);
 });

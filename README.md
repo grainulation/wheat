@@ -78,7 +78,7 @@ The compiler is the enforcement layer. If it says blocked, no brief gets produce
 For native tool access in Claude Code:
 
 ```bash
-claude mcp add wheat -- npx -y @grainulation/wheat-mcp
+claude mcp add wheat -- npx -y -p @grainulation/wheat wheat-mcp
 ```
 
 This gives Claude direct access to wheat's claims engine -- add-claim, compile, search, status -- without shelling out.

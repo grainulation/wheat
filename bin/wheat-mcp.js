@@ -9,7 +9,7 @@
  *
  * Usage:
  *   node bin/wheat-mcp.js [--dir <path>]
- *   npx @grainulation/wheat-mcp [--dir <path>]
+ *   npx -y -p @grainulation/wheat wheat-mcp [--dir <path>]
  *
  * Zero npm dependencies.
  */
@@ -17,8 +17,9 @@
 import { startServer } from "../lib/serve-mcp.js";
 
 const dirIdx = process.argv.indexOf("--dir");
-const dir = dirIdx !== -1 && process.argv[dirIdx + 1]
-  ? process.argv[dirIdx + 1]
-  : process.cwd();
+const dir =
+	dirIdx !== -1 && process.argv[dirIdx + 1]
+		? process.argv[dirIdx + 1]
+		: process.cwd();
 
 startServer(dir);
