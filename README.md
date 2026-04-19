@@ -139,6 +139,10 @@ rm -f .mcp.json   # or remove just the "wheat" entry
 # Remove pre-commit hook snippet (or delete .git/hooks/pre-commit)
 ```
 
+## Releases
+
+See [CHANGELOG.md](./CHANGELOG.md) for release history.
+
 ## License
 
 MIT
