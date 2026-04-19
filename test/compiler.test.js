@@ -96,6 +96,54 @@ describe("wheat compile", () => {
 		);
 	});
 
+	it("accepts refuted as a valid claim status", () => {
+		const claimsPath = path.join(tmpDir, "claims.json");
+		fs.writeFileSync(
+			claimsPath,
+			JSON.stringify(
+				minimalClaims({
+					claims: [
+						{
+							id: "r001",
+							type: "factual",
+							topic: "refutation-demo",
+							content:
+								"Initial claim later disproved by adversarial review.",
+							source: {
+								origin: "cli",
+								artifact: null,
+								connector: null,
+							},
+							evidence: "documented",
+							status: "refuted",
+							phase_added: "research",
+							timestamp: "2026-04-18T00:00:00Z",
+							conflicts_with: [],
+							resolved_by: "r002",
+							tags: [],
+						},
+					],
+				}),
+				null,
+				2,
+			),
+		);
+
+		execFileSync(
+			process.execPath,
+			[COMPILER_PATH, "--dir", tmpDir, "--check"],
+			{ timeout: 10_000, stdio: "pipe" },
+		);
+
+		const compilationPath = path.join(tmpDir, "compilation.json");
+		const compilation = JSON.parse(fs.readFileSync(compilationPath, "utf8"));
+		assert.equal(
+			compilation.sprint_meta.refuted_claims,
+			1,
+			"refuted_claims counter should reflect refuted claims",
+		);
+	});
+
 	it("--check exits 0 for valid claims", () => {
 		const claimsPath = path.join(tmpDir, "claims.json");
 		fs.writeFileSync(claimsPath, JSON.stringify(minimalClaims(), null, 2));

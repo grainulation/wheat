@@ -83,7 +83,17 @@ const VALID_TYPES = [
 	"recommendation",
 	"feedback",
 ];
-const VALID_STATUSES = ["active", "superseded", "conflicted", "resolved"];
+// "refuted" is a first-class claim outcome: a claim that was initially
+// asserted but later disproven under closer review. Distinct from
+// "superseded" (replaced by a newer claim on the same topic) and
+// "conflicted" (contradicts another claim but unresolved).
+const VALID_STATUSES = [
+	"active",
+	"superseded",
+	"conflicted",
+	"resolved",
+	"refuted",
+];
 const VALID_PHASES = [
 	"define",
 	"research",
@@ -856,6 +866,7 @@ function compile(inputPath, outputPath, dir, opts = {}) {
 			active_claims: claims.filter((c) => c.status === "active").length,
 			conflicted_claims: claims.filter((c) => c.status === "conflicted").length,
 			superseded_claims: claims.filter((c) => c.status === "superseded").length,
+			refuted_claims: claims.filter((c) => c.status === "refuted").length,
 			connectors: meta.connectors || [],
 		},
 		compilation_certificate: certificate,
