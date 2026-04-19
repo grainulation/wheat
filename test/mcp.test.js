@@ -707,3 +707,111 @@ describe("wheat MCP tool handlers", () => {
 		}
 	});
 });
+
+// ────────────────────────────────────────────────────────────────────────────
+// Top-level crash handler tests
+//
+// Verify that uncaughtException / unhandledRejection thrown OFF the request
+// path (e.g., from a setTimeout or an unhandled promise rejection) are caught
+// by the new top-level handlers, logged as structured JSON to stderr, and
+// cause the process to exit with code 1 (so Claude Code surfaces a reload
+// prompt rather than a silent hang).
+//
+// The WHEAT_MCP_CRASH_TEST env var is a test-only hook that asks the server
+// to schedule an async throw or rejection 50ms after startup. Never set in
+// production.
+// ────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Spawn the MCP server with WHEAT_MCP_CRASH_TEST set and collect stderr + exit
+ * code. Resolves when the process exits.
+ */
+function spawnCrashing(mode, timeoutMs = 5_000) {
+	return new Promise((resolve, reject) => {
+		const child = spawn(process.execPath, [MCP_BIN], {
+			stdio: ["pipe", "pipe", "pipe"],
+			env: { ...process.env, WHEAT_MCP_CRASH_TEST: mode },
+		});
+
+		let stderr = "";
+		let stdout = "";
+
+		child.stderr.on("data", (chunk) => {
+			stderr += chunk.toString();
+		});
+		child.stdout.on("data", (chunk) => {
+			stdout += chunk.toString();
+		});
+
+		const timer = setTimeout(() => {
+			child.kill();
+			reject(
+				new Error(
+					`Crash child did not exit within ${timeoutMs}ms\nstderr: ${stderr}`,
+				),
+			);
+		}, timeoutMs);
+
+		child.on("close", (code) => {
+			clearTimeout(timer);
+			resolve({ code, stderr, stdout });
+		});
+
+		child.on("error", (err) => {
+			clearTimeout(timer);
+			reject(err);
+		});
+	});
+}
+
+describe("wheat MCP crash handlers", () => {
+	it("uncaughtException — logs structured JSON to stderr and exits with code 1", async () => {
+		const { code, stderr, stdout } = await spawnCrashing("uncaught");
+		assert.equal(code, 1, `expected exit code 1, got ${code}`);
+
+		// stdout must NOT contain the crash payload (reserved for JSON-RPC).
+		assert.ok(
+			!stdout.includes("uncaughtException"),
+			"crash payload must never appear on stdout",
+		);
+
+		// stderr should contain a parseable JSON line with the expected fields.
+		const lines = stderr.split("\n").filter((l) => l.trim().startsWith("{"));
+		assert.ok(
+			lines.length > 0,
+			`expected a JSON log line on stderr, got: ${stderr}`,
+		);
+		const payload = JSON.parse(lines[0]);
+		assert.equal(payload.level, "fatal");
+		assert.equal(payload.source, "wheat-mcp");
+		assert.equal(payload.kind, "uncaughtException");
+		assert.ok(payload.message.includes("WHEAT_MCP_CRASH_TEST uncaught"));
+		assert.ok(typeof payload.stack === "string" && payload.stack.length > 0);
+		assert.ok(typeof payload.version === "string");
+		assert.ok(typeof payload.pid === "number");
+	});
+
+	it("unhandledRejection — logs structured JSON to stderr and exits with code 1", async () => {
+		const { code, stderr, stdout } = await spawnCrashing("unhandled");
+		assert.equal(code, 1, `expected exit code 1, got ${code}`);
+
+		assert.ok(
+			!stdout.includes("unhandledRejection"),
+			"crash payload must never appear on stdout",
+		);
+
+		const lines = stderr.split("\n").filter((l) => l.trim().startsWith("{"));
+		assert.ok(
+			lines.length > 0,
+			`expected a JSON log line on stderr, got: ${stderr}`,
+		);
+		// The first fatal JSON line should be the unhandled rejection.
+		const fatal = lines
+			.map((l) => JSON.parse(l))
+			.find((p) => p.level === "fatal");
+		assert.ok(fatal, "expected a fatal-level line");
+		assert.equal(fatal.source, "wheat-mcp");
+		assert.equal(fatal.kind, "unhandledRejection");
+		assert.ok(fatal.message.includes("WHEAT_MCP_CRASH_TEST unhandled"));
+	});
+});
