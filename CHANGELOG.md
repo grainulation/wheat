@@ -2,6 +2,108 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.1.4 — 2026-04-18
+
+### Changed
+
+- Refactored to use `@grainulation/barn` for JSON-RPC, path guards, and CLI verbose logging — consolidates shared utilities across the ecosystem
+
+### Fixed
+
+- Corrected all user-facing references to the `wheat-mcp` invocation
+- Corrected MCP package invocation in `wheat init`
+- Removed dead code and unused parameters flagged by eslint audit
+- Added missing `execFileSync` import in `serve-mcp.js`
+
+### Docs
+
+- Fixed broken `add-claim` example in the README quick-start
+- Added SECURITY.md
+- README honesty pass (production polish), added `publishConfig`, expanded `.gitignore` to cover `.env`
+- CI: fixed zero-dep gate
+
+## 1.1.2 — 2026-04-11
+
+### Changed
+
+- Dropped Node 18 from the CI matrix — `engines` already required `>=20`
+
+### Fixed
+
+- DeepWiki link in docs (was broken)
+- Wheat chip label shortened from "evidence compiler" to "compiler"
+- Bottom padding added to CTA section (32px)
+- Tightened margins around the npx install CTA block and CTA section padding (24px → 8px)
+
+### Internal
+
+- Trimmed npm tarball — removed local-only files from the package
+
+## 1.1.1 — 2026-04-11
+
+### Added
+
+- Revised landing page: contrasting hero, claim definition, before/after, install CTA
+- Syntax highlighting on sprint terminal examples
+
+### Changed
+
+- Aligned meta tags, softened the Jake example, updated ecosystem chip, added tagline
+- Centralized environment variables to `defaults.js`; removed doc URLs
+- Static imports in the wheat CLI — eliminated a computed dynamic import
+- Inlined compiler calls — eliminated 4 `child_process` spawns
+
+### Removed
+
+- `publish.yml` workflow — publishing is now manual (token-create-publish-delete)
+
+### Internal
+
+- CI skips publish when the version already exists on npm
+
+## 1.1.0 — 2026-04-11
+
+Security hardening release.
+
+### Security
+
+- CSP meta tag added (Rx-6)
+- MCP `dir` parameter is now contained to the workspace (Rx-4)
+- Fixed a prefix-collision in directory containment by appending `path.sep` (w105)
+
+### Internal
+
+- Missing runtime files added to `.gitignore` (Rx-10)
+
+### Docs
+
+- Restored CI badge and npm downloads badge
+
+## 1.0.17 — 2026-04-09
+
+### Added
+
+- `claims-ops.js` extracted with new CLI commands: `add`, `search`, `resolve`
+
+### Changed
+
+- README value-prop rewritten per HN feedback (Rx-3)
+
+### Fixed
+
+- P0 onboarding issues (Rx-001, Rx-005)
+
+### Security
+
+- Bearer auth added to the farmer probe and generated hooks (Rx-002)
+- `.farmer-token` and runtime files added to `.gitignore` (Rx-003)
+
+## 1.0.16 — 2026-04-06
+
+### Added
+
+- Anti-rationalization tables and personas for the `/challenge`, `/witness`, and `/blind-spot` slash commands
+
 ## 1.0.15 — 2026-04-03
 
 ### Added
