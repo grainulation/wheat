@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.1.7 — 2026-04-19
+
+### Changed
+
+- `lib/serve-mcp.js` now adopts `@grainulation/barn/mcp-crash#installCrashHandlers` in place of the ~84-line inline crash handler added in 1.1.6. Behaviour is unchanged (structured JSON on stderr, exit 1 on `uncaughtException` / `unhandledRejection`) but every Grainulation MCP server now shares identical semantics.
+- Test-only env hook renamed from `WHEAT_MCP_CRASH_TEST` to `BARN_MCP_CRASH_TEST` to match the cross-service helper.
+
+### Fixed
+
+- `toolDeepwiki` now attaches `res.on("error")` alongside the existing `data`/`end` listeners. A mid-stream `ECONNRESET` (or other `IncomingMessage` error event) is now reported as a clean JSON-RPC error instead of a potentially unhandled `error` event on the response body.
+
+### Internal
+
+- `@grainulation/barn` dep bumped `^1.2.1` → `^1.2.2` (adds the `/mcp-crash` subpath export).
+
 ## 1.1.6 — 2026-04-19
 
 ### Changed

@@ -717,20 +717,20 @@ describe("wheat MCP tool handlers", () => {
 // cause the process to exit with code 1 (so Claude Code surfaces a reload
 // prompt rather than a silent hang).
 //
-// The WHEAT_MCP_CRASH_TEST env var is a test-only hook that asks the server
+// The BARN_MCP_CRASH_TEST env var is a test-only hook that asks the server
 // to schedule an async throw or rejection 50ms after startup. Never set in
 // production.
 // ────────────────────────────────────────────────────────────────────────────
 
 /**
- * Spawn the MCP server with WHEAT_MCP_CRASH_TEST set and collect stderr + exit
+ * Spawn the MCP server with BARN_MCP_CRASH_TEST set and collect stderr + exit
  * code. Resolves when the process exits.
  */
 function spawnCrashing(mode, timeoutMs = 5_000) {
 	return new Promise((resolve, reject) => {
 		const child = spawn(process.execPath, [MCP_BIN], {
 			stdio: ["pipe", "pipe", "pipe"],
-			env: { ...process.env, WHEAT_MCP_CRASH_TEST: mode },
+			env: { ...process.env, BARN_MCP_CRASH_TEST: mode },
 		});
 
 		let stderr = "";
@@ -785,7 +785,7 @@ describe("wheat MCP crash handlers", () => {
 		assert.equal(payload.level, "fatal");
 		assert.equal(payload.source, "wheat-mcp");
 		assert.equal(payload.kind, "uncaughtException");
-		assert.ok(payload.message.includes("WHEAT_MCP_CRASH_TEST uncaught"));
+		assert.ok(payload.message.includes("BARN_MCP_CRASH_TEST uncaught"));
 		assert.ok(typeof payload.stack === "string" && payload.stack.length > 0);
 		assert.ok(typeof payload.version === "string");
 		assert.ok(typeof payload.pid === "number");
@@ -812,6 +812,6 @@ describe("wheat MCP crash handlers", () => {
 		assert.ok(fatal, "expected a fatal-level line");
 		assert.equal(fatal.source, "wheat-mcp");
 		assert.equal(fatal.kind, "unhandledRejection");
-		assert.ok(fatal.message.includes("WHEAT_MCP_CRASH_TEST unhandled"));
+		assert.ok(fatal.message.includes("BARN_MCP_CRASH_TEST unhandled"));
 	});
 });
