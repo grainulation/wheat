@@ -405,9 +405,13 @@ function analyzeCoverage(claims) {
 		}
 	});
 
-	// Compute corroboration: how many other claims reference/support each claim
+	// Compute corroboration: how many other claims reference/support each claim.
+	// Exclude superseded AND refuted claims — a disproven claim must not lend
+	// evidentiary weight to another.
 	const corroboration = {};
-	const allClaims = claims.filter((c) => c.status !== "superseded");
+	const allClaims = claims.filter(
+		(c) => c.status !== "superseded" && c.status !== "refuted",
+	);
 	allClaims.forEach((claim) => {
 		corroboration[claim.id] = 0;
 	});
