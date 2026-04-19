@@ -742,12 +742,13 @@ function compile(inputPath, outputPath, dir, opts = {}) {
 
 	// Read claims
 	if (!fs.existsSync(claimsPath)) {
-		console.error(
-			`Error: ${path.basename(
-				claimsPath,
-			)} not found. Run "wheat init" to start a sprint.`,
+		// Throw instead of process.exit so callers (e.g. the MCP server in
+		// lib/serve-mcp.js) can surface the error without the host process
+		// dying. The CLI entry point at the bottom of this file wraps
+		// compile() in a try/catch that exits on thrown errors.
+		throw new Error(
+			`${path.basename(claimsPath)} not found. Run "wheat init" to start a sprint.`,
 		);
-		process.exit(1);
 	}
 
 	const raw = fs.readFileSync(claimsPath, "utf8");
@@ -755,18 +756,15 @@ function compile(inputPath, outputPath, dir, opts = {}) {
 	try {
 		claimsData = JSON.parse(raw);
 	} catch (e) {
-		console.error(
-			`Error: ${path.basename(claimsPath)} is not valid JSON — ${e.message}`,
+		throw new Error(
+			`${path.basename(claimsPath)} is not valid JSON — ${e.message}`,
 		);
-		process.exit(1);
 	}
 	// ── Schema version check + migration [r237] ──────────────────────────────
 	const migrationResult = checkAndMigrateSchema(claimsData);
 	if (migrationResult.errors.length > 0) {
-		for (const err of migrationResult.errors) {
-			console.error(`Error: ${err.message}`);
-		}
-		process.exit(1);
+		const messages = migrationResult.errors.map((err) => err.message).join("; ");
+		throw new Error(messages);
 	}
 	claimsData = migrationResult.data;
 
@@ -1055,9 +1053,18 @@ Options:
 
 	const jsonFlag = args.includes("--json");
 	const quietFlag = args.includes("--quiet") || args.includes("-q");
-	const compilation = compile(inputPath, outputPath, undefined, {
-		skipSprintDetection: quietFlag && !args.includes("--summary"),
-	});
+	let compilation;
+	try {
+		compilation = compile(inputPath, outputPath, undefined, {
+			skipSprintDetection: quietFlag && !args.includes("--summary"),
+		});
+	} catch (err) {
+		// CLI entry point: surface the error and exit with non-zero.
+		// The library path (called from lib/serve-mcp.js, lib/compiler.js)
+		// rethrows cleanly so MCP servers can catch it.
+		console.error(`Error: ${err.message}`);
+		process.exit(1);
+	}
 
 	// --quiet / -q: one-liner output for scripts and AI agents (~13 tokens vs ~4,600)
 	if (quietFlag && !args.includes("--summary")) {
