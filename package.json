@@ -43,7 +43,13 @@
 		"bin/",
 		"lib/",
 		"compiler/",
-		"templates/"
+		"templates/",
+		"README.md",
+		"LICENSE",
+		"CODE_OF_CONDUCT.md",
+		"CONTRIBUTING.md",
+		"SECURITY.md",
+		"CHANGELOG.md"
 	],
 	"scripts": {
 		"test": "node --test test/cli.test.js test/compiler.test.js test/guard.test.js test/init.test.js test/migration.test.js test/mcp.test.js test/claims-ops.test.js test/load-claims.test.js test/status.test.js test/connect.test.js test/hints.test.js",
