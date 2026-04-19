@@ -38,12 +38,11 @@ const VERSION = JSON.parse(
 
 // ─── Parse arguments ─────────────────────────────────────────────────────────
 
+import { setVerbose, vlog as barnVlog } from "@grainulation/barn/cli";
+
 const verbose = process.argv.includes("--verbose");
-function vlog(...a) {
-	if (!verbose) return;
-	const ts = new Date().toISOString();
-	process.stderr.write(`[${ts}] wheat: ${a.join(" ")}\n`);
-}
+setVerbose(verbose);
+const vlog = (...a) => barnVlog("wheat:", ...a);
 
 export { verbose, vlog };
 
