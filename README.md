@@ -41,7 +41,7 @@ One command. Zero config. Sprint ready in under 3 seconds.
 Then open your AI coding tool and start investigating:
 
 ```bash
-wheat add r001 --type factual --topic "graphql-performance" \
+wheat add --id r001 --type factual --topic "graphql-performance" \
   --content "GraphQL N+1 queries cause 3-10x latency without DataLoader" \
   --evidence documented
 
