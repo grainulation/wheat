@@ -1,0 +1,10 @@
+node_modules/
+public/index.html
+public/*.js
+public/*.css
+templates/
+test-output/
+coverage/
+output/
+CHANGELOG.md
+*.md
