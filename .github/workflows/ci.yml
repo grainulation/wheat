@@ -25,11 +25,20 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Verify zero dependencies
+      - name: Verify zero third-party dependencies
         run: |
-          deps=$(node -e "console.log(Object.keys(require('./package.json').dependencies || {}).length)")
-          if [ "$deps" != "0" ]; then
-            echo "ERROR: package.json has $deps dependencies — wheat must have zero deps"
+          # Only @grainulation/* internal deps are allowed; any other
+          # dependency fails the gate. This keeps the "no left-pad /
+          # no supply chain" posture while allowing shared ecosystem
+          # utilities.
+          foreign=$(node -e "
+            const d = require('./package.json').dependencies || {};
+            const bad = Object.keys(d).filter(n => !n.startsWith('@grainulation/'));
+            console.log(bad.join(','));
+          ")
+          if [ -n "$foreign" ]; then
+            echo "ERROR: package.json has third-party dependencies: $foreign"
+            echo "wheat only permits @grainulation/* internal deps."
             exit 1
           fi
 
