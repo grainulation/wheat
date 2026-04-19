@@ -28,3 +28,4 @@ evidence/
 .env
 .env.local
 .env.*.local
+orchard.json
