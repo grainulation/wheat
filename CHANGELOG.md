@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.1.6 — 2026-04-19
+
+### Changed
+
+- `lib/install-prompt.js` routes `~/.grainulation/usage.json` writes through `atomicWriteJSON` from `@grainulation/barn/atomic`. Concurrent wheat invocations can no longer produce a torn JSON on the usage file.
+
+### Fixed
+
+- **Picomatch ReDoS (GHSA-3v7f-55p6-f55p, GHSA-c2c7-rcm5-vvqj).** Transitive devDep bumped 2.3.1 → 2.3.2 via `npm audit fix`. DevDep-only (via `@changesets/cli`) — never shipped to consumers; bundle is unchanged.
+
+### Internal
+
+- CI: install dependencies before running the test matrix (fixes subprocess module resolution)
+- CI: prettier pass + MCP test harness chunk-safety fix
+
+## 1.1.5 — 2026-04-19
+
+(Production-polish sprint release — SBOM + OIDC provenance; refuted status + atomic writes + barn containment shipped.)
+
 ## 1.1.4 — 2026-04-18
 
 ### Changed
