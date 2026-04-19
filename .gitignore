@@ -23,3 +23,8 @@ evidence/
 # Grainulator runtime files
 .wheat-tips.md
 .wheat-compile.lock
+
+# Environment / secrets — never commit
+.env
+.env.local
+.env.*.local

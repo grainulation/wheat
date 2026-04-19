@@ -113,7 +113,7 @@ Wheat installs two optional guard mechanisms:
 
 ## Requirements
 
-Node 20+. Zero npm dependencies.
+Node 20+. Zero third-party runtime dependencies — depends only on `@grainulation/barn` (internal ecosystem utilities).
 
 Wheat doesn't care what language your project uses. Your Scala project, your Python monorepo, your Flutter app -- wheat validates decisions, not code.
 
