@@ -59,13 +59,13 @@
 	"engines": {
 		"node": ">=20"
 	},
-	"dependencies": {
-		"@grainulation/barn": "^1.2.1"
-	},
 	"devDependencies": {
 		"@changesets/cli": "^2.30.0"
 	},
 	"publishConfig": {
 		"access": "public"
+	},
+	"dependencies": {
+		"@grainulation/barn": "^1.2.1"
 	}
 }
