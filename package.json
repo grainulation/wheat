@@ -54,7 +54,7 @@
 		"node": ">=20"
 	},
 	"dependencies": {
-		"@grainulation/barn": "^1.2.0"
+		"@grainulation/barn": "^1.2.1"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.30.0"

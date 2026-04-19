@@ -22,7 +22,7 @@ import { fileURLToPath } from "url";
 import { maybeHint } from "../lib/hints.js";
 
 // Sprint detection — git-based, no config pointer needed (p013/f001)
-import { detectSprints } from "./detect-sprints.js";
+import { detectSprints } from "@grainulation/barn/detect-sprints";
 // Direct manifest generation — avoids subprocess + redundant detectSprints call
 import { buildManifest } from "./generate-manifest.js";
 

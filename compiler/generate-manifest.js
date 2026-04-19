@@ -15,7 +15,7 @@ import fs from "fs";
 import path from "path";
 
 import { fileURLToPath } from "url";
-import { detectSprints } from "./detect-sprints.js";
+import { detectSprints } from "@grainulation/barn/detect-sprints";
 import { env } from "../lib/defaults.js";
 
 const __filename = fileURLToPath(import.meta.url);
