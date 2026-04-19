@@ -107,8 +107,7 @@ describe("wheat compile", () => {
 							id: "r001",
 							type: "factual",
 							topic: "refutation-demo",
-							content:
-								"Initial claim later disproved by adversarial review.",
+							content: "Initial claim later disproved by adversarial review.",
 							source: {
 								origin: "cli",
 								artifact: null,

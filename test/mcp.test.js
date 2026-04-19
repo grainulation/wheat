@@ -684,7 +684,10 @@ describe("wheat MCP tool handlers", () => {
 	it("tools/call outside workspace — returns isError", async () => {
 		const { child } = await spawnAndInitialize(MCP_BIN, ["--dir", sprintDir]);
 		try {
-			const outsideDir = path.resolve(os.tmpdir(), "definitely-outside-workspace");
+			const outsideDir = path.resolve(
+				os.tmpdir(),
+				"definitely-outside-workspace",
+			);
 			const responsePromise = waitForResponse(child);
 			sendJsonRpc(child, {
 				jsonrpc: "2.0",

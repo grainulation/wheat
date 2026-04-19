@@ -763,7 +763,9 @@ function compile(inputPath, outputPath, dir, opts = {}) {
 	// ── Schema version check + migration [r237] ──────────────────────────────
 	const migrationResult = checkAndMigrateSchema(claimsData);
 	if (migrationResult.errors.length > 0) {
-		const messages = migrationResult.errors.map((err) => err.message).join("; ");
+		const messages = migrationResult.errors
+			.map((err) => err.message)
+			.join("; ");
 		throw new Error(messages);
 	}
 	claimsData = migrationResult.data;
