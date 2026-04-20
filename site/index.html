@@ -244,7 +244,7 @@ footer p{margin-bottom:6px}
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do you make better technical decisions in engineering?","acceptedAnswer":{"@type":"Answer","text":"Use a structured decision-making framework like Wheat. Instead of debating in Slack or writing a one-time doc, Wheat lets you gather evidence from multiple angles, prototype solutions, adversarially challenge assumptions, and compile everything into a validated decision brief. Every finding is typed and evidence-graded, and a compiler catches contradictions before you ship."}},{"@type":"Question","name":"What is a good alternative to architecture decision records (ADRs)?","acceptedAnswer":{"@type":"Answer","text":"Wheat is a modern alternative to ADRs that validates your reasoning as you go. Instead of writing a static document after the decision is made, Wheat tracks typed findings during the investigation — constraints, risks, estimates, recommendations — and compiles them into a decision brief with evidence tiers and conflict resolution. It runs inside Claude Code as slash commands."}},{"@type":"Question","name":"How do you evaluate technology options for a migration?","acceptedAnswer":{"@type":"Answer","text":"Wheat provides a structured evaluation process: /research explores each option, /prototype builds testable proof-of-concepts, /challenge stress-tests your assumptions, and /brief compiles a validated recommendation. Every finding is evidence-graded from 'stated' (someone said it) to 'tested' (prototype-validated) to 'production' (measured in prod). The compiler blocks output if contradictions exist."}},{"@type":"Question","name":"What tools work with Claude Code for technical research?","acceptedAnswer":{"@type":"Answer","text":"Wheat (@grainulation/wheat) is a technical decision framework that runs as 20 slash commands inside Claude Code. Commands like /research, /prototype, /challenge, and /brief guide you through structured investigation. It uses Claude's ability to read codebases, search the web, and reason about evidence. Zero npm dependencies, works in any repo."}},{"@type":"Question","name":"How do you decide between build vs buy for software?","acceptedAnswer":{"@type":"Answer","text":"Use a structured research process instead of gut instinct. With Wheat, you start by defining your question and constraints (/init), research both options with evidence tiers (/research), prototype the build option to validate estimates (/prototype), challenge your assumptions (/challenge), and compile everything into a decision brief (/brief). The compiler ensures you can't ship a recommendation built on contradictory or weak evidence."}}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"HowTo","name":"How to make a structured technical decision","description":"Use Wheat to evaluate technology options and produce an evidence-backed architecture decision in 3 steps. Works inside Claude Code.","totalTime":"PT30M","tool":[{"@type":"HowToTool","name":"Claude Code"},{"@type":"HowToTool","name":"Node.js 20+"}],"step":[{"@type":"HowToStep","name":"Define your question and constraints","text":"Run npx @grainulation/wheat 'Should we migrate to GraphQL?' — one command, zero prompts. Wheat creates a sprint with smart defaults in under 3 seconds.","url":"https://wheat.grainulation.com/#quickstart"},{"@type":"HowToStep","name":"Research, prototype, and challenge","text":"Use /research to gather evidence from code, docs, and the web. Use /prototype to build testable proof-of-concepts. Use /challenge to adversarially stress-test your findings. Every finding is a typed assertion with an evidence tier from 'stated' to 'production-measured'.","url":"https://wheat.grainulation.com/#example"},{"@type":"HowToStep","name":"Compile and ship the decision brief","text":"Run /brief to compile all findings into a validated decision document. The compiler resolves conflicts, flags weak evidence, and produces a self-contained HTML brief you can share with stakeholders. If contradictions exist, the build fails until they're resolved.","url":"https://wheat.grainulation.com/#quickstart"}]}
+{"@context":"https://schema.org","@type":"HowTo","name":"How to make a structured technical decision","description":"Use Wheat to evaluate technology options and produce an evidence-backed architecture decision in 3 steps. Works inside Claude Code.","totalTime":"PT30M","tool":[{"@type":"HowToTool","name":"Claude Code"},{"@type":"HowToTool","name":"Node.js 20+"}],"step":[{"@type":"HowToStep","name":"Define your question and constraints","text":"Run npx @grainulation/wheat 'Should we migrate from microservices to a modular monolith?' — one command, zero prompts. Wheat creates a sprint with smart defaults in under 3 seconds.","url":"https://wheat.grainulation.com/#quickstart"},{"@type":"HowToStep","name":"Research, prototype, and challenge","text":"Use /research to gather evidence from code, docs, and the web. Use /prototype to build testable proof-of-concepts. Use /challenge to adversarially stress-test your findings. Every finding is a typed assertion with an evidence tier from 'stated' to 'production-measured'.","url":"https://wheat.grainulation.com/#example"},{"@type":"HowToStep","name":"Compile and ship the decision brief","text":"Run /brief to compile all findings into a validated decision document. The compiler resolves conflicts, flags weak evidence, and produces a self-contained HTML brief you can share with stakeholders. If contradictions exist, the build fails until they're resolved.","url":"https://wheat.grainulation.com/#quickstart"}]}
 </script>
 </head>
 <body>
@@ -284,7 +284,7 @@ footer p{margin-bottom:6px}
 
 <section style="padding:8px 0 32px;text-align:center">
   <div class="container">
-    <code style="display:inline-block;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:8px;padding:12px 24px;font-size:1rem;color:var(--accent);letter-spacing:.01em">npx wheat init "Should we migrate to GraphQL?"</code>
+    <code style="display:inline-block;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:8px;padding:12px 24px;font-size:1rem;color:var(--accent);letter-spacing:.01em">npx wheat init "Should we migrate from microservices to a modular monolith?"</code>
     <p style="font-size:.75rem;color:var(--text-3);margin-top:10px">Runs inside Claude Code. Node.js 20+. Zero npm dependencies.</p>
   </div>
 </section>
@@ -296,7 +296,7 @@ footer p{margin-bottom:6px}
     <div class="what-box rv">
       <h2>What is <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong>?</h2>
       <p style="color:var(--text-2);font-size:.9375rem;margin-bottom:16px">Every finding in a wheat sprint is a <strong style="color:var(--accent)">claim</strong> — a single typed statement with an evidence grade. "Redis handles 100k ops/sec" is a factual claim at the "documented" tier. "We should use Redis" is a recommendation at the "stated" tier. The compiler treats them differently.</p>
-      <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> is a structured way to answer technical questions. You start with a question — "Should we migrate to GraphQL?" — and use slash commands to research, prototype, and challenge your findings. Every finding becomes a typed claim (factual, risk, estimate, constraint, recommendation) with an evidence tier from "someone said it" to "measured in production."</p>
+      <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> is a structured way to answer technical questions. You start with a question — "Should we extract the payments service from our monolith?" — and use slash commands to research, prototype, and challenge your findings. Every finding becomes a typed claim (factual, risk, estimate, constraint, recommendation) with an evidence tier from "someone said it" to "measured in production."</p>
       <p>When you're ready, a compiler validates everything: catches contradictions, flags weak evidence, and blocks output until issues are resolved. The compiler is JavaScript code — not prompts, not an LLM call. Same claims in, same result out, every time. The output is a decision brief you can send to your team, with a git audit trail showing how every claim was collected and challenged.</p>
     </div>
   </div>
@@ -307,11 +307,11 @@ footer p{margin-bottom:6px}
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px">
         <p style="font-weight:700;color:var(--red);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">Without Wheat</p>
-        <p style="color:var(--text-2);font-size:.875rem;line-height:1.6">"We should probably use GraphQL because it's more modern and Jake said it worked well at his last company."</p>
+        <p style="color:var(--text-2);font-size:.875rem;line-height:1.6">"We should probably extract a bunch of services because it's more scalable and Jake said it worked well at his last company."</p>
       </div>
       <div style="background:var(--surface);border:1px solid var(--accent-dim);border-radius:12px;padding:24px">
         <p style="font-weight:700;color:var(--accent);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">With Wheat</p>
-        <p style="color:var(--text-2);font-size:.875rem;line-height:1.6">14 typed claims. 3 risks flagged. 1 contradiction caught between a team-size assumption and a documented constraint. Recommendation: REST with selective GraphQL for the dashboard API. Every claim traceable to a source.</p>
+        <p style="color:var(--text-2);font-size:.875rem;line-height:1.6">14 typed claims. 3 risks flagged. 1 contradiction caught between a team-size assumption and a documented constraint. Recommendation: extract the payments service only; keep the rest of the monolith for now. Every claim traceable to a source.</p>
       </div>
     </div>
   </div>
@@ -369,11 +369,11 @@ footer p{margin-bottom:6px}
         <h3>Ask your question</h3>
         <p>One command. Zero prompts. Sprint ready in under 3 seconds.</p>
         <div class="copy-wrap">
-          <pre class="qs-code"><code><span style="color:#6b7280">$</span> <span style="color:#e0e7ef">npx @grainulation/wheat</span> <span style="color:#9ba5b7">"Should we migrate to GraphQL?"</span></code></pre>
-          <button class="copy-btn" onclick="copyText(this,'npx @grainulation/wheat &quot;Should we migrate to GraphQL?&quot;')">Copy</button>
+          <pre class="qs-code"><code><span style="color:#6b7280">$</span> <span style="color:#e0e7ef">npx @grainulation/wheat</span> <span style="color:#9ba5b7">"Should we migrate from microservices to a modular monolith?"</span></code></pre>
+          <button class="copy-btn" onclick="copyText(this,'npx @grainulation/wheat &quot;Should we migrate from microservices to a modular monolith?&quot;')">Copy</button>
         </div>
         <div class="qs-output"><span style="color:var(--accent)">wheat</span> — sprint created
-Should we migrate to GraphQL?
+Should we migrate from microservices to a modular monolith?
 1 constraint(s) seeded</div>
       </div>
       <div class="qs-step rv rv-d2">
@@ -381,14 +381,14 @@ Should we migrate to GraphQL?
         <h3>Gather evidence</h3>
         <p>Use slash commands to research, prototype, and challenge. Every finding is tracked with a type and an evidence grade.</p>
         <div class="copy-wrap">
-          <pre class="qs-code"><code><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/research</span> <span style="color:#9ba5b7">"GraphQL performance"</span></code></pre>
-          <button class="copy-btn" onclick="copyText(this,'/research &quot;GraphQL performance&quot;')">Copy</button>
+          <pre class="qs-code"><code><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/research</span> <span style="color:#9ba5b7">"service extraction cost"</span></code></pre>
+          <button class="copy-btn" onclick="copyText(this,'/research &quot;service extraction cost&quot;')">Copy</button>
         </div>
-        <div class="qs-output"><span style="color:#f59e0b">r001</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">documented</span><span style="color:#6b7280">]</span> GraphQL eliminates
-  over-fetching, reducing payload 15-25%
-<span style="color:#f59e0b">r002</span> <span style="color:#6b7280">[</span><span style="color:#f87171">risk</span><span style="color:#6b7280">|</span><span style="color:#f87171">documented</span><span style="color:#6b7280">]</span> REST caching does not
-  transfer to GraphQL without custom work
-<span style="color:#f59e0b">r003</span> <span style="color:#6b7280">[</span><span style="color:#a78bfa">estimate</span><span style="color:#6b7280">|</span><span style="color:#a78bfa">web</span><span style="color:#6b7280">]</span> Migration: ~3 weeks core</div>
+        <div class="qs-output"><span style="color:#f59e0b">r001</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">documented</span><span style="color:#6b7280">]</span> In-process calls (~1µs)
+  become network calls (~2ms p50) once extracted
+<span style="color:#f59e0b">r002</span> <span style="color:#6b7280">[</span><span style="color:#f87171">risk</span><span style="color:#6b7280">|</span><span style="color:#f87171">documented</span><span style="color:#6b7280">]</span> Shared-DB transactions
+  do not survive a module boundary — need a saga
+<span style="color:#f59e0b">r003</span> <span style="color:#6b7280">[</span><span style="color:#a78bfa">estimate</span><span style="color:#6b7280">|</span><span style="color:#a78bfa">web</span><span style="color:#6b7280">]</span> Extraction: ~3 weeks per service</div>
       </div>
       <div class="qs-step rv rv-d3">
         <div class="qs-num">3</div>
@@ -401,9 +401,9 @@ Should we migrate to GraphQL?
         <div class="qs-output"><span style="color:var(--green)">Compiled</span> 14 claims, 3 conflicts resolved
 <span style="color:var(--green)">Written:</span> output/brief.html (self-contained)
 
-Recommendation: Proceed with GraphQL for
-new endpoints. Migrate existing REST
-endpoints opportunistically.</div>
+Recommendation: Extract the payments service
+only; keep the rest of the monolith. Revisit
+after 6 months of production data.</div>
       </div>
     </div>
   </div>
@@ -414,8 +414,8 @@ endpoints opportunistically.</div>
 <section class="example" id="example">
   <div class="container">
     <div class="section-label rv">Real example</div>
-    <h2 class="section-title rv rv-d1">"Should we migrate from REST to GraphQL?"</h2>
-    <p class="section-sub rv rv-d2">A team needs to decide whether to invest 3-5 weeks in a GraphQL migration. Instead of debating in Slack, they use wheat to research it properly.</p>
+    <h2 class="section-title rv rv-d1">"Should we extract the payments service from our monolith?"</h2>
+    <p class="section-sub rv rv-d2">A team needs to decide whether to invest 3-5 weeks in extracting the payments service from their modular monolith. Instead of debating in Slack, they use wheat to research it properly.</p>
 
     <div class="example-timeline">
       <div class="ex-step">
@@ -423,22 +423,22 @@ endpoints opportunistically.</div>
         <div class="ex-body">
           <div class="ex-cmd"><span style="color:#6b7280">$</span> <span style="color:#e0e7ef">npx @grainulation/wheat</span> init</div>
           <h4>Define the question</h4>
-          <p>The team lead types the question: "Should we migrate from REST to GraphQL?" <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> asks for audience (backend team), constraints (must support existing mobile clients), and scaffolds the investigation.</p>
+          <p>The team lead types the question: "Should we extract the payments service from our monolith?" <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> asks for audience (platform team), constraints (must preserve end-to-end transaction guarantees), and scaffolds the investigation.</p>
         </div>
       </div>
 
       <div class="ex-step">
         <div class="ex-dot research">2</div>
         <div class="ex-body">
-          <div class="ex-cmd"><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/research</span> <span style="color:#9ba5b7">"GraphQL performance characteristics"</span></div>
+          <div class="ex-cmd"><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/research</span> <span style="color:#9ba5b7">"payments service extraction trade-offs"</span></div>
           <h4>Gather evidence</h4>
           <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> reads your codebase, searches the web, and records what it finds. Each finding gets a type (factual, risk, estimate) and an evidence grade — from "stated" (someone said it) to "tested" (prototype-validated).</p>
-          <div class="ex-output"><span style="color:#f59e0b">r001</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">documented</span><span style="color:#6b7280">]</span> GraphQL eliminates over-fetching for
-  mobile clients, reducing payload size 40-60%
-<span style="color:#f59e0b">r002</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">web</span><span style="color:#6b7280">]</span> GraphQL N+1 query problem requires DataLoader
-  or equivalent batching layer
-<span style="color:#f59e0b">r003</span> <span style="color:#6b7280">[</span><span style="color:#f87171">risk</span><span style="color:#6b7280">|</span><span style="color:#f87171">documented</span><span style="color:#6b7280">]</span> Existing REST caching (CDN, HTTP) does not
-  transfer to GraphQL without custom solutions</div>
+          <div class="ex-output"><span style="color:#f59e0b">r001</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">documented</span><span style="color:#6b7280">]</span> Extracting payments removes the largest
+  source of deploy contention — team ships 2-3x more often
+<span style="color:#f59e0b">r002</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">web</span><span style="color:#6b7280">]</span> In-process calls become network calls; every
+  extracted boundary needs idempotent retries and a timeout budget
+<span style="color:#f59e0b">r003</span> <span style="color:#6b7280">[</span><span style="color:#f87171">risk</span><span style="color:#6b7280">|</span><span style="color:#f87171">documented</span><span style="color:#6b7280">]</span> Shared-DB transactions spanning orders +
+  payments do not survive extraction — need a saga or outbox</div>
         </div>
       </div>
 
@@ -448,10 +448,10 @@ endpoints opportunistically.</div>
           <div class="ex-cmd"><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/prototype</span></div>
           <h4>Build and measure</h4>
           <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> builds a working proof-of-concept and benchmarks it. Findings from prototypes get the "tested" evidence grade — real measurements, not blog posts.</p>
-          <div class="ex-output"><span style="color:#f59e0b">p001</span> <span style="color:#6b7280">[</span><span style="color:#a78bfa">estimate</span><span style="color:#6b7280">|</span><span style="color:#a78bfa">tested</span><span style="color:#6b7280">]</span> Migration effort: ~3 weeks for core
-  endpoints, 2 weeks for mobile client updates
-<span style="color:#f59e0b">p002</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">tested</span><span style="color:#6b7280">]</span> DataLoader resolves N+1; p95 latency
-  within 12% of REST equivalent</div>
+          <div class="ex-output"><span style="color:#f59e0b">p001</span> <span style="color:#6b7280">[</span><span style="color:#a78bfa">estimate</span><span style="color:#6b7280">|</span><span style="color:#a78bfa">tested</span><span style="color:#6b7280">]</span> Extraction effort: ~3 weeks for the
+  payments module, 2 weeks for saga + outbox plumbing
+<span style="color:#f59e0b">p002</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">tested</span><span style="color:#6b7280">]</span> Anti-corruption layer keeps checkout
+  p95 within 8% of the in-process baseline</div>
         </div>
       </div>
 
@@ -460,10 +460,10 @@ endpoints opportunistically.</div>
         <div class="ex-body">
           <div class="ex-cmd"><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/challenge</span> <span style="color:#f59e0b">r001</span></div>
           <h4>Stress-test the findings</h4>
-          <p>The adversarial review catches that the "40-60% payload reduction" was based on worst-case assumptions — the real number is lower because the team already field-filters their REST endpoints.</p>
-          <div class="ex-output"><span style="color:#f59e0b">x001</span> <span style="color:#6b7280">[</span><span style="color:#f87171">risk</span><span style="color:#6b7280">|</span><span style="color:#f87171">documented</span><span style="color:#6b7280">]</span> 40-60% payload reduction assumes
-  worst-case REST over-fetching; our actual endpoints
-  are already field-filtered — real reduction ~15-25%</div>
+          <p>The adversarial review catches that the "2-3x ship-rate" estimate assumed the current deploy bottleneck is payments — but the last 90 days of incidents show the real bottleneck is the shared schema, which extraction alone will not fix.</p>
+          <div class="ex-output"><span style="color:#f59e0b">x001</span> <span style="color:#6b7280">[</span><span style="color:#f87171">risk</span><span style="color:#6b7280">|</span><span style="color:#f87171">documented</span><span style="color:#6b7280">]</span> 2-3x ship-rate gain assumes deploys
+  are the bottleneck; 90 days of incidents show schema
+  coupling is — strangler fig alone will not resolve it</div>
         </div>
       </div>
 
@@ -473,10 +473,11 @@ endpoints opportunistically.</div>
           <div class="ex-cmd"><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/brief</span></div>
           <h4>Ship the decision</h4>
           <p>The compiler resolves conflicts (higher evidence grades win), validates everything, and produces a self-contained HTML decision document. If there are contradictions, it tells you exactly what to fix first.</p>
-          <div class="ex-output"><span style="color:#fbbf24;font-weight:600">Recommendation:</span> Proceed with GraphQL for new endpoints only.
-Migrate existing REST endpoints opportunistically. Payload
-benefits are real but smaller than initially estimated (15-25%
-vs. 40-60%). The caching gap (<span style="color:#f59e0b">r003</span>) needs a solution first.
+          <div class="ex-output"><span style="color:#fbbf24;font-weight:600">Recommendation:</span> Extract the payments service only; keep orders,
+catalog, and auth in the monolith. Use the strangler-fig pattern
+behind an anti-corruption layer. Ship-rate gains are real but
+smaller than initially estimated. The saga/outbox work (<span style="color:#f59e0b">r003</span>) needs
+to land before the cutover.
 
 <span style="color:#6b7280">14 claims | 3 conflicts resolved | evidence: 2 tested, 8 documented, 4 web</span>
 <span style="color:#6b7280">-&gt; output/brief.html (self-contained, send to stakeholders)</span></div>
