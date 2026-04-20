@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.1.8 — 2026-04-20
+
+### Fixed
+
+- `fix(pkg): include public/ in npm tarball` — the dashboard UI served by `wheat serve` has been 404'ing on `/` since 1.0.1, when `public/` was silently dropped from the `files` array in `package.json`. `public/index.html` (the 63KB dashboard template) is now shipped again, so `npx @grainulation/wheat serve` renders the dashboard instead of returning HTTP 404.
+
+### Internal
+
+- New test `test/tarball.test.js` asserts that every load-bearing runtime file (including `public/index.html`, `lib/server.js`, `lib/serve-mcp.js`, the CLI bins, and the compiler bundle) appears in `npm pack --dry-run --json` output AND survives a real `npm pack` + `tar xzf` roundtrip. Prevents this class of packaging regression forever — zero new dependencies, Node built-ins only.
+
 ## 1.1.7 — 2026-04-19
 
 ### Changed
