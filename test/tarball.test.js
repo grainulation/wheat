@@ -34,7 +34,9 @@ test("npm pack --dry-run includes every load-bearing file", () => {
 	// (without the "package/" prefix used inside the tarball itself). Accept
 	// both forms so the test is resilient to npm versions.
 	for (const req of REQUIRED_PATHS) {
-		const bare = req.startsWith("package/") ? req.slice("package/".length) : req;
+		const bare = req.startsWith("package/")
+			? req.slice("package/".length)
+			: req;
 		assert.ok(
 			files.has(req) || files.has(bare),
 			`missing from tarball: ${req}`,
