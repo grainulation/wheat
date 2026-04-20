@@ -296,7 +296,7 @@ footer p{margin-bottom:6px}
     <div class="what-box rv">
       <h2>What is <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong>?</h2>
       <p style="color:var(--text-2);font-size:.9375rem;margin-bottom:16px">Every finding in a wheat sprint is a <strong style="color:var(--accent)">claim</strong> — a single typed statement with an evidence grade. "Redis handles 100k ops/sec" is a factual claim at the "documented" tier. "We should use Redis" is a recommendation at the "stated" tier. The compiler treats them differently.</p>
-      <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> is a structured way to answer technical questions. You start with a question — "Should we extract the payments service from our monolith?" — and use slash commands to research, prototype, and challenge your findings. Every finding becomes a typed claim (factual, risk, estimate, constraint, recommendation) with an evidence tier from "someone said it" to "measured in production."</p>
+      <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> is a structured way to answer technical questions. You start with a question — "Should we migrate from microservices back to a modular monolith?" — and use slash commands to research, prototype, and challenge your findings. Every finding becomes a typed claim (factual, risk, estimate, constraint, recommendation) with an evidence tier from "someone said it" to "measured in production."</p>
       <p>When you're ready, a compiler validates everything: catches contradictions, flags weak evidence, and blocks output until issues are resolved. The compiler is JavaScript code — not prompts, not an LLM call. Same claims in, same result out, every time. The output is a decision brief you can send to your team, with a git audit trail showing how every claim was collected and challenged.</p>
     </div>
   </div>
@@ -307,11 +307,11 @@ footer p{margin-bottom:6px}
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px">
         <p style="font-weight:700;color:var(--red);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">Without Wheat</p>
-        <p style="color:var(--text-2);font-size:.875rem;line-height:1.6">"We should probably extract a bunch of services because it's more scalable and Jake said it worked well at his last company."</p>
+        <p style="color:var(--text-2);font-size:.875rem;line-height:1.6">"We should probably roll our microservices back into a monolith because Prime Video did it and Jake said it worked well at his last company."</p>
       </div>
       <div style="background:var(--surface);border:1px solid var(--accent-dim);border-radius:12px;padding:24px">
         <p style="font-weight:700;color:var(--accent);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">With Wheat</p>
-        <p style="color:var(--text-2);font-size:.875rem;line-height:1.6">14 typed claims. 3 risks flagged. 1 contradiction caught between a team-size assumption and a documented constraint. Recommendation: extract the payments service only; keep the rest of the monolith for now. Every claim traceable to a source.</p>
+        <p style="color:var(--text-2);font-size:.875rem;line-height:1.6">14 typed claims. 3 risks flagged. 1 contradiction caught between a team-size assumption and a documented constraint. Recommendation: consolidate the auth service back into the monolith; keep payments split where async boundaries are load-bearing. Every claim traceable to a source.</p>
       </div>
     </div>
   </div>
@@ -381,14 +381,14 @@ Should we migrate from microservices to a modular monolith?
         <h3>Gather evidence</h3>
         <p>Use slash commands to research, prototype, and challenge. Every finding is tracked with a type and an evidence grade.</p>
         <div class="copy-wrap">
-          <pre class="qs-code"><code><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/research</span> <span style="color:#9ba5b7">"service extraction cost"</span></code></pre>
-          <button class="copy-btn" onclick="copyText(this,'/research &quot;service extraction cost&quot;')">Copy</button>
+          <pre class="qs-code"><code><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/research</span> <span style="color:#9ba5b7">"service consolidation cost"</span></code></pre>
+          <button class="copy-btn" onclick="copyText(this,'/research &quot;service consolidation cost&quot;')">Copy</button>
         </div>
-        <div class="qs-output"><span style="color:#f59e0b">r001</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">documented</span><span style="color:#6b7280">]</span> In-process calls (~1µs)
-  become network calls (~2ms p50) once extracted
-<span style="color:#f59e0b">r002</span> <span style="color:#6b7280">[</span><span style="color:#f87171">risk</span><span style="color:#6b7280">|</span><span style="color:#f87171">documented</span><span style="color:#6b7280">]</span> Shared-DB transactions
-  do not survive a module boundary — need a saga
-<span style="color:#f59e0b">r003</span> <span style="color:#6b7280">[</span><span style="color:#a78bfa">estimate</span><span style="color:#6b7280">|</span><span style="color:#a78bfa">web</span><span style="color:#6b7280">]</span> Extraction: ~3 weeks per service</div>
+        <div class="qs-output"><span style="color:#f59e0b">r001</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">documented</span><span style="color:#6b7280">]</span> Network calls (~2ms p50) become
+  in-process calls (~1µs) once consolidated — p99 drops 40-60%
+<span style="color:#f59e0b">r002</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">documented</span><span style="color:#6b7280">]</span> Cross-service sagas collapse
+  into single-module ACID transactions — class of bugs eliminated
+<span style="color:#f59e0b">r003</span> <span style="color:#6b7280">[</span><span style="color:#a78bfa">estimate</span><span style="color:#6b7280">|</span><span style="color:#a78bfa">web</span><span style="color:#6b7280">]</span> Consolidation: ~3 weeks per service</div>
       </div>
       <div class="qs-step rv rv-d3">
         <div class="qs-num">3</div>
@@ -401,8 +401,8 @@ Should we migrate from microservices to a modular monolith?
         <div class="qs-output"><span style="color:var(--green)">Compiled</span> 14 claims, 3 conflicts resolved
 <span style="color:var(--green)">Written:</span> output/brief.html (self-contained)
 
-Recommendation: Extract the payments service
-only; keep the rest of the monolith. Revisit
+Recommendation: Consolidate the auth service
+into the monolith; keep payments split. Revisit
 after 6 months of production data.</div>
       </div>
     </div>
@@ -414,8 +414,8 @@ after 6 months of production data.</div>
 <section class="example" id="example">
   <div class="container">
     <div class="section-label rv">Real example</div>
-    <h2 class="section-title rv rv-d1">"Should we extract the payments service from our monolith?"</h2>
-    <p class="section-sub rv rv-d2">A team needs to decide whether to invest 3-5 weeks in extracting the payments service from their modular monolith. Instead of debating in Slack, they use wheat to research it properly.</p>
+    <h2 class="section-title rv rv-d1">"Should we consolidate the auth service back into our monolith?"</h2>
+    <p class="section-sub rv rv-d2">A team needs to decide whether to invest 3-5 weeks in consolidating their standalone auth service back into the monolith. Instead of debating in Slack, they use wheat to research it properly.</p>
 
     <div class="example-timeline">
       <div class="ex-step">
@@ -423,22 +423,22 @@ after 6 months of production data.</div>
         <div class="ex-body">
           <div class="ex-cmd"><span style="color:#6b7280">$</span> <span style="color:#e0e7ef">npx @grainulation/wheat</span> init</div>
           <h4>Define the question</h4>
-          <p>The team lead types the question: "Should we extract the payments service from our monolith?" <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> asks for audience (platform team), constraints (must preserve end-to-end transaction guarantees), and scaffolds the investigation.</p>
+          <p>The team lead types the question: "Should we consolidate the auth service back into our monolith?" <strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> asks for audience (platform team), constraints (must not break existing SSO clients during the rollback), and scaffolds the investigation.</p>
         </div>
       </div>
 
       <div class="ex-step">
         <div class="ex-dot research">2</div>
         <div class="ex-body">
-          <div class="ex-cmd"><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/research</span> <span style="color:#9ba5b7">"payments service extraction trade-offs"</span></div>
+          <div class="ex-cmd"><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/research</span> <span style="color:#9ba5b7">"auth service consolidation trade-offs"</span></div>
           <h4>Gather evidence</h4>
           <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> reads your codebase, searches the web, and records what it finds. Each finding gets a type (factual, risk, estimate) and an evidence grade — from "stated" (someone said it) to "tested" (prototype-validated).</p>
-          <div class="ex-output"><span style="color:#f59e0b">r001</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">documented</span><span style="color:#6b7280">]</span> Extracting payments removes the largest
-  source of deploy contention — team ships 2-3x more often
-<span style="color:#f59e0b">r002</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">web</span><span style="color:#6b7280">]</span> In-process calls become network calls; every
-  extracted boundary needs idempotent retries and a timeout budget
-<span style="color:#f59e0b">r003</span> <span style="color:#6b7280">[</span><span style="color:#f87171">risk</span><span style="color:#6b7280">|</span><span style="color:#f87171">documented</span><span style="color:#6b7280">]</span> Shared-DB transactions spanning orders +
-  payments do not survive extraction — need a saga or outbox</div>
+          <div class="ex-output"><span style="color:#f59e0b">r001</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">documented</span><span style="color:#6b7280">]</span> Network calls to auth become in-process
+  module calls — p99 login-check latency drops 40-60% (Shopify, Prime Video precedent)
+<span style="color:#f59e0b">r002</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">documented</span><span style="color:#6b7280">]</span> Cross-service saga/outbox work collapses
+  into a single ACID transaction — eliminates a class of partial-failure bugs
+<span style="color:#f59e0b">r003</span> <span style="color:#6b7280">[</span><span style="color:#f87171">risk</span><span style="color:#6b7280">|</span><span style="color:#f87171">documented</span><span style="color:#6b7280">]</span> Deployment-unit coupling returns — auth
+  changes now ship on the monolith cadence; build-pipeline time grows</div>
         </div>
       </div>
 
@@ -448,10 +448,10 @@ after 6 months of production data.</div>
           <div class="ex-cmd"><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/prototype</span></div>
           <h4>Build and measure</h4>
           <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> builds a working proof-of-concept and benchmarks it. Findings from prototypes get the "tested" evidence grade — real measurements, not blog posts.</p>
-          <div class="ex-output"><span style="color:#f59e0b">p001</span> <span style="color:#6b7280">[</span><span style="color:#a78bfa">estimate</span><span style="color:#6b7280">|</span><span style="color:#a78bfa">tested</span><span style="color:#6b7280">]</span> Extraction effort: ~3 weeks for the
-  payments module, 2 weeks for saga + outbox plumbing
-<span style="color:#f59e0b">p002</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">tested</span><span style="color:#6b7280">]</span> Anti-corruption layer keeps checkout
-  p95 within 8% of the in-process baseline</div>
+          <div class="ex-output"><span style="color:#f59e0b">p001</span> <span style="color:#6b7280">[</span><span style="color:#a78bfa">estimate</span><span style="color:#6b7280">|</span><span style="color:#a78bfa">tested</span><span style="color:#6b7280">]</span> Reverse-strangler prototype: auth
+  consolidated behind a module boundary in ~3 weeks; saga removal saved 2 more
+<span style="color:#f59e0b">p002</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">tested</span><span style="color:#6b7280">]</span> Login p95 drops 42% vs the cross-service
+  baseline; auth-module tests run in-process (no test containers needed)</div>
         </div>
       </div>
 
@@ -460,10 +460,10 @@ after 6 months of production data.</div>
         <div class="ex-body">
           <div class="ex-cmd"><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/challenge</span> <span style="color:#f59e0b">r001</span></div>
           <h4>Stress-test the findings</h4>
-          <p>The adversarial review catches that the "2-3x ship-rate" estimate assumed the current deploy bottleneck is payments — but the last 90 days of incidents show the real bottleneck is the shared schema, which extraction alone will not fix.</p>
-          <div class="ex-output"><span style="color:#f59e0b">x001</span> <span style="color:#6b7280">[</span><span style="color:#f87171">risk</span><span style="color:#6b7280">|</span><span style="color:#f87171">documented</span><span style="color:#6b7280">]</span> 2-3x ship-rate gain assumes deploys
-  are the bottleneck; 90 days of incidents show schema
-  coupling is — strangler fig alone will not resolve it</div>
+          <p>The adversarial review catches that the latency-win estimate assumes auth's in-process path will stay fast at monolith scale — but the last 90 days of incidents show the monolith already has slow-path contention, and the reverse-strangler re-establishes the schema boundaries that made auth painful to host in the first place.</p>
+          <div class="ex-output"><span style="color:#f59e0b">x001</span> <span style="color:#6b7280">[</span><span style="color:#f87171">risk</span><span style="color:#6b7280">|</span><span style="color:#f87171">documented</span><span style="color:#6b7280">]</span> 40-60% latency win assumes monolith
+  slow-path stays fast at scale; 90 days of incidents show contention,
+  and reverse-strangler re-couples schema boundaries — not free</div>
         </div>
       </div>
 
@@ -473,11 +473,11 @@ after 6 months of production data.</div>
           <div class="ex-cmd"><span style="color:#fbbf24">wheat&gt;</span> <span style="color:#34d399">/brief</span></div>
           <h4>Ship the decision</h4>
           <p>The compiler resolves conflicts (higher evidence grades win), validates everything, and produces a self-contained HTML decision document. If there are contradictions, it tells you exactly what to fix first.</p>
-          <div class="ex-output"><span style="color:#fbbf24;font-weight:600">Recommendation:</span> Extract the payments service only; keep orders,
-catalog, and auth in the monolith. Use the strangler-fig pattern
-behind an anti-corruption layer. Ship-rate gains are real but
-smaller than initially estimated. The saga/outbox work (<span style="color:#f59e0b">r003</span>) needs
-to land before the cutover.
+          <div class="ex-output"><span style="color:#fbbf24;font-weight:600">Recommendation:</span> Consolidate the auth service back into the monolith;
+keep payments split where async boundaries are load-bearing. Use the reverse-
+strangler pattern behind an anti-corruption layer during cutover. Latency
+gains are real but narrower than initially estimated. The module-boundary
+enforcement work (<span style="color:#f59e0b">r003</span>) needs to land before the cutover.
 
 <span style="color:#6b7280">14 claims | 3 conflicts resolved | evidence: 2 tested, 8 documented, 4 web</span>
 <span style="color:#6b7280">-&gt; output/brief.html (self-contained, send to stakeholders)</span></div>
