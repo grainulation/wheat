@@ -33,7 +33,7 @@ The result: a decision document backed by validated evidence, not vibes.
 ## Quick start
 
 ```bash
-npx @grainulation/wheat "Should we migrate to GraphQL?"
+npx @grainulation/wheat "Should we migrate from microservices back to a modular monolith?"
 ```
 
 One command. Zero config. Sprint ready in under 3 seconds.
@@ -41,11 +41,11 @@ One command. Zero config. Sprint ready in under 3 seconds.
 Then open your AI coding tool and start investigating:
 
 ```bash
-wheat add --id r001 --type factual --topic "graphql-performance" \
-  --content "GraphQL N+1 queries cause 3-10x latency without DataLoader" \
+wheat add --id r001 --type factual --topic "service-consolidation-latency" \
+  --content "Network calls between services become in-process calls when consolidated — p99 drops 40-60%" \
   --evidence documented
 
-wheat search --topic "graphql"
+wheat search --topic "consolidation"
 
 wheat compile   # 7-pass validation: conflicts, weak evidence, coverage gaps
 
