@@ -434,7 +434,7 @@ after 6 months of production data.</div>
           <h4>Gather evidence</h4>
           <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> reads your codebase, searches the web, and records what it finds. Each finding gets a type (factual, risk, estimate) and an evidence grade — from "stated" (someone said it) to "tested" (prototype-validated).</p>
           <div class="ex-output"><span style="color:#f59e0b">r001</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">documented</span><span style="color:#6b7280">]</span> Network calls to auth become in-process
-  module calls — p99 login-check latency drops 40-60% (Shopify, Prime Video precedent)
+  module calls — p99 login-check latency drops 40-60% (microservices-migration literature)
 <span style="color:#f59e0b">r002</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">documented</span><span style="color:#6b7280">]</span> Cross-service saga/outbox work collapses
   into a single ACID transaction — eliminates a class of partial-failure bugs
 <span style="color:#f59e0b">r003</span> <span style="color:#6b7280">[</span><span style="color:#f87171">risk</span><span style="color:#6b7280">|</span><span style="color:#f87171">documented</span><span style="color:#6b7280">]</span> Deployment-unit coupling returns — auth
@@ -450,7 +450,7 @@ after 6 months of production data.</div>
           <p><strong style="color:#fff;font-size:110%"><span style="color:var(--accent)">w</span>heat</strong> builds a working proof-of-concept and benchmarks it. Findings from prototypes get the "tested" evidence grade — real measurements, not blog posts.</p>
           <div class="ex-output"><span style="color:#f59e0b">p001</span> <span style="color:#6b7280">[</span><span style="color:#a78bfa">estimate</span><span style="color:#6b7280">|</span><span style="color:#a78bfa">tested</span><span style="color:#6b7280">]</span> Reverse-strangler prototype: auth
   consolidated behind a module boundary in ~3 weeks; saga removal saved 2 more
-<span style="color:#f59e0b">p002</span> <span style="color:#6b7280">[</span><span style="color:#60a5fa">factual</span><span style="color:#6b7280">|</span><span style="color:#60a5fa">tested</span><span style="color:#6b7280">]</span> Login p95 drops 42% vs the cross-service
+<span style="color:#f59e0b">p002</span> <span style="color:#6b7280">[</span><span style="color:#a78bfa">estimate</span><span style="color:#6b7280">|</span><span style="color:#a78bfa">web</span><span style="color:#6b7280">]</span> Login p95 drops ~42% vs the cross-service
   baseline; auth-module tests run in-process (no test containers needed)</div>
         </div>
       </div>
@@ -487,6 +487,7 @@ enforcement work (<span style="color:#f59e0b">r003</span>) needs to land before 
 
     <div style="margin-top:40px;text-align:center" class="rv">
       <p style="color:var(--text-2);font-size:.9375rem;max-width:560px;margin:0 auto"><strong style="color:var(--text)">The outcome:</strong> Instead of a 45-minute meeting where the loudest voice wins, the team has a compiled brief with 14 validated findings, resolved conflicts, and a clear recommendation. Anyone can run <code>git log claims.json</code> to see how the decision was made.</p>
+      <p style="color:var(--text-3);font-size:.75rem;max-width:560px;margin:16px auto 0;font-style:italic">Numbers in this example are illustrative — the pattern is what matters. Evidence tiers (<code style="font-style:normal">web</code>, <code style="font-style:normal">tested</code>, <code style="font-style:normal">production</code>) flag which claims would need what level of verification in your own sprint.</p>
     </div>
   </div>
 </section>

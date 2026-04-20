@@ -13,7 +13,7 @@ body:
     attributes:
       label: Sprint question
       description: What was the research question driving your sprint?
-      placeholder: "e.g., Should we migrate from REST to GraphQL?"
+      placeholder: "e.g., Should we consolidate our microservices into a modular monolith?"
     validations:
       required: true
 
